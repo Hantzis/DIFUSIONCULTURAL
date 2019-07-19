@@ -1,0 +1,55 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+
+
+
+{% if self %}
+
+    <div class="block-contained">
+        <div class="container">
+            <div class="row">
+
+                <div class="item-carousel" data-toggle="owlcarousel"
+                     data-owlcarousel-settings='{"items":3, "pagination":false, "navigation":true, "itemsScaleUp":true}'>
+
+
+                    {% for block in self %}
+
+                        <section class="block-{{ block.block_type }}">
+
+                            <div class="item">
+                                {% image block.value.image original as aux_image %}
+
+                                <a href="{{ aux_image.url }}" data-toggle="lightbox"
+                                   data-title="{{ block.value.attribution }}" data-footer="{{ block.value.caption }}"
+                                   class="overlay-wrapper">
+                                    {% image block.value.image fill-600x300 class="img-responsive underlay img-fluid" %}
+                                    {% if block.value.caption %}
+
+                                        <span class="overlay">
+                                            <span class="overlay-content">
+                                                <span class="h5">{{ block.value.caption }}</span>
+                                            </span>
+                                        </span>
+
+                                    {% endif %}
+
+                                </a>
+                                {% if block.value.attribution %}
+                                    <div class="item-details bg-noise">
+                                        <h5 class="item-title">
+                                            <a href="#">{{ block.value.attribution }}</a>
+                                        </h5>
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                        </section>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endif %}
+

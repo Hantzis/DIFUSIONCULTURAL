@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'modelcluster',
     'taggit',
+    'wagtailfontawesome',
     'wagtail_blocks',
     'base',
     'difusion_cultural',

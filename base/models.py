@@ -112,8 +112,6 @@ class FooterText(models.Model):
         verbose_name_plural = 'Footer Text'
 
 
-
-
 @register_snippet
 class Keyword(TaggitTag):
     pass

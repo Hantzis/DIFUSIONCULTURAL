@@ -1,0 +1,20 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% if self %}
+    {% for block in self %}
+        {% if block.block_type == 'icon' %}
+            <span class="fa-stack fa-5x">
+              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+              <i class="fa fa-{{ block.value }} fa-stack-1x fa-inverse"></i>
+            </span>
+        {% elif block.block_type == 'heading' %}
+            <h2>{{ block.value }}</h2>
+        {% elif block.block_type == 'image' %}
+            {% image block.value width-900 class="img-responsive" %}
+        {% else %}
+            <section class="block-{{ block.block_type }}">
+                {{ block }}
+            </section>
+        {% endif %}
+    {% endfor %}
+{% endif %}

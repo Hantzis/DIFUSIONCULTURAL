@@ -1,0 +1,24 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% if self %}
+
+    <div class="block block-pd-sm block-bg-grey-dark block-bg-overlay block-bg-overlay-6 text-center block-bg-img">
+
+
+        {% if self.size == 'h2' %}
+            <h2 class="h-xlg h1 m-a-0">{{ self.heading_text }}</h2>
+            <h3 class="h-lg m-t-0 m-b-lg">{{ self.text }}</h3>
+
+        {% elif self.size == 'h3' %}
+            <h3 class="h-lg h1 m-a-0">{{ self.heading_text }}</h3>
+            <h4 class="h-lg m-t-0 m-b-lg">{{ self.text }}</h4>
+
+        {% endif %}
+        <p>
+            <a id="formularioboton" class="btn btn-more btn-lg i-right">
+                {% if self.cta_text %}{{ self.cta_text }}{% else %}¡Quiero inscribirme!{% endif %}
+                <i class="fa fa-angle-right"></i></a>
+        </p>
+
+    </div>
+{% endif %}

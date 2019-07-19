@@ -60,12 +60,11 @@ class BlockQuote(StructBlock):
 
 
 class ColumnBlock(blocks.StreamBlock):
-    heading = blocks.CharBlock(classname="título completo")
     paragraph = blocks.RichTextBlock()
     image = ImageChooserBlock()
 
     class Meta:
-        template = 'blocks/custom/column_block.html'
+        template = 'blocks/column_block.html'
 
 
 class TwoColumnBlock(blocks.StructBlock):
@@ -73,19 +72,18 @@ class TwoColumnBlock(blocks.StructBlock):
     right_column = ColumnBlock(icon='arrow-right', label='Right column content')
 
     class Meta:
-        template = 'blocks/custom/two_columns_block.html'
+        template = 'blocks/two_columns_block.html'
         icon = 'grip'
         label = 'Dos columnas'
 
 
 class IconColumnBlock(blocks.StreamBlock):
-    heading = blocks.CharBlock(classname="título completo")
-    paragraph = blocks.RichTextBlock()
-    image = ImageChooserBlock()
     icon = CharBlock(required=False)
+    image = ImageChooserBlock()
+    paragraph = blocks.RichTextBlock()
 
     class Meta:
-        template = 'blocks/custom/icon_column_block.html'
+        template = 'blocks/icon_column_block.html'
 
 
 class ThreeColumnBlock(blocks.StructBlock):
@@ -94,7 +92,7 @@ class ThreeColumnBlock(blocks.StructBlock):
     right_column = IconColumnBlock(icon='placeholder', label='Right column content')
 
     class Meta:
-        template = 'blocks/custom/three_columns_block.html'
+        template = 'blocks/three_columns_block.html'
         icon = 'group'
         label = 'Tres columnas'
 
@@ -110,14 +108,14 @@ class CarouselImageBlock(blocks.StructBlock):
 
     class Meta:
         icon = 'image'
-        template = "blocks/custom/carousel_image_block.html"
+        template = "blocks/carousel_image_block.html"
 
 
 class CarouselBlock(blocks.StreamBlock):
     image = CarouselImageBlock(icon='cogs', label='Imagen de carrusel')
 
     class Meta:
-        template = 'blocks/custom/carousel_block.html'
+        template = 'blocks/carousel_block.html'
         icon = 'cog'
         label = 'Carrusel'
 
@@ -138,7 +136,7 @@ class HeadBandBlock(StructBlock):
 
     class Meta:
         icon = "title"
-        template = "blocks/custom/head_band_block.html"
+        template = "blocks/head_band_block.html"
 
 
 
@@ -174,14 +172,14 @@ class HeroSlideBlockImage(blocks.StructBlock):
 
     class Meta:
         icon = 'image'
-        template = "blocks/custom/hero_slide_block_image.html"
+        template = "blocks/hero_slide_block_image.html"
 
 
 class HeroSlideBlock(blocks.StreamBlock):
     image = HeroSlideBlockImage(icon='image', label='Imagen Hero')
 
     class Meta:
-        template = 'blocks/custom/hero_slide_block.html'
+        template = 'blocks/hero_slide_block.html'
         label = 'Hero Slide'
 
 ###
@@ -207,7 +205,6 @@ class BaseStreamBlock(StreamBlock):
 
 
 
-
 class ExtraStreamBlock(BaseStreamBlock):
     """
     Este bloque extiende a BaseStreamBlock, para hacer lo mismo que BaseStreamBlock pero meter cosas nuevas
@@ -217,6 +214,16 @@ class ExtraStreamBlock(BaseStreamBlock):
     carousel_block = CarouselBlock()
     headband_block = HeadBandBlock()
     map_block = MapBlock()
+
+    header = HeaderBlock()
+    list = ListBlock()
+    image_text_overlay = ImageTextOverlayBlock()
+    cropped_images_with_text = CroppedImagesWithTextBlock()
+    list_with_images = ListWithImagesBlock()
+    thumbnail_gallery = ThumbnailGalleryBlock()
+    chart = ChartBlock()
+    map = MapBlock()
+    image_slider = ImageSliderBlock()
 
 
 class FormStreamBlock(BaseStreamBlock):
@@ -229,7 +236,7 @@ class FormStreamBlock(BaseStreamBlock):
     )
     headband_block = HeadBandBlock(
         icon="fa-heading",
-        template="blocks/custom/form_head_band_block.html"
+        template="blocks/form_head_band_block.html"
     )
 
 

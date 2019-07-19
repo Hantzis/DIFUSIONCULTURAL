@@ -1,0 +1,15 @@
+{% load wagtailimages_tags wagtailcore_tags %}
+
+{% image self.image fill-2048x900 %}
+<div class="carousel-caption">
+    <h2 class="h1 text-weight-light"><a class="title-slider" href="{{ self.cta_link }}">{{ self.title }}</a></h2>
+    <p class="h3 text-weight-light">{{ self.caption }}</p>
+    <br/>
+    {% if self.cta_link %}
+        <!-- <a href="{% pageurl self.cta_link %}" class="btn btn-more"><i class="fa fa-plus"></i>
+            {% if self.cta_text %}{{ self.cta_text }}{% else %}Leer más{% endif %}
+        </a>
+        <br/> -->
+    {% endif %}
+</div>
+
