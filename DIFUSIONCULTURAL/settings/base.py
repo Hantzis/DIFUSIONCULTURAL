@@ -95,9 +95,9 @@ WSGI_APPLICATION = 'DIFUSIONCULTURAL.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'difusion',
-        'USER': 'root',
-        'PASSWORD': '',
+        'NAME': 'c1difusiondb',
+        'USER': 'c1difusionuser',
+        'PASSWORD': '1trombon',
         'HOST': 'localhost',
         'PORT': '3306',
     }
