@@ -213,16 +213,6 @@ class ExtraStreamBlock(BaseStreamBlock):
     threecolumn_block = ThreeColumnBlock()
     carousel_block = CarouselBlock()
     headband_block = HeadBandBlock()
-    map_block = MapBlock()
-
-    header = HeaderBlock()
-    list = ListBlock()
-    image_text_overlay = ImageTextOverlayBlock()
-    cropped_images_with_text = CroppedImagesWithTextBlock()
-    list_with_images = ListWithImagesBlock()
-    thumbnail_gallery = ThumbnailGalleryBlock()
-    chart = ChartBlock()
-    map = MapBlock()
     image_slider = ImageSliderBlock()
 
 
