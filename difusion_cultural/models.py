@@ -7,7 +7,7 @@ from modelcluster.models import ClusterableModel
 
 
 from wagtail.core.fields import RichTextField, StreamField
-from wagtail.core.models import Collection, Page
+from wagtail.core.models import Collection, Page, PageManager, PageQuerySet
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
@@ -62,6 +62,18 @@ class DifusionCulturalNoticiaEtiqueta(TaggedItemBase):
                                  on_delete=models.CASCADE)
 
 
+class DifusionCulturalNoticiaQuerySet(PageQuerySet):
+    def ultimos(self):
+        return self.order_by('-fecha')
+
+
+#DifusionCulturalNoticiaManager = PageManager.from_queryset(DifusionCulturalNoticiaQuerySet)
+
+class DifusionCulturalNoticiaManager(PageManager):
+    def ultimos(self):
+        return self.order_by('-fecha')
+
+
 class DifusionCulturalNoticia(Page):
     fecha = models.DateField("Fecha de publicación")
     introduccion = models.CharField(max_length=250)
@@ -101,5 +113,6 @@ class DifusionCulturalNoticia(Page):
     def por_fecha(self):
         return Page.objects.sort_by('fecha')
 
-    class Meta:
-        ordering = ['-fecha']
+    objects = DifusionCulturalNoticiaManager()
+
+
