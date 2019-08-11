@@ -20,10 +20,14 @@ from base.blocks import ExtraStreamBlock
 # from .blocks import BaseStreamBlock, ExtraStreamBlock, HeroSlideBlock, FormStreamBlock
 
 from base.models import HomePage, StandardPage
-
+from django.db.models import Q
 
 class DifusionCulturalHomePage(HomePage):
-    pass
+
+
+    def get_nuevos_bisnietos(self):
+        return Page.objects.filter(Q(depth__gte=5))[:3]
+
 
 
 class DifusionCulturalArticulo(StandardPage):
@@ -94,5 +98,8 @@ class DifusionCulturalNoticia(Page):
         ImageChooserPanel('imagen'),
     ]
 
+    def por_fecha(self):
+        return Page.objects.sort_by('fecha')
+
     class Meta:
-        ordering = ['fecha']
+        ordering = ['-fecha']

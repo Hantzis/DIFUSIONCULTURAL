@@ -19,6 +19,8 @@
 
         <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
         {{ post.specific.introduccion }}
+        {{ post.specific.fecha }}
+        {{ post.specific.pk }}
         {{ post.specific.cuerpo }}
     {% endfor %}
  <hr />
@@ -26,6 +28,7 @@
 
         <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
         {{ post.specific.introduccion }}
+        {{ post.specific.fecha }}
         {{ post.specific.cuerpo }}
     {% endfor %}
 

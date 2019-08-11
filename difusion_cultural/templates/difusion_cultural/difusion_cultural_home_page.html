@@ -9,9 +9,19 @@
     {{ page }}
 
     {% for post in page.get_children %}
-        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
+        <h2><a href="{% pageurl post %}">--{{ post.title }}--</a></h2>
         {{ post.specific.intro }}
 
+
+    {% endfor %}
+<hr />
+    {% for post in page.get_nuevos_bisnietos %}
+
+        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
+        {{ post.specific.introduccion }}
+        {{ post.specific.fecha }}
+        {{ post.specific.pk }}
+        {{ post.specific.cuerpo }}
     {% endfor %}
 
 
