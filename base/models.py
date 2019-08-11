@@ -3,8 +3,8 @@ from django.db import models
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from rest_framework.serializers import models
-from wagtail_blocks.blocks import HeaderBlock, ListBlock, ImageTextOverlayBlock, CroppedImagesWithTextBlock, \
-    ListWithImagesBlock, ThumbnailGalleryBlock, ChartBlock, MapBlock, ImageSliderBlock
+# from wagtail_blocks.blocks import HeaderBlock, ListBlock, ImageTextOverlayBlock, CroppedImagesWithTextBlock, \
+#     ListWithImagesBlock, ThumbnailGalleryBlock, ChartBlock, MapBlock, ImageSliderBlock
 
 
 
@@ -196,24 +196,6 @@ class HomePage(Page):
         related_name='+',
         help_text='Homepage image'
     )
-    hero_text = models.CharField(
-        max_length=255,
-        help_text='Write an introduction for the bakery'
-        )
-    hero_cta = models.CharField(
-        verbose_name='Hero CTA',
-        max_length=255,
-        help_text='Text to display on Call to Action'
-        )
-    hero_cta_link = models.ForeignKey(
-        'wagtailcore.Page',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        verbose_name='Hero CTA link',
-        help_text='Choose a page to link to for the Call to Action'
-    )
 
     # Body section of the HomePage
     body = StreamField(
@@ -224,11 +206,6 @@ class HomePage(Page):
     content_panels = Page.content_panels + [
         MultiFieldPanel([
             ImageChooserPanel('image'),
-            FieldPanel('hero_text', classname="full"),
-            MultiFieldPanel([
-                FieldPanel('hero_cta'),
-                PageChooserPanel('hero_cta_link'),
-                ])
             ], heading="Hero section"),
 
         StreamFieldPanel('body'),

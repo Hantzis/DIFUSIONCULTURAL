@@ -1,0 +1,183 @@
+{% extends "difusion_cultural/base.html" %}
+{% load static %}
+
+{% block body_class %}articulo-template{% endblock %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+
+<header>
+  <div data-sticky-container>
+    <nav class="title-bar title-bar-sticky-shrink" id="main-menu" data-sticky data-top-anchor="1" data-margin-top="0" data-sticky-on="small">
+        <div class="title-bar-left">
+          <ul class="menu">
+            <li><a href="/"><img src="{% static 'img/dif_logo_web_horizontal_01.svg' %}" alt=""></a></li>
+          </ul>
+        </div>
+        <div class="title-bar-right">
+          <ul class="menu align-right">
+            <li class="menu-text show-for-medium"><img src="{% static 'img/dif_umich.svg' %}" alt="umich"></li>
+            <li class="menu-text"><button class="menu-icon" type="button" data-toggle="mainNavCanvasMenu"></button></li>
+          </ul>
+        </div>
+    </nav>
+  </div>
+
+<div class="off-canvas position-right" id="mainNavCanvasMenu" data-off-canvas data-transition="overlap">
+
+    <button class="close-button" aria-label="Cerrar menu" type="button" data-close>
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <br>
+    <br>
+    <br>
+
+    <ul class="vertical menu accordion-menu" data-accordion-menu data-submenu-toggle="true">
+      <li><a href="#">Agenda</a></li>
+      <li><a href="#">Agenda Digital de Cultura </a></li>
+      <li><a href="#">Espacios. Conoce nuestras áreas</a></li>
+      <li><a href="#">Contacto. Directorio</a></li>
+      <li><a href="#">Transparencia</a></li>
+      <li><a href="#">Deportes</a></li>
+      <li><a href="#">Editorial Cultural</a></li>
+      <li><a href="#">Noticias</a></li>
+    </ul>
+
+</div>
+
+</header>
+<div class="off-canvas-content" data-off-canvas-content>
+  <div class="hero">
+    <div class="owl-carousel-article-gallery article-hero"> <!-- to add class: owl-carousel -->
+      {% block hero %}
+
+      {#% include hero ETC TODO... %#}
+
+        {% comment %}
+          example of include
+        {% endcomment %}
+
+      {# % include 'home/../../../base/welcome_page.html' % #}
+
+      {% endblock hero %}
+      <figure style="background-image: url({% static 'img/hero/ccu_0001__web.jpg' %});">
+      </figure>
+    </div>
+  </div>
+
+  <div class="grid-container">
+    <div class="grid-x news">
+      <div class="medium-10 medium-offset-1 large-6 large-offset-1 cell">
+
+
+
+        <hgroup>
+          <h4>{{ page.title }}</h4>
+          <h6>Próximos</h6>
+        </hgroup>
+        <p class="lead">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero reiciendis beatae libero, dolorum neque, inventore voluptas voluptates, ad, mollitia voluptatem blanditiis.
+        </p>
+        <hr>
+
+        {% block content %}
+
+        {{ page }}
+
+        {% endblock content %}{# !!!!!!!!!!!!! END OF CONTENT !!!!!!!!!!! #}
+
+
+      </div>
+
+      <div class="medium-10 medium-offset-1 large-3 large-offset-1 cell">
+        <ul class="menu vertical">
+          <li><a href="">Menu premium</a></li>
+          <li><a href="">Menu premium</a></li>
+          <li><a href="">Menu premium</a></li>
+          <li><a href="">Menu premium</a></li>
+          <li><a href="">Menu premium</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+<footer class="marketing-site-footer">
+  <div class="grid-container">
+    <div class="grid-x medium-unstack">
+    <div class="medium-4 cell">
+      <h4 class="marketing-site-footer-name">Yeti Snowcone</h4>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita dolorem accusantium architecto id quidem, itaque nesciunt quam ducimus atque.</p>
+      <ul class="menu marketing-site-footer-menu-social simple">
+        <li><a href="#"><i class="fa fa-youtube-square" aria-hidden="true"></i></a></li>
+         <li><a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
+         <li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
+      </ul>
+    </div>
+    <div class="medium-4 cell">
+       <h4 class="marketing-site-footer-title">Contact Info</h4>
+      <div class="marketing-site-footer-block">
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+        <p>100 W Rincon<br>San Francisco, CA 94015</p>
+      </div>
+      <div class="marketing-site-footer-block">
+        <i class="fa fa-phone" aria-hidden="true"></i>
+        <p>1 (800) 555-5555</p>
+      </div>
+      <div class="marketing-site-footer-block">
+        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+        <p>yetirules@fakeemail.com</p>
+      </div>
+    </div>
+    <div class="medium-4 cell">
+      <h4 class="marketing-site-footer-title">Instagram</h4>
+      <div class="grid-x small-up-3">
+        <div class="cell column-block">
+          <img src="https://placehold.it/75" alt="" />
+        </div>
+        <div class="cell column-block">
+          <img src="https://placehold.it/75" alt="" />
+        </div>
+        <div class="cell column-block">
+          <img src="https://placehold.it/75" alt="" />
+        </div>
+        <div class="cell column-block">
+          <img src="https://placehold.it/75" alt="" />
+        </div>
+        <div class="cell column-block">
+          <img src="https://placehold.it/75" alt="" />
+        </div>
+        <div class="cell column-block">
+          <img src="https://placehold.it/75" alt="" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+  <div class="marketing-site-footer-bottom">
+    <div class="grid-container">
+      <div class="grid-x large-unstack align-middle">
+        <div class="column">
+          <p>&copy; 2017 No rights reserved</p>
+        </div>
+        <div class="column">
+          <ul class="menu marketing-site-footer-bottom-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Works</a></li>
+            <li><a href="#">News</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</footer>
+
+</div> <!-- off canvas page content Close-->
+
