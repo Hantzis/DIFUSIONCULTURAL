@@ -5,20 +5,60 @@
 {% block body_class %}template-difusionculturalnoticia{% endblock %}
 
 {% block content %}
+<div class="hero">
+  <div class="owl-carousel-article-gallery article-hero"> <!-- to add class: owl-carousel -->
+    {% block hero %}
 
-    <h1>{{ page.title }}</h1>
-    {% image page.imagen fill-1000x400 %}
+      {% include './includes/hero.html' %}
 
-    <p>{{ page.cuerpo }}<p>
+    {% endblock hero %}
+    </figure>
+  </div>
+</div>
+
+    {% block grid %}
+    <div class="grid-container">
+      <div class="grid-x">
+        {% block main-cell %}
+        <div class="medium-10 medium-offset-1 large-6 large-offset-1 cell intro-offset">
+
+          <div class="intro card">
+            <h4>{{ page.title }}</h4>
+
+            <p class="lead">
+                {{ page.introduccion}}  
+            </p>
+          </div>
 
 
+            {{ page.cuerpo }}
 
-    {% for item in page.galeria.all %}
 
-        {{ item }}
+          {% for item in page.galeria.all %}
 
-    {% image item fill-200x100 %}
-    {% endfor %}
+              {{ item }}
+
+          {% image item fill-200x100 %}
+          {% endfor %}
+
+        </div>
+        {% endblock main-cell %}
+
+        {% block sidebar %}
+        <div class="medium-10 medium-offset-1 large-3 large-offset-1 cell">
+          <ul class="menu vertical">
+            {% for post in page.get_siblings %}
+                <li><a href="{% pageurl post %}">{{ post.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endblock sidebar %}
+        </div>
+      </div>
+    {% endblock grid %}
+
+
 
 
 {% endblock %}
+

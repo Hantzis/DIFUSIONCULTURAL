@@ -33,9 +33,34 @@
   {% wagtailuserbar %}
 
 
+{% include "./includes/navigation.html" %}
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+
 {% block content %}
+    {% block hero %}
+    {% endblock hero %}
+
+
+    {% block grid %}
+
+        {% block main-cell %}
+        {% endblock main-cell %}
+
+        {% block sidebar %}
+        {% endblock sidebar %}
+
+    {% endblock grid %}
+
 
 {% endblock %}
+
+
+
+
+{% include "./includes/footer.html" %}
+</div> <!-- off canvas page content Close-->
 
 
 
