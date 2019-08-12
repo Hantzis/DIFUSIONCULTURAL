@@ -1,0 +1,40 @@
+{% load static %}
+<header>
+  <div data-sticky-container>
+    <nav class="title-bar title-bar-sticky-shrink" id="main-menu" data-sticky data-top-anchor="1" data-margin-top="0" data-sticky-on="small">
+        <div class="title-bar-left">
+          <ul class="menu">
+            <li><a href="/"><img src="{% static 'img/dif_logo_web_horizontal_01.svg' %}" alt=""></a></li>
+          </ul>
+        </div>
+        <div class="title-bar-right">
+          <ul class="menu align-right">
+            <li class="menu-text show-for-medium"><img src="{% static 'img/dif_umich.svg' %}" alt="umich"></li>
+            <li class="menu-text"><button class="menu-icon" type="button" data-toggle="mainNavCanvasMenu"></button></li>
+          </ul>
+        </div>
+    </nav>
+  </div>
+
+<div class="off-canvas position-right" id="mainNavCanvasMenu" data-off-canvas data-transition="overlap">
+
+    <button class="close-button" aria-label="Cerrar menu" type="button" data-close>
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <br>
+    <br>
+    <br>
+
+    <ul class="vertical menu accordion-menu" data-accordion-menu data-submenu-toggle="true">
+      <li><a href="article.html">Agenda</a></li>
+      <li><a href="article.html">Agenda Digital de Cultura </a></li>
+      <li><a href="article.html">Espacios. Conoce nuestras áreas</a></li>
+      <li><a href="article.html">Contacto. Directorio</a></li>
+      <li><a href="article.html">Transparencia</a></li>
+      <li><a href="article.html">Deportes</a></li>
+      <li><a href="article.html">Editorial Cultural</a></li>
+      <li><a href="article.html">Noticias</a></li>
+    </ul>
+
+</div>
+

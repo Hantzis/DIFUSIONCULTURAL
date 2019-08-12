@@ -1,0 +1,4 @@
+{% load wagtailimages_tags wagtailcore_tags static %}
+{% image page.imagen fill-1000x400 as hero %}
+<figure style="background-image: url({{ hero.url }});"></figure>
+
