@@ -2,5 +2,5 @@
 
 <figure>
     {% image self.image fill-600x600 %}
-    <figcaption>{{ self.caption }} - {{ self.attribution }}</figcaption>
+    {% if self.caption %}<figcaption>{{ self.caption }}{% if self.attribution %} - {{ self.attribution }}{% endif %}</figcaption>{% endif %}
 </figure>
