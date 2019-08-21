@@ -4,25 +4,47 @@
 
 {% block body_class %}template-difusionculturalhomepage{% endblock %}
 
+
 {% block content %}
 
-    {{ page }}
+<div class="owl-hero-carousel">
+  <div class="owl-carousel owl-carousel-home-front owl-hero"> <!-- to add class: owl-carousel -->
+    {% block hero %}
 
-    {% for post in page.get_children %}
-        <h2><a href="{% pageurl post %}">--{{ post.title }}--</a></h2>
-        {{ post.specific.intro }}
+      {% include './includes/owlhero.html' %}
 
+    {% endblock hero %}
+    </figure>
+  </div>
+</div>
 
-    {% endfor %}
-<hr />
-    {% for post in page.get_nuevos_bisnietos %}
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit odio illum debitis provident a quod vero laudantium, exercitationem excepturi est assumenda voluptas, voluptates corrupti ipsa expedita libero magnam voluptatum! Expedita, quos odit magnam! Quaerat similique temporibus quis eum nihil provident amet facere vitae minima consectetur ducimus recusandae hic possimus nam, alias, sint assumenda nobis omnis, veniam sit quidem rem eos voluptates repellat. Porro, quia saepe doloremque nisi adipisci a quisquam error necessitatibus autem tenetur, commodi asperiores amet itaque. Dolores minima illo beatae quia quasi quos, ea fuga dolorem sunt dignissimos saepe, fugit praesentium sint, corporis vel ratione optio, adipisci architecto in dolorum sed. Incidunt voluptate culpa odit optio repellendus neque exercitationem laboriosam ipsam minus, beatae cumque, velit, magnam est alias. Molestiae obcaecati, quasi, dolore temporibus deleniti fuga perspiciatis reprehenderit ad. Neque at culpa maiores sed incidunt magni nesciunt repellat, soluta, ut eius quidem excepturi voluptatibus, ipsum repellendus. Eos veniam, dolorem maxime assumenda accusamus sit at. Itaque quas eveniet cum commodi possimus dolores a deleniti fugiat tempora non aperiam, perferendis voluptas dignissimos accusamus nihil repellat nemo magni pariatur recusandae repudiandae voluptatum fugit. Voluptas repellendus alias fuga inventore ipsam velit dolores sunt voluptatibus, nobis dolorem, quam reiciendis dolor aliquid? Dolorum accusamus cumque veritatis! Quo sint et, sequi libero pariatur recusandae, eum, saepe amet nemo doloremque beatae voluptatum numquam. Harum aperiam, minus esse, iste in omnis sapiente obcaecati, tempora rerum repellendus voluptate. Molestias impedit doloremque, modi corporis? Quod temporibus, a nisi, ipsum laudantium ullam voluptate debitis eos asperiores consectetur at animi nesciunt! Dicta nobis sed officia saepe laborum tempora. Molestiae perspiciatis ipsum eligendi numquam deleniti sapiente hic tempore, quo at reiciendis. Deleniti natus dignissimos deserunt optio voluptatibus adipisci quaerat, ratione vel doloribus aliquam fugit, eum asperiores dolorum molestiae alias sed dolor placeat suscipit maiores blanditiis laboriosam ipsum autem similique. Nemo impedit sequi suscipit optio expedita neque, ab itaque earum libero reprehenderit aliquid ratione, porro doloribus eum officiis quas, aspernatur. Eum quam pariatur cumque vel provident quos unde quibusdam error, odio. Error numquam, aspernatur mollitia explicabo? Alias inventore in recusandae distinctio atque neque obcaecati id tempora molestiae eaque, odit at expedita praesentium soluta repudiandae.
+</p>
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit odio illum debitis provident a quod vero laudantium, exercitationem excepturi est assumenda voluptas, voluptates corrupti ipsa expedita libero magnam voluptatum! Expedita, quos odit magnam! Quaerat similique temporibus quis eum nihil provident amet facere vitae minima consectetur ducimus recusandae hic possimus nam, alias, sint assumenda nobis omnis, veniam sit quidem rem eos voluptates repellat. Porro, quia saepe doloremque nisi adipisci a quisquam error necessitatibus autem tenetur, commodi asperiores amet itaque. Dolores minima illo beatae quia quasi quos, ea fuga dolorem sunt dignissimos saepe, fugit praesentium sint, corporis vel ratione optio, adipisci architecto in dolorum sed. Incidunt voluptate culpa odit optio repellendus neque exercitationem laboriosam ipsam minus, beatae cumque, velit, magnam est alias. Molestiae obcaecati, quasi, dolore temporibus deleniti fuga perspiciatis reprehenderit ad. Neque at culpa maiores sed incidunt magni nesciunt repellat, soluta, ut eius quidem excepturi voluptatibus, ipsum repellendus. Eos veniam, dolorem maxime assumenda accusamus sit at. Itaque quas eveniet cum commodi possimus dolores a deleniti fugiat tempora non aperiam, perferendis voluptas dignissimos accusamus nihil repellat nemo magni pariatur recusandae repudiandae voluptatum fugit. Voluptas repellendus alias fuga inventore ipsam velit dolores sunt voluptatibus, nobis dolorem, quam reiciendis dolor aliquid? Dolorum accusamus cumque veritatis! Quo sint et, sequi libero pariatur recusandae, eum, saepe amet nemo doloremque beatae voluptatum numquam. Harum aperiam, minus esse, iste in omnis sapiente obcaecati, tempora rerum repellendus voluptate. Molestias impedit doloremque, modi corporis? Quod temporibus, a nisi, ipsum laudantium ullam voluptate debitis eos asperiores consectetur at animi nesciunt! Dicta nobis sed officia saepe laborum tempora. Molestiae perspiciatis ipsum eligendi numquam deleniti sapiente hic tempore, quo at reiciendis. Deleniti natus dignissimos deserunt optio voluptatibus adipisci quaerat, ratione vel doloribus aliquam fugit, eum asperiores dolorum molestiae alias sed dolor placeat suscipit maiores blanditiis laboriosam ipsum autem similique. Nemo impedit sequi suscipit optio expedita neque, ab itaque earum libero reprehenderit aliquid ratione, porro doloribus eum officiis quas, aspernatur. Eum quam pariatur cumque vel provident quos unde quibusdam error, odio. Error numquam, aspernatur mollitia explicabo? Alias inventore in recusandae distinctio atque neque obcaecati id tempora molestiae eaque, odit at expedita praesentium soluta repudiandae.
+</p>
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit odio illum debitis provident a quod vero laudantium, exercitationem excepturi est assumenda voluptas, voluptates corrupti ipsa expedita libero magnam voluptatum! Expedita, quos odit magnam! Quaerat similique temporibus quis eum nihil provident amet facere vitae minima consectetur ducimus recusandae hic possimus nam, alias, sint assumenda nobis omnis, veniam sit quidem rem eos voluptates repellat. Porro, quia saepe doloremque nisi adipisci a quisquam error necessitatibus autem tenetur, commodi asperiores amet itaque. Dolores minima illo beatae quia quasi quos, ea fuga dolorem sunt dignissimos saepe, fugit praesentium sint, corporis vel ratione optio, adipisci architecto in dolorum sed. Incidunt voluptate culpa odit optio repellendus neque exercitationem laboriosam ipsam minus, beatae cumque, velit, magnam est alias. Molestiae obcaecati, quasi, dolore temporibus deleniti fuga perspiciatis reprehenderit ad. Neque at culpa maiores sed incidunt magni nesciunt repellat, soluta, ut eius quidem excepturi voluptatibus, ipsum repellendus. Eos veniam, dolorem maxime assumenda accusamus sit at. Itaque quas eveniet cum commodi possimus dolores a deleniti fugiat tempora non aperiam, perferendis voluptas dignissimos accusamus nihil repellat nemo magni pariatur recusandae repudiandae voluptatum fugit. Voluptas repellendus alias fuga inventore ipsam velit dolores sunt voluptatibus, nobis dolorem, quam reiciendis dolor aliquid? Dolorum accusamus cumque veritatis! Quo sint et, sequi libero pariatur recusandae, eum, saepe amet nemo doloremque beatae voluptatum numquam. Harum aperiam, minus esse, iste in omnis sapiente obcaecati, tempora rerum repellendus voluptate. Molestias impedit doloremque, modi corporis? Quod temporibus, a nisi, ipsum laudantium ullam voluptate debitis eos asperiores consectetur at animi nesciunt! Dicta nobis sed officia saepe laborum tempora. Molestiae perspiciatis ipsum eligendi numquam deleniti sapiente hic tempore, quo at reiciendis. Deleniti natus dignissimos deserunt optio voluptatibus adipisci quaerat, ratione vel doloribus aliquam fugit, eum asperiores dolorum molestiae alias sed dolor placeat suscipit maiores blanditiis laboriosam ipsum autem similique. Nemo impedit sequi suscipit optio expedita neque, ab itaque earum libero reprehenderit aliquid ratione, porro doloribus eum officiis quas, aspernatur. Eum quam pariatur cumque vel provident quos unde quibusdam error, odio. Error numquam, aspernatur mollitia explicabo? Alias inventore in recusandae distinctio atque neque obcaecati id tempora molestiae eaque, odit at expedita praesentium soluta repudiandae.
+</p>
 
-        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
-        {{ post.specific.introduccion }}
-        {{ post.specific.fecha }}
-        {{ post.specific.pk }}
-        {{ post.specific.cuerpo }}
-    {% endfor %}
+{#    {{ page }}  #}
+{#  #}
+{#    {% for post in page.get_children %}  #}
+{#        <h2><a href="{% pageurl post %}">--{{ post.title }}--</a></h2>  #}
+{#        {{ post.specific.intro }}  #}
+{#  #}
+{#  #}
+{#    {% endfor %}  #}
+{#    <hr />  #}
+{#    {% for post in page.get_nuevos_bisnietos %}  #}
+{#  #}
+{#        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>  #}
+{#        {{ post.specific.introduccion }}  #}
+{#        {{ post.specific.fecha }}  #}
+{#        {{ post.specific.pk }}  #}
+{#        {{ post.specific.cuerpo }}  #}
+{#    {% endfor %}  #}
 
 
 {% endblock %}
