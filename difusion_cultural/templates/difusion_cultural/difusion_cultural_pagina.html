@@ -4,6 +4,7 @@
 
 {% block body_class %}template-difusionculturalnoticia{% endblock %}
 
+
 {% block content %}
 <div class="hero">
   <div class="owl-carousel-article-gallery article-hero"> <!-- to add class: owl-carousel -->
@@ -23,24 +24,27 @@
         <div class="medium-10 medium-offset-1 large-6 large-offset-1 cell intro-offset">
 
           <div class="intro card">
-            <h4>{{ page.title }}</h4>
+            <h4 class="title">{{ page.title }}</h4>
 
             <p class="lead">
                 {{ page.introduccion}}  
             </p>
           </div>
+          <div class="article-body">
+
 
 
             {{ page.cuerpo }}
 
 
-          {% for item in page.galeria.all %}
+            {% for item in page.galeria.all %}
 
-              {{ item }}
+                {{ item }}
 
-          {% image item fill-200x100 %}
-          {% endfor %}
+            {% image item fill-200x100 %}
+            {% endfor %}
 
+          </div>
         </div>
         {% endblock main-cell %}
 

@@ -1,0 +1,31 @@
+{% load wagtailimages_tags wagtailcore_tags static %}
+{% image page.imagen fill-1400x600 as hero %}
+
+
+
+{% for post in page.get_nuevos_bisnietos %}
+<div class="item">
+
+  <figure>
+    {#<img src="{{ post.specific.hero }}" alt="{{ post.title }}" />#}
+    <img src="https://picsum.photos/id/520/1200/850/" alt="placeholder 01">
+  </figure>
+
+  <figcaption class="grid-x">
+    <span class="label"><small>Cine</small></span>
+    <div class="cell large-12">
+      <div>
+        <a href="{% pageurl post %}">
+          <h2 class="font-bold">{{ post.title }}</h2>
+          <p class="lead">{{ post.specific.introduccion }}</p>
+          <b class="owlfront-item-details">
+            <button class="button tiny primary">Ver más</button>
+          </b>
+        </a>
+      </div>
+    </div>
+  </figcaption>
+
+</div>
+{% endfor %}
+
