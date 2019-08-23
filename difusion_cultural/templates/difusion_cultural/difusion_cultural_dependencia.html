@@ -1,8 +1,16 @@
 {% extends "difusion_cultural/base.html" %}
 
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags navigation_tags %}
 
 {% block body_class %}template-difusionculturalcartelera{% endblock %}
+
+
+{% block navigation %}
+
+  {% include "./includes/navigation.html" %}
+
+{% endblock %}
+
 
 {% block content %}
     <h1>{{ page.title }}</h1>
