@@ -1,8 +1,14 @@
 {% extends "difusion_cultural/base.html" %}
-{% load wagtailimages_tags wagtailcore_tags %}
-{% load wagtail_html_support %}
+{% load wagtailimages_tags wagtailcore_tags wagtail_html_support %}
 
 {% block body_class %}template-difusionculturalnoticia{% endblock %}
+
+
+{% block navigation %}
+
+  {% include "./includes/navigation_siblings.html" %}
+
+{% endblock %}
 
 
 {% block content %}
@@ -13,7 +19,6 @@
       {% include './includes/hero.html' %}
 
     {% endblock hero %}
-    </figure>
   </div>
 </div>
 
@@ -26,7 +31,7 @@
           <div class="intro card">
             <h4 class="title">{{ page.title }}</h4>
 
-            <p class="lead">
+            <p>
                 {{ page.introduccion}}  
             </p>
           </div>

@@ -4,6 +4,14 @@
 
 {% block body_class %}template-difusionculturalnoticia{% endblock %}
 
+
+{% block navigation %}
+
+  {% include "./includes/navigation.html" %}
+
+{% endblock %}
+
+
 {% block content %}
 
     <h1>{{ page.title }}</h1>
@@ -14,6 +22,12 @@
 
     {% image item fill-200x100 %}
     {% endfor %}
+    {% for tag in page.etiquetas.all %}
+
+        {{ tag }}
+
+    {% endfor %}
+
 
 
 {% endblock %}

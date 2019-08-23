@@ -32,10 +32,11 @@
 <body class="{% block body_class %}{% endblock %}">
   {% wagtailuserbar %}
 
-
-{% include "./includes/navigation.html" %}
+  {% block navigation %}
+  {% endblock navigation %}
 
 <div class="off-canvas-content" data-off-canvas-content>
+
 
 
 {% block content %}
@@ -74,7 +75,7 @@
 
       jQuery('.owl-carousel-home-front').owlCarousel({
           loop:true,
-          autoplay:false,
+          autoplay:true,
           items:1,
           margin:0,
           nav:true,
@@ -116,7 +117,7 @@
           loop:true,
           items:1,
           margin:0,
-          nav:false,
+          nav:true,
           dots:true,
           responsiveClass:true,
           thumbs: true,

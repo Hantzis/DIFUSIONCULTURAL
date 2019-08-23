@@ -1,8 +1,16 @@
 {% extends "difusion_cultural/base.html" %}
 
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags wagtail_html_support %}
 
 {% block body_class %}template-difusionculturalpaginacategoria{% endblock %}
+
+
+{% block navigation %}
+
+  {% include "./includes/navigation.html" %}
+
+{% endblock %}
+
 
 {% block content %}
     <h1>{{ page.title }}</h1>

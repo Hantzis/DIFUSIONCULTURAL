@@ -15,7 +15,15 @@
           </ul>
         </div>
         <div class="title-bar-right">
-          <ul class="menu align-right">
+          <ul class="menu align-right dropdown" data-dropdown-menu>
+            <li class="show-for-medium ">
+              <a href="#">{{ page.get_parent }}</a>
+              <ul class="menu vertical">
+                {% for post in page.get_siblings %}
+                <li><a href="{% pageurl post %}">{{ post.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
             <li class="menu-text show-for-medium umich-logo"><img src="{% static 'difusion_cultural/img/dif_umich.svg' %}" alt="umich"></li>
             <li class="menu-text hamburger-button"><button class="menu-icon" type="button" data-toggle="mainNavCanvasMenu"></button></li>
           </ul>

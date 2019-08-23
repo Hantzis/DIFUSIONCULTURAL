@@ -32,7 +32,7 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 
 # /mio
 
-@register_snippet
+# @register_snippet
 class People(index.Indexed, ClusterableModel):
     """
     A Django model to store People objects.
@@ -112,7 +112,7 @@ class FooterText(models.Model):
         verbose_name_plural = 'Footer Text'
 
 
-@register_snippet
+#@register_snippet
 class Keyword(TaggitTag):
     pass
 
