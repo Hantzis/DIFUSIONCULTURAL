@@ -1,6 +1,6 @@
 {% extends "difusion_cultural/base.html" %}
 
-{% load wagtailcore_tags navigation_tags %}
+{% load wagtailcore_tags wagtailimages_tags navigation_tags %}
 
 {% block body_class %}template-difusionculturalcartelera{% endblock %}
 
@@ -14,33 +14,37 @@
 
 
 {% block content %}
-    <h1>{{ page.title }}</h1>
 
-    <div class="intro">{{ page.introduccion|richtext }}</div>
+{% block grid %}
 
-    {% for post in page.get_children %}
-        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
-        {{ post.specific.introduccion }}
-        {{ post.specific.cuerpo }}
-    {% endfor %}
- <hr />
+<div class="grid-container">
+  <h3 class="top-puzher">{{ page.title }}</h3>
+  <div class="grid-x grid-margin-x grid-margin-y">
+    {% block main-cell %}
+
     {% for post in page.get_nietos %}
+    <div class="medium-5 large-6 cell">
+      <div class="card">
 
-        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
-        {{ post.specific.introduccion }}
-        {{ post.specific.fecha }}
-        {{ post.specific.pk }}
-        {{ post.specific.cuerpo }}
+        {% image post.specific.imagen fill-800x150 %}
+
+        <div class="card-section">
+          <h4><a href="{% pageurl post %}">{{ post.title }}</a></h4>
+          <p>
+            {{ post.specific.introduccion }}
+          </p>
+        </div>
+
+      </div>
+    </div>
     {% endfor %}
- <hr />
-    {% for post in page.get_nuevos_nietos %}
 
-        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
-        {{ post.specific.introduccion }}
-        {{ post.specific.fecha }}
-        {{ post.specific.cuerpo }}
-    {% endfor %}
+    {% endblock main-cell %}
 
 
-{% endblock %}
+  </div>
+</div>
+{% endblock grid %}
+
+{% endblock content %}
 

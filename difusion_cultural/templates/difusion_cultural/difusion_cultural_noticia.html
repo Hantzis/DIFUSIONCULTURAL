@@ -1,6 +1,5 @@
 {% extends "difusion_cultural/base.html" %}
-{% load wagtailimages_tags wagtailcore_tags navigation_tags %}
-{% load wagtail_html_support %}
+{% load wagtailimages_tags wagtailcore_tags wagtail_html_support navigation_tags %}
 
 {% block body_class %}template-difusionculturalnoticia{% endblock %}
 
@@ -13,9 +12,36 @@
 
 
 {% block content %}
+<div class="hero">
+  <div class="owl-carousel-article-gallery article-hero"> <!-- to add class: owl-carousel -->
+    {% block hero %}
 
-    <h1>{{ page.title }}</h1>
-    <p>{{ page.cuerpo }}<p>
+      {% include './includes/hero.html' %}
+
+    {% endblock hero %}
+  </div>
+</div>
+
+{% block grid %}
+<div class="grid-container">
+  <div class="grid-x">
+    {% block main-cell %}
+    <div class="medium-10 medium-offset-1 large-6 large-offset-1 cell intro-offset">
+
+      <div class="intro card">
+        <h4 class="title">{{ page.title }}</h4>
+
+        <p>
+            {{ page.introduccion}}  
+        </p>
+      </div>
+      <div class="article-body">
+
+
+
+        {{ page.cuerpo }}
+
+
     {% for item in page.galeria.all %}
 
         {{ item }}
@@ -28,7 +54,22 @@
 
     {% endfor %}
 
+      </div>
+    </div>
+{% endblock main-cell %}
 
+{% block sidebar %}
+    <div class="medium-10 medium-offset-1 large-3 large-offset-1 cell">
+      <ul class="menu vertical">
+        {% for post in page.get_siblings %}
+            <li><a href="{% pageurl post %}">{{ post.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+{% endblock sidebar %}
+  </div>
+</div>
+{% endblock grid %}
 
 {% endblock %}
 
