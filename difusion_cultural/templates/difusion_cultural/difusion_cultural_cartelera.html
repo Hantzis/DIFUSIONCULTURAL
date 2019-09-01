@@ -18,15 +18,17 @@
 {% block grid %}
 
 <div class="grid-container">
-  <h3 class="top-puzher">{{ page.title }}</h3>
-  <div class="grid-x grid-margin-x grid-margin-y">
+  <h3 class="top-pusher">{{ page.title }}</h3>
+  <div class="grid-x grid-margin-x grid-margin-y" data-equalizer data-equalize-on="medium" id="equalized-grid">
     {% block main-cell %}
 
     {% for post in page.get_nietos %}
-    <div class="medium-5 large-6 cell">
-      <div class="card">
+    <div class="medium-6 large-4 cell">
+      <div class="card" data-equalizer-watch>
 
-        {% image post.specific.imagen fill-800x150 %}
+
+        {% image post.specific.imagen fill-700x400 as postimage %}
+        <img src="{{ postimage.url }}" alt="{{ post.title }}">
 
         <div class="card-section">
           <h4><a href="{% pageurl post %}">{{ post.title }}</a></h4>
