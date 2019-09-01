@@ -16,7 +16,7 @@
 
     {% block grid %}
     <div class="grid-container">
-      <h3 class="top-puzher">{{ page.title }}</h3>
+      <h3 class="top-pusher">{{ page.title }}</h3>
       <div class="grid-x grid-margin-x grid-margin-y">
         {% block main-cell %}
 
@@ -26,16 +26,14 @@
 
             {% image post.specific.imagen fill-800x150 %}
 
-          <div class="card-section">
-            <h4><a href="{% pageurl post %}">{{ post.title }}</a></h4>
-            <p>
-              {{ post.specific.introduccion }}
-            </p>
+            <div class="card-section">
+              <h4><a href="{% pageurl post %}">{{ post.title }}</a></h4>
+              <p>
+                {{ post.specific.introduccion }}
+              </p>
+            </div>
+
           </div>
-
-        </div>
-
-
 
         </div>
         {% endfor %}

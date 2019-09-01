@@ -21564,6 +21564,7 @@ __webpack_require__.r(__webpack_exports__);
 // have the hoisting behavior.
 
 window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
+window.$ = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 
 __webpack_require__(/*! foundation-sites */ "./node_modules/foundation-sites/dist/js/foundation.esm.js"); // If you want to pick and choose which modules to include, comment out the above and uncomment
 // the line below

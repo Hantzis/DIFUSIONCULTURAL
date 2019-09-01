@@ -5,10 +5,18 @@
 {% for post in page.get_nuevos_bisnietos %}
 <div class="item">
 
-  {% image post.specific.imagen fill-1400x600 as hero %}
+  {% image post.specific.imagen fill-600x800 as hero_small %}
+  {% image post.specific.imagen fill-800x500 as hero_medium %}
+  {% image post.specific.imagen fill-1400x550 as hero_large %}
   <figure>
-    <img src="{{ hero.url }}" alt="{{ post.title }}" />
-    {#<img src="https://picsum.photos/id/531/1200/850/" alt="placeholder 01">#}
+
+    <img src="{{ hero_medium.url }}"
+          alt="{{ post.title }}"
+          data-interchange="[{{ hero_small.url }}, small],
+                            [{{ hero_medium.url }}, medium],
+                            [{{ hero_large.url }}, large]
+                            ">
+
   </figure>
 
   <figcaption class="grid-x">
@@ -16,7 +24,7 @@
     <div class="cell large-12">
       <div>
         <a href="{% pageurl post %}">
-          <h2 class="font-bold">{{ post.title }}</h2>
+          <h3 class="font-bold">{{ post.title }}</h3>
           <p>{{ post.specific.introduccion }}</p>
           <b class="owlfront-item-details">
             <button class="button tiny primary">Ver más</button>

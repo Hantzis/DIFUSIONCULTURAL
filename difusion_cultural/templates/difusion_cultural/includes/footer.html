@@ -1,18 +1,18 @@
 {% load static wagtailimages_tags %}
 <footer class="marketing-site-footer">
   <div class="grid-container">
-    <div class="grid-x medium-unstack">
-    <div class="medium-4 cell">
+    <div class="grid-x medium-unstack grid-padding-y">
+    <div class="medium-4 cell text-center medium-text-left">
 
-      <img src="{% static 'difusion_cultural/img/logo_dif_white.svg' %}" alt="logo" style="width: 300px;">
+      <img class="footer-logo" src="{% static 'difusion_cultural/img/logo_dif_white.svg' %}" alt="logo">
 
-      <ul class="menu marketing-site-footer-menu-social simple" style="margin-left: 2rem; margin-top:2rem;">
+      <ul class="menu marketing-site-footer-menu-social simple align-center medium-align-left">
         <li><a href="#"><i class="fa fa-2x fa-youtube-square" aria-hidden="true"></i></a></li>
          <li><a href="#"><i class="fa fa-2x fa-facebook-square" aria-hidden="true"></i></a></li>
          <li><a href="#"><i class="fa fa-2x fa-twitter-square" aria-hidden="true"></i></a></li>
       </ul>
     </div>
-    <div class="medium-4 cell">
+    <div class="small-10 small-offset-1 medium-4 medium-offset-0 cell">
        <h4 class="marketing-site-footer-title">Contacto</h4>
       <div class="marketing-site-footer-block">
         <i class="fa fa-map-marker" aria-hidden="true" style="color:white;"></i>
@@ -32,8 +32,8 @@
       </div>
     </div>
 
-    <div class="medium-4 cell text-right">
-            <img src="{% static 'difusion_cultural/img/logo_umich_white.svg' %}" alt="logo" style="width: 150px;">
+    <div class="medium-4 cell text-center medium-text-right">
+            <img class="footer-logo-umich" src="{% static 'difusion_cultural/img/logo_umich_white.svg' %}" alt="umich logo">
     </div>
 
   </div>
