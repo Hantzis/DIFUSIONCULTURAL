@@ -12,30 +12,47 @@
 
 
 {% block content %}
+<div class="hero">
+  <div class="owl-carousel-article-gallery article-hero"> <!-- to add class: owl-carousel -->
+    {% block hero %}
+
+      {% include './includes/hero.html' %}
+
+    {% endblock hero %}
+  </div>
+</div>
 
 {% block grid %}
 <div class="grid-container">
-  <h3 class="top-pusher">{{ page.title }}</h3>
   <div class="grid-x">
     {% block main-cell %}
-    <div class="medium-10 medium-offset-1 large-6 large-offset-1 cell">
-      <div class="article-body">
+    <div class="medium-10 medium-offset-1 large-6 large-offset-1 cell intro-offset">
 
-        {% image page.imagen fill-800x600 %}
+      <div class="intro card">
+        <h4 class="title">{{ page.title }}</h4>
 
         <p>
-          {{ page.introduccion}}  
+            {{ page.introduccion}}  
         </p>
+      </div>
+      <div class="article-body">
+
+
 
         {{ page.cuerpo }}
 
 
+    {% for item in page.galeria.all %}
 
-        {% for tag in page.etiquetas.all %}
+        {{ item }}
 
-            {{ tag }}
+    {% image item fill-200x100 %}
+    {% endfor %}
+    {% for tag in page.etiquetas.all %}
 
-        {% endfor %}
+        {{ tag }}
+
+    {% endfor %}
 
       </div>
     </div>
@@ -43,48 +60,6 @@
 
 {% block sidebar %}
     <div class="medium-10 medium-offset-1 large-3 large-offset-1 cell">
-      <!-- Social Button HTML -->
-      <section class="share-buttons-menu">
-      
-        <span>Comparte en:</span>
-        <br>
-        <!-- Facebook -->
-        <ul class="menu">
-          <li>
-            <a href="http://www.facebook.com/sharer/sharer.php?u={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" target="_blank" class="btn share-btn facebook">
-              <i class="fa fa-facebook facebook" aria-label="facebok"></i>
-            </a>
-          </li>
-          <li>
-            <!-- Twitter -->
-            <a href="http://twitter.com/share?url={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}&text=#UMSNHesCultura&via=@CulturaUMSNH" target="_blank" class="btn share-btn twitter">
-              <i class="fa fa-twitter twitter" aria-label="twitter"></i>
-            </a>
-          </li>
-          <li>
-            <!-- Whatsapp -->
-            <a href="https://wa.me/?text=Mira%20esta%20nota%20de%20cultura%20en%20la%20UMICH%3A{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" target="_blank" class="btn share-btn whatsapp">
-              <i class="fa fa-whatsapp whatsapp" aria-label="whatsapp"></i>
-            </a>
-          </li>
-          <li>
-            <!-- Reddit (url, title) -->
-            <a href="http://reddit.com/submit?url={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}&title={{ page.title|escape }}" target="_blank" class="btn share-btn reddit">
-              <i class="fa fa-reddit reddit" aria-label="reddit"></i>
-            </a>
-          </li>
-          <li>
-            <!-- Email -->
-            <a href="mailto:?subject={{ page.title|escape }}&body=#UMSNHesCultura{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" target="_blank" class="btn share-btn email">
-              <i class="fa fa-envelope envelope" aria-label="email"></i>
-            </a>
-          </li>
-      
-        </ul>
-      
-      </section>
-      <hr>
-      <h5>Otros notas de interés:</h5>
       <ul class="menu vertical">
         {% for post in page.get_siblings %}
             <li><a href="{% pageurl post %}">{{ post.title }}</a></li>
