@@ -84,7 +84,7 @@
               </li>
               <li>
                 <!-- Whatsapp -->
-                <a href="https://wa.me/?text=Mira%20esta%20nota%20de%20cultura%20en%20la%20UMICH%3A{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" target="_blank" class="btn share-btn whatsapp">
+                <a href="https://wa.me/?text=Mira%20esta%20nota%20de%20cultura%20en%20la%20UMICH%3A%20{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" target="_blank" class="btn share-btn whatsapp">
                   <i class="fa fa-whatsapp whatsapp" aria-label="whatsapp"></i>
                 </a>
               </li>
@@ -107,9 +107,11 @@
           <hr>
           <h5>Otros sitios de interés:</h5>
           <ul class="menu vertical">
+            {% if page.has_children %}
             {% for post in page.get_siblings %}
                 <li><a href="{% pageurl post %}">{{ post.title }}</a></li>
             {% endfor %}
+            {% endif %}
           </ul>
         </div>
         {% endblock sidebar %}
