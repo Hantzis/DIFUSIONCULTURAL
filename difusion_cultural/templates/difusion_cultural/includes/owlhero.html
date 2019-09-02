@@ -8,10 +8,7 @@
   {% image post.specific.imagen fill-600x800 as hero_small %}
   {% image post.specific.imagen fill-800x500 as hero_medium %}
   {% image post.specific.imagen fill-1400x550 as hero_large %}
-  <figure>
-
-    <img src="{{ hero_medium.url }}"
-          alt="{{ post.title }}"
+  <figure style="background-image: url('{{ hero_medium.url }}')"
           data-interchange="[{{ hero_small.url }}, small],
                             [{{ hero_medium.url }}, medium],
                             [{{ hero_large.url }}, large]
@@ -24,10 +21,10 @@
     <div class="cell large-12">
       <div>
         <a href="{% pageurl post %}">
-          <h3 class="font-bold">{{ post.title }}</h3>
+          <h4 class="font-bold">{{ post.title }}</h4>
           <p>{{ post.specific.introduccion }}</p>
           <b class="owlfront-item-details">
-            <button class="button tiny primary">Ver más</button>
+            <button class="button primary">Ver más</button>
           </b>
         </a>
       </div>

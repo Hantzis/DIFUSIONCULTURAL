@@ -50,87 +50,113 @@
 </div>
 
 
+<div class="grid-container articles-grid">
 
-  <div class="grid-x small-up-2 medium-up-4 large-up-6" style="margin-top: -2rem; margin-bottom: 3rem;">
-    <div class="cell">
+  <div class="grid-x">
+    {% for post in page.get_nietos_espacios %}
+    <div class="medium-6 large-4 cell">
+      <div class="card borderless box-shadow" data-equalizer-watch>
+
+        <a href="{% pageurl post %}">
+
+          {% image post.specific.imagen fill-700x400 as postimage %}
+          <img src="{{ postimage.url }}" alt="{{ post.title }}">
+
+          <div class="card-section title-uppercase">
+            <h5>{{ post.title }}</h5>
+            <p>
+              {{ post.specific.introduccion }}
+            </p>
+          </div>
+
+        </a>
+
+      </div>
+
+    </div>
+    {% endfor %}
+
+
+    <!-- <div class="cell">
       <a href="http://dif.hipervolta.com/espacios/centro-cultural-universitario/">
         <figure>
           <img src="http://dif.hipervolta.com/media/images/CED853B0-F720-4794-BED5-92B1E7F01.2e16d0ba.fill-1400x600.jpg" alt="">
         </figure>
       </a>
-    </div>
-    <div class="cell">
+    </div> -->
+    <!-- <div class="cell">
       <a href="http://dif.hipervolta.com/espacios/ciac/">
         <figure>
           <img src="http://dif.hipervolta.com/media/images/teatro_j_r_romero.2e16d0ba.fill-1400x600.jpg" alt="">
         </figure>
       </a>
-    </div>
-    <div class="cell">
+    </div> -->
+    <!-- <div class="cell">
       <a href="http://dif.hipervolta.com/espacios/ciac/">
         <figure>
           <img src="http://dif.hipervolta.com/media/images/teatro_j_r_romero.2e16d0ba.fill-1400x600.jpg" alt="">
         </figure>
       </a>
-    </div>
-    <div class="cell">
+    </div> -->
+    <!-- <div class="cell">
       <a href="http://dif.hipervolta.com/espacios/centro-cultural-universitario/">
         <figure>
           <img src="http://dif.hipervolta.com/media/images/CED853B0-F720-4794-BED5-92B1E7F01.2e16d0ba.fill-1400x600.jpg" alt="">
         </figure>
       </a>
-    </div>
-    <div class="cell">
+    </div> -->
+    <!-- <div class="cell">
       <a href="http://dif.hipervolta.com/espacios/centro-cultural-universitario/">
         <figure>
           <img src="http://dif.hipervolta.com/media/images/CED853B0-F720-4794-BED5-92B1E7F01.2e16d0ba.fill-1400x600.jpg" alt="">
         </figure>
       </a>
-    </div>
-    <div class="cell">
+    </div> -->
+    <!-- <div class="cell">
       <a href="http://dif.hipervolta.com/espacios/ciac/">
         <figure>
           <img src="http://dif.hipervolta.com/media/images/teatro_j_r_romero.2e16d0ba.fill-1400x600.jpg" alt="">
         </figure>
       </a>
-    </div>
-    <div class="cell">
+    </div> -->
+    <!-- <div class="cell">
       <a href="http://dif.hipervolta.com/espacios/ciac/">
         <figure>
           <img src="http://dif.hipervolta.com/media/images/teatro_j_r_romero.2e16d0ba.fill-1400x600.jpg" alt="">
         </figure>
       </a>
-    </div>
-    <div class="cell">
+    </div> -->
+    <!-- <div class="cell">
       <a href="http://dif.hipervolta.com/espacios/centro-cultural-universitario/">
         <figure>
           <img src="http://dif.hipervolta.com/media/images/CED853B0-F720-4794-BED5-92B1E7F01.2e16d0ba.fill-1400x600.jpg" alt="">
         </figure>
       </a>
-    </div>
-    <div class="cell">
+    </div> -->
+    <!-- <div class="cell">
       <a href="http://dif.hipervolta.com/espacios/ciac/">
         <figure>
           <img src="http://dif.hipervolta.com/media/images/teatro_j_r_romero.2e16d0ba.fill-1400x600.jpg" alt="">
         </figure>
       </a>
-    </div>
-    <div class="cell">
+    </div> -->
+    <!-- <div class="cell">
       <a href="http://dif.hipervolta.com/espacios/ciac/">
         <figure>
           <img src="http://dif.hipervolta.com/media/images/teatro_j_r_romero.2e16d0ba.fill-1400x600.jpg" alt="">
         </figure>
       </a>
-    </div>
-    <div class="cell">
+    </div> -->
+    <!-- <div class="cell">
       <a href="http://dif.hipervolta.com/espacios/centro-cultural-universitario/">
         <figure>
           <img src="http://dif.hipervolta.com/media/images/CED853B0-F720-4794-BED5-92B1E7F01.2e16d0ba.fill-1400x600.jpg" alt="">
         </figure>
       </a>
-    </div>
+    </div> -->
   </div>
 
+</div>
 
 {% endblock grid %}
 
