@@ -1,4 +1,12 @@
 {% load wagtailimages_tags wagtailcore_tags static %}
-{% image page.imagen fill-1400x600 as hero %}
-<figure style="background-image: url({{ hero.url }});"></figure>
+
+{% image page.imagen fill-600x800 as hero_small %}
+{% image page.imagen fill-800x500 as hero_medium %}
+{% image page.imagen fill-1400x550 as hero_large %}
+
+<figure style="background-image: url({{ hero_medium.url }});" data-interchange="
+                  [{{ hero_small.url }}, small],
+                  [{{ hero_medium.url }}, medium],
+                  [{{ hero_large.url }}, large]
+                  "></figure>
 
