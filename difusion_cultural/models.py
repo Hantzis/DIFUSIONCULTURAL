@@ -6,18 +6,17 @@ from modelcluster.models import ClusterableModel
 # Create your models here.
 
 
-from wagtail.core.fields import RichTextField, StreamField
+from wagtail.core.fields import StreamField
 from wagtail.core.models import Collection, Page, PageManager, PageQuerySet
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, BaseChooserPanel
+from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase, TagBase, Tag as TaggitTag
 from base.blocks import ExtraStreamBlock
-from wagtail.snippets.models import register_snippet
-
+from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 
 # from .blocks import BaseStreamBlock, ExtraStreamBlock, HeroSlideBlock, FormStreamBlock
@@ -25,7 +24,6 @@ from wagtail.snippets.models import register_snippet
 from base.models import HomePage, StandardPage
 from django.db.models import Q
 
-register_snippet(Collection)
 
 
 

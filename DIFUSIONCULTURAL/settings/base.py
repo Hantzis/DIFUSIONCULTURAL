@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'sorl.thumbnail',
     'django_instagram',
+    'wagtail.contrib.routable_page',
 ]
 
 WAGTAIL_ALLOW_UNICODE_SLUGS = False

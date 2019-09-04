@@ -34,7 +34,7 @@
 
                             {% for tag in page.etiquetas.all %}
 
-                                {{ tag }}
+                                <a href="{{ tag.slug }}" class="button {{ tag.slug }}">{{ tag }}</a>
 
                             {% endfor %}
 
