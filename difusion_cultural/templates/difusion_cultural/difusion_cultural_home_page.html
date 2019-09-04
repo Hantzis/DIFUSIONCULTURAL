@@ -33,7 +33,7 @@
     <div class="medium-10 medium-offset-1 large-10 large-offset-1 cell">
 
       <h4>
-        La Secreatría de Difusión Cultural y Extensión Universitaria te da la bienvenida
+        La Secretría de Difusión Cultural y Extensión Universitaria te da la bienvenida
       </h4>
 
       <p class="lead">
@@ -67,43 +67,21 @@
     <p class="marketing-site-content-section-block-subheader subheader">“Construyendo capacidades para el futuro”.</p>
     <a href="/transformacion-digital/agenda-digital-de-cultura/" class="round button small">Leer más</a>
   </div>
+  <div class="marketing-site-content-section-block">
+    <h3 class="marketing-site-content-section-block-header">Educación Digital</h3>
+    <p class="marketing-site-content-section-block-subheader subheader">Enfocados en brindar una formación profesional que se ajuste a los distintos tiempos, espacios y ritmos de aprendizaje.</p>
+    <a href="https://www.ced.umich.mx/" target="_blank" class="round button small">Leer más</a>
+  </div>
+  <div class="marketing-site-content-section-img">
+    <img src="http://dif.hipervolta.com/media/images/ced-logo.original.jpg" alt="" />
+  </div>
 </div>
 
-
-<section class="instagram-grid">
-  <div class="grid-container">
-    <div class="grid-x">
-      <div class="medium-12 cell section-title">
-        <h4>Nuestras historias</h4>
-        <h3>#SomosCulturaUMSNH</h3>
-        <span>
-          Síguenos en Instagram
-        </span>
-        <a href="//instagram.com/cultura_umsnh" target="_blank">@cultura_umsnh</a>
-        <br>
-        <br>
-      </div>
-
-      {% instagram_user_recent_media cultura_umsnh %}
-      {% for media in recent_media %}
-      <div class="small-4 medium-2 cell">
-        <div class="django_instagram_media_wall_item">
-          <a href="//instagram.com/p/{{ media.shortcode }}" target="_blank">
-            <img src="{{ media.thumbnail_src }}"/>
-          </a>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
 
 
 <div class="grid-container articles-grid">
       <h3 class="top-pusher">Espacios</h3>
       <div class="grid-x grid-margin-x grid-margin-y" data-equalizer data-equalize-on="medium" id="equalized-grid">
-
-
 
         <div class="medium-6 large-4 cell">
           <div class="card borderless box-shadow" data-equalizer-watch>
@@ -213,21 +191,41 @@
 
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
       </div>
+
+
+
+
+
+
+      <section class="instagram-grid">
+        <div class="grid-container">
+          <div class="grid-x">
+            <div class="medium-12 cell section-title">
+              <h4>Nuestras historias</h4>
+              <h3>#SomosCulturaUMSNH</h3>
+              <span>
+                Síguenos en Instagram
+              </span>
+              <a href="//instagram.com/cultura_umsnh" target="_blank">@cultura_umsnh</a>
+              <br>
+              <br>
+            </div>
+
+            {% instagram_user_recent_media cultura_umsnh %}
+            {% for media in recent_media %}
+            <div class="small-4 medium-2 cell">
+              <div class="django_instagram_media_wall_item">
+                <a href="//instagram.com/p/{{ media.shortcode }}" target="_blank">
+                  <img src="{{ media.thumbnail_src }}"/>
+                </a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
 
 {% endblock grid %}
 

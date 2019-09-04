@@ -17,7 +17,9 @@
   </figure>
 
   <figcaption class="grid-x">
-    <span class="label"><small>Cine</small></span>
+    {% for tag in post.specific.etiquetas.all %}
+      <span class="label {{ tag.slug }}"><small>{{ tag.slug }}</small></span>
+    {% endfor %}
     <div class="cell large-12">
       <div>
         <a href="{% pageurl post %}">

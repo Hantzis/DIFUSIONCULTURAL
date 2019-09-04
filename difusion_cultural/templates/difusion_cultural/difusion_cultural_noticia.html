@@ -6,101 +6,123 @@
 
 {% block navigation %}
 
-    {% include "./includes/navigation.html" %}
+  {% include "./includes/navigation.html" %}
 
 {% endblock %}
 
 
 {% block content %}
 
-    {% block grid %}
-        <div class="grid-container heroless">
-            <h3 class="top-pusher">{{ page.title }}</h3>
-            <div class="grid-x">
-                {% block main-cell %}
-                    <div class="medium-10 medium-offset-1 large-6 large-offset-1 cell">
-                        <div class="article-body">
+{% block grid %}
+<div class="grid-container heroless">
+  <h3 class="top-pusher">{{ page.title }}</h3>
+  <div class="grid-x">
+    {% block main-cell %}
+    <div class="medium-10 medium-offset-1 large-6 large-offset-1 cell">
+      <div class="article-body">
 
-                            {% image page.imagen fill-800x600 %}
+        {% image page.imagen fill-800x600 %}
 
-                            <p>
-                                {{ page.introduccion }}
-                            </p>
+        <p>
+          {{ page.introduccion}}  
+        </p>
 
-                            {{ page.cuerpo }}
+        {{ page.cuerpo }}
 
-                            {% gallery page.galeria %}
+        {% for tag in page.etiquetas.all %}
+            <ul class="menu">
+            <li><span class="label">
+              {{ tag }}
+            </span></li>
+          </ul>
+
+        {% endfor %}
 
 
-                            {% for tag in page.etiquetas.all %}
+                <div class="gallery">
 
-                                {{ tag }}
+                  {% gallery page.galeria %}
 
-                            {% endfor %}
+                </div>
 
-                        </div>
-                    </div>
-                {% endblock main-cell %}
+      </div>
+    </div>
+{% endblock main-cell %}
 
-                {% block sidebar %}
-                    <div class="medium-10 medium-offset-1 large-3 large-offset-1 cell side-bar heroless">
-                        <!-- Social Button HTML -->
-                        <section class="share-buttons-menu">
+{% block sidebar %}
+    <div class="medium-10 medium-offset-1 large-3 large-offset-1 cell side-bar heroless">
+      <!-- Social Button HTML -->
+      <section class="share-buttons-menu">
+      
+        <span>Comparte en:</span>
+        <br>
+        <!-- Facebook -->
+        <ul class="menu">
+          <li>
+            <a href="http://www.facebook.com/sharer/sharer.php?u={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" target="_blank" class="btn share-btn facebook">
+              <i class="fa fa-facebook facebook" aria-label="facebok"></i>
+            </a>
+          </li>
+          <li>
+            <!-- Twitter -->
+            <a href="http://twitter.com/share?url={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}&text=#UMSNHesCultura&via=@CulturaUMSNH" target="_blank" class="btn share-btn twitter">
+              <i class="fa fa-twitter twitter" aria-label="twitter"></i>
+            </a>
+          </li>
+          <li>
+            <!-- Whatsapp -->
+            <a href="https://wa.me/?text=Mira%20esta%20nota%20de%20cultura%20en%20la%20UMICH%3A%20{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" target="_blank" class="btn share-btn whatsapp">
+              <i class="fa fa-whatsapp whatsapp" aria-label="whatsapp"></i>
+            </a>
+          </li>
+          <li>
+            <!-- Reddit (url, title) -->
+            <a href="http://reddit.com/submit?url={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}&title={{ page.title|escape }}" target="_blank" class="btn share-btn reddit">
+              <i class="fa fa-reddit reddit" aria-label="reddit"></i>
+            </a>
+          </li>
+          <li>
+            <!-- Email -->
+            <a href="mailto:?subject={{ page.title|escape }}&body=#UMSNHesCultura{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" target="_blank" class="btn share-btn email">
+              <i class="fa fa-envelope envelope" aria-label="email"></i>
+            </a>
+          </li>
+      
+        </ul>
+      
+      </section>
+      <hr>
+      <h5>Otros notas de interés:</h5>
+      <ul class="menu vertical">
+        {% for post in page.get_siblings %}
+            <li><a href="{% pageurl post %}">{{ post.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+{% endblock sidebar %}
+  </div>
+</div>
+{% endblock grid %}
 
-                            <span>Comparte en:</span>
-                            <br>
-                            <!-- Facebook -->
-                            <ul class="menu">
-                                <li>
-                                    <a href="http://www.facebook.com/sharer/sharer.php?u={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}"
-                                       target="_blank" class="btn share-btn facebook">
-                                        <i class="fa fa-facebook facebook" aria-label="facebok"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <!-- Twitter -->
-                                    <a href="http://twitter.com/share?url={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}&text=#UMSNHesCultura&via=@CulturaUMSNH"
-                                       target="_blank" class="btn share-btn twitter">
-                                        <i class="fa fa-twitter twitter" aria-label="twitter"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <!-- Whatsapp -->
-                                    <a href="https://wa.me/?text=Mira%20esta%20nota%20de%20cultura%20en%20la%20UMICH%3A%20{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}"
-                                       target="_blank" class="btn share-btn whatsapp">
-                                        <i class="fa fa-whatsapp whatsapp" aria-label="whatsapp"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <!-- Reddit (url, title) -->
-                                    <a href="http://reddit.com/submit?url={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}&title={{ page.title|escape }}"
-                                       target="_blank" class="btn share-btn reddit">
-                                        <i class="fa fa-reddit reddit" aria-label="reddit"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <!-- Email -->
-                                    <a href="mailto:?subject={{ page.title|escape }}&body=#UMSNHesCultura{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}"
-                                       target="_blank" class="btn share-btn email">
-                                        <i class="fa fa-envelope envelope" aria-label="email"></i>
-                                    </a>
-                                </li>
+{% endblock content %}
 
-                            </ul>
+{% block extra_js %}
 
-                        </section>
-                        <hr>
-                        <h5>Otros notas de interés:</h5>
-                        <ul class="menu vertical">
-                            {% for post in page.get_siblings %}
-                                <li><a href="{% pageurl post %}">{{ post.title }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endblock sidebar %}
-            </div>
-        </div>
-    {% endblock grid %}
+  <!-- PHOTOSWIPE -->
+  <!-- Core CSS file -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css" integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE=" crossorigin="anonymous">
 
-{% endblock %}
+  <!-- Skin CSS file (styling of UI - buttons, caption, etc.)
+       In the folder of skin CSS file there are also:
+       - .png and .svg icons sprite,
+       - preloader.gif (for browsers that do not support CSS animations) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css" integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin="anonymous">
+
+  <!-- Core JS file -->
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js" integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin="anonymous"></script>
+
+  <!-- UI JS file -->
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js" integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin="anonymous"></script>
+
+{% endblock extra_js %}
 
