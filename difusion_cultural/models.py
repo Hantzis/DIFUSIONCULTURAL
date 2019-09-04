@@ -123,8 +123,8 @@ class DifusionCulturalPagina(Page):
 
     ]
 
-    subpage_types = []
-    parent_page_types = ['DifusionCulturalHomePage']
+    subpage_types = ['DifusionCulturalPagina']
+    parent_page_types = ['DifusionCulturalPagina', 'DifusionCulturalPaginaCategoria', 'DifusionCulturalHomePage']
 
 
     class Meta:
