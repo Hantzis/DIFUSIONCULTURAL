@@ -14,7 +14,7 @@ from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from modelcluster.contrib.taggit import ClusterTaggableManager
-from taggit.models import TaggedItemBase, TagBase, Tag as TaggitTag
+from taggit.models import TaggedItemBase, TagBase
 from base.blocks import ExtraStreamBlock
 from wagtail.snippets.models import register_snippet
 
@@ -165,6 +165,17 @@ class DifusionCulturalNoticiaManager(PageManager):
         return self.order_by('-fecha')
 
 
+@register_snippet
+class DifusionCulturalNoticiaEtiqueta(TaggedItemBase):
+    content_object = ParentalKey('DifusionCulturalNoticia', related_name='noticia_tags')
+
+
+@register_snippet
+class Tag(TagBase):
+    color = models.CharField(max_length=7, unique=True, blank=True, null=True)
+    clase = models.CharField(max_length=30, unique=True, blank=True, null=True)
+
+
 class DifusionCulturalNoticia(Page):
     fecha = models.DateField("Fecha de publicación")
     introduccion = models.CharField(max_length=250)
@@ -187,7 +198,7 @@ class DifusionCulturalNoticia(Page):
         on_delete=models.SET_NULL,
         help_text='Select the image collection for this gallery.'
     )
-    # etiquetas = ClusterTaggableManager(through=DifusionCulturalEtiqueta, blank=True)
+    etiquetas = ClusterTaggableManager(through='DifusionCulturalNoticiaEtiqueta', blank=True)
 
     search_fields = Page.search_fields + [
         index.SearchField('introduccion'),
@@ -200,7 +211,7 @@ class DifusionCulturalNoticia(Page):
         StreamFieldPanel('cuerpo'),
         ImageChooserPanel('imagen'),
         FieldPanel('galeria'),
-        #FieldPanel('etiquetas'),
+        FieldPanel('etiquetas'),
     ]
 
     objects = DifusionCulturalNoticiaManager()
