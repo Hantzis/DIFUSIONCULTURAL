@@ -31,7 +31,7 @@
 
         {% for tag in page.etiquetas.all %}
             <ul class="menu">
-            <li><span class="label">
+            <li><span class="label {{ tag.slug }}">
               {{ tag }}
             </span></li>
           </ul>

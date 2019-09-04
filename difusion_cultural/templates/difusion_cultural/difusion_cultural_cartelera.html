@@ -27,6 +27,13 @@
       <div class="card borderless box-shadow" data-equalizer-watch>
 
 
+        {% for tag in post.specific.etiquetas.all %}
+            <span class="label {{ tag.slug }}">
+              {{ tag }} 
+            </span>
+        {% endfor %}
+
+
         {% image post.specific.imagen fill-700x400 as postimage %}
         <img src="{{ postimage.url }}" alt="{{ post.title }}">
 
