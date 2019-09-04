@@ -12,9 +12,9 @@ from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, BaseChooserPanel
 from modelcluster.contrib.taggit import ClusterTaggableManager
-from taggit.models import TaggedItemBase, TagBase
+from taggit.models import TaggedItemBase, TagBase, Tag as TaggitTag
 from base.blocks import ExtraStreamBlock
 from wagtail.snippets.models import register_snippet
 
@@ -164,16 +164,15 @@ class DifusionCulturalNoticiaManager(PageManager):
     def ultimos(self):
         return self.order_by('-fecha')
 
-
 @register_snippet
 class DifusionCulturalNoticiaEtiqueta(TaggedItemBase):
     content_object = ParentalKey('DifusionCulturalNoticia', related_name='noticia_tags')
 
 
 @register_snippet
-class Tag(TagBase):
-    color = models.CharField(max_length=7, unique=True, blank=True, null=True)
-    clase = models.CharField(max_length=30, unique=True, blank=True, null=True)
+class Tag(TaggitTag):
+    class Meta:
+        proxy = True
 
 
 class DifusionCulturalNoticia(Page):

@@ -56,6 +56,10 @@ INSTALLED_APPS = [
     'django_instagram',
 ]
 
+WAGTAIL_ALLOW_UNICODE_SLUGS = False
+
+
+
 MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
