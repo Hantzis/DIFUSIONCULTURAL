@@ -1,5 +1,5 @@
 {% extends "difusion_cultural/base.html" %}
-{% load wagtailimages_tags wagtailcore_tags wagtail_html_support navigation_tags %}
+{% load wagtailimages_tags wagtailcore_tags wagtail_html_support navigation_tags gallery_tags %}
 
 {% block body_class %}template-difusionculturalnoticia{% endblock %}
 
@@ -24,12 +24,16 @@
         {% image page.imagen fill-800x600 %}
 
         <p>
-          {{ page.introduccion}}  
+          {{ page.introduccion }}
         </p>
 
         {{ page.cuerpo }}
 
+      <p>start</p>
 
+
+      {% gallery page.galeria %}
+      <p>end</p>
 
         {% for tag in page.etiquetas.all %}
 

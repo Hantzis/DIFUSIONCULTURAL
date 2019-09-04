@@ -173,6 +173,9 @@ class StandardPage(Page):
     promote_panels = Page.promote_panels + [
         FieldPanel('search_keywords'),
     ]
+    parent_page_types = []
+
+
 
 
 
@@ -214,6 +217,8 @@ class HomePage(Page):
 
     def __str__(self):
         return self.title
+
+    parent_page_types = []
 
 
 class GalleryPage(Page):
@@ -258,6 +263,8 @@ class GalleryPage(Page):
     # Defining what content type can sit under the parent. Since it's a blank
     # array no subpage can be added
     subpage_types = []
+
+    parent_page_types = []
 
 
 class FormField(AbstractFormField):
@@ -304,3 +311,5 @@ class FormPage(AbstractEmailForm):
             FieldPanel('subject'),
         ], "Email"),
     ]
+
+    parent_page_types = []

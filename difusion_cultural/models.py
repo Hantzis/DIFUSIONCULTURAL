@@ -33,10 +33,27 @@ class DifusionCulturalHomePage(HomePage):
     def get_nuevos_bisnietos(self):
         return Page.objects.filter(Q(depth__gte=5))[:6]
 
+    parent_page_types = ['wagtailcore.Page']
+
+    @classmethod
+    def can_create_at(cls, parent):
+        # You can only create one of these!
+        return super(DifusionCulturalHomePage, cls).can_create_at(parent) \
+               and not cls.objects.exists()
+
+    class Meta:
+        verbose_name = "Inicio"
+
 
 
 class DifusionCulturalArticulo(StandardPage):
-    pass
+    subpage_types = []
+    parent_page_types = ['DifusionCulturalHomePage']
+
+
+    class Meta:
+        verbose_name = "Artículo"
+        verbose_name_plural = "Artículos"
 
 
 class DifusionCulturalCartelera(Page):
@@ -51,10 +68,24 @@ class DifusionCulturalCartelera(Page):
         return Page.objects.descendant_of(self, inclusive=False).not_child_of(self)[:2]
 
 
+    @classmethod
+    def can_create_at(cls, parent):
+        # You can only create one of these!
+        return super(DifusionCulturalCartelera, cls).can_create_at(parent) \
+               and not cls.objects.exists()
+
+    class Meta:
+        verbose_name = "Cartelera"
+        verbose_name_plural = "Carteleras"
+
+
 class DifusionCulturalPaginaCategoria(Page):
     subpage_types = ['DifusionCulturalPagina']
     parent_page_types = ['DifusionCulturalHomePage']
 
+    class Meta:
+        verbose_name = "Categoría de página"
+        verbose_name_plural = "Categorías de página"
 
 
 class DifusionCulturalPagina(Page):
@@ -92,7 +123,13 @@ class DifusionCulturalPagina(Page):
 
     ]
 
+    subpage_types = []
+    parent_page_types = ['DifusionCulturalHomePage']
 
+
+    class Meta:
+        verbose_name = "Página"
+        verbose_name_plural = "páginas"
 
 
 
@@ -100,6 +137,13 @@ class DifusionCulturalPagina(Page):
 class DifusionCulturalDependencia(Page):
     subpage_types = ['DifusionCulturalNoticia']
     parent_page_types = ['DifusionCulturalCartelera']
+
+
+    class Meta:
+        verbose_name = "Dependencia"
+        verbose_name_plural = "Dependencias"
+
+
 
 '''
 @register_snippet
@@ -160,5 +204,13 @@ class DifusionCulturalNoticia(Page):
     ]
 
     objects = DifusionCulturalNoticiaManager()
+
+    subpage_types = []
+    parent_page_types = ['DifusionCulturalDependencia']
+
+
+    class Meta:
+        verbose_name = "Noticia"
+        verbose_name_plural = "Noticias"
 
 
