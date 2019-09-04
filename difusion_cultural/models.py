@@ -14,7 +14,7 @@ from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from modelcluster.contrib.taggit import ClusterTaggableManager
-from taggit.models import TaggedItemBase, TagBase, Tag as TaggitTag
+from taggit.models import TaggedItemBase, TagBase
 from base.blocks import ExtraStreamBlock
 from wagtail.snippets.models import register_snippet
 
@@ -166,13 +166,15 @@ class DifusionCulturalNoticiaManager(PageManager):
 
 
 @register_snippet
-class Tag(TaggitTag):
+class DifusionCulturalNoticiaEtiqueta(TaggedItemBase):
+    content_object = ParentalKey('DifusionCulturalNoticia', related_name='noticia_tags')
+
+
+@register_snippet
+class Tag(TagBase):
     color = models.CharField(max_length=7, unique=True, blank=True, null=True)
     clase = models.CharField(max_length=30, unique=True, blank=True, null=True)
 
-@register_snippet
-class DifusionCulturalNoticiaEtiqueta(TaggedItemBase):
-    content_object = ParentalKey('DifusionCulturalNoticia', related_name='etiquetas_noticia')
 
 class DifusionCulturalNoticia(Page):
     fecha = models.DateField("Fecha de publicación")
