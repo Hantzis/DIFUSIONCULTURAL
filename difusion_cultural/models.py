@@ -165,6 +165,15 @@ class DifusionCulturalNoticiaManager(PageManager):
         return self.order_by('-fecha')
 
 
+@register_snippet
+class Tag(TaggitTag):
+    color = models.CharField(max_length=7, unique=True, blank=True, null=True)
+    clase = models.CharField(max_length=30, unique=True, blank=True, null=True)
+
+@register_snippet
+class DifusionCulturalNoticiaEtiqueta(TaggedItemBase):
+    content_object = ParentalKey('DifusionCulturalNoticia', related_name='etiquetas_noticia')
+
 class DifusionCulturalNoticia(Page):
     fecha = models.DateField("Fecha de publicación")
     introduccion = models.CharField(max_length=250)
@@ -187,7 +196,7 @@ class DifusionCulturalNoticia(Page):
         on_delete=models.SET_NULL,
         help_text='Select the image collection for this gallery.'
     )
-    # etiquetas = ClusterTaggableManager(through=DifusionCulturalEtiqueta, blank=True)
+    etiquetas = ClusterTaggableManager(through='DifusionCulturalNoticiaEtiqueta', blank=True)
 
     search_fields = Page.search_fields + [
         index.SearchField('introduccion'),
@@ -200,7 +209,7 @@ class DifusionCulturalNoticia(Page):
         StreamFieldPanel('cuerpo'),
         ImageChooserPanel('imagen'),
         FieldPanel('galeria'),
-        #FieldPanel('etiquetas'),
+        FieldPanel('etiquetas'),
     ]
 
     objects = DifusionCulturalNoticiaManager()
