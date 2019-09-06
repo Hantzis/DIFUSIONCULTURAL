@@ -8,10 +8,12 @@
   {% image post.specific.imagen fill-600x800 as hero_small %}
   {% image post.specific.imagen fill-800x500 as hero_medium %}
   {% image post.specific.imagen fill-1400x550 as hero_large %}
+  {% image post.specific.imagen fill-1600x650 as hero_xlarge %}
   <figure style="background-image: url('{{ hero_medium.url }}')"
           data-interchange="[{{ hero_small.url }}, small],
                             [{{ hero_medium.url }}, medium],
                             [{{ hero_large.url }}, large]
+                            [{{ hero_xlarge.url }}, xlarge]
                             ">
 
   </figure>
