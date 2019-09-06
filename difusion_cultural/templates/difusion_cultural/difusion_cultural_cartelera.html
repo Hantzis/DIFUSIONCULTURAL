@@ -1,5 +1,4 @@
 {% extends "difusion_cultural/base.html" %}
-
 {% load wagtailcore_tags wagtailimages_tags navigation_tags %}
 
 {% block body_class %}template-difusionculturalcartelera{% endblock %}
@@ -29,7 +28,7 @@
 
         {% for tag in post.specific.etiquetas.all %}
             <span class="label {{ tag.slug }}">
-              {{ tag }} 
+              {{ tag }}
             </span>
         {% endfor %}
 

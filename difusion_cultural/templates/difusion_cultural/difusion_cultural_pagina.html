@@ -4,6 +4,19 @@
 {% block body_class %}template-difusionculturalnoticia{% endblock %}
 
 
+  {% block extra_css %}
+  <!-- PHOTOSWIPE -->
+  <!-- Core CSS file -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css" integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE=" crossorigin="anonymous">
+
+  <!-- Skin CSS file (styling of UI - buttons, caption, etc.)
+       In the folder of skin CSS file there are also:
+       - .png and .svg icons sprite,
+       - preloader.gif (for browsers that do not support CSS animations) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css" integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin="anonymous">
+  {% endblock extra_css %}
+
+
 {% block navigation %}
 
   {% include "./includes/navigation_siblings.html" %}

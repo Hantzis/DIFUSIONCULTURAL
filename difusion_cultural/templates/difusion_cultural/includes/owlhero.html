@@ -18,7 +18,9 @@
 
   <figcaption class="grid-x {% for tag in post.specific.etiquetas.all %}{{ tag.slug }}{% endfor %}">
     {% for tag in post.specific.etiquetas.all %}
-      <span class="label {{ tag.slug }}"><small>{{ tag.slug }}</small></span>
+        {% if forloop.first %}
+          <span class="label {{ tag.slug }}"><small>{{ tag.slug }}</small></span>
+        {% endif  %}
     {% endfor %}
     <div class="cell large-12">
       <div>
