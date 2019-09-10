@@ -27,9 +27,11 @@
 
 
         {% for tag in post.specific.etiquetas.all %}
+          {% if forloop.first %}
             <span class="label {{ tag.slug }}">
               {{ tag }}
             </span>
+          {% endif %}
         {% endfor %}
 
 
@@ -37,7 +39,7 @@
         <img src="{{ postimage.url }}" alt="{{ post.title }}">
 
         <div class="card-section">
-          <h4><a href="{% pageurl post %}">{{ post.title }}</a></h4>
+          <h5><a href="{% pageurl post %}">{{ post.title }}</a></h5>
           <p>
             {{ post.specific.introduccion }}
           </p>

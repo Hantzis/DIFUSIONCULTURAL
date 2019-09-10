@@ -53,9 +53,6 @@
             {{ page.cuerpo }}
 
 
-            {% gallery page.galeria %}
-
-
           </div>
         </div>
 
@@ -75,8 +72,14 @@
           </ul>
         </div>
         {% endblock sidebar %}
+
+        <div class="medium-10 medium-offset-1 cell intro-offset">
+          <h4>Galería</h4>
+            {% gallery page.galeria %}
         </div>
+
       </div>
+    </div>
     {% endblock grid %}
 
 

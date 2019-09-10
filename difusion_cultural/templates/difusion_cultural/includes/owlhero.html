@@ -18,7 +18,7 @@
 
   </figure>
 
-  <figcaption class="grid-x {% for tag in post.specific.etiquetas.all %}{{ tag.slug }}{% endfor %}">
+  <figcaption class="grid-x {% for tag in post.specific.etiquetas.all %}{{ tag.slug }} {% endfor %}">
     {% for tag in post.specific.etiquetas.all %}
         {% if forloop.first %}
           <span class="label {{ tag.slug }}"><small>{{ tag.slug }}</small></span>

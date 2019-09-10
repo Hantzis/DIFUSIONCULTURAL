@@ -44,14 +44,14 @@ class DifusionCulturalHomePage(HomePage):
 
 
 
-class DifusionCulturalArticulo(StandardPage):
-    subpage_types = []
-    parent_page_types = ['DifusionCulturalHomePage']
-
-
-    class Meta:
-        verbose_name = "Artículo"
-        verbose_name_plural = "Artículos"
+# class DifusionCulturalArticulo(StandardPage):
+#     subpage_types = []
+#     parent_page_types = ['DifusionCulturalHomePage']
+#
+#
+#     class Meta:
+#         verbose_name = "Artículo"
+#         verbose_name_plural = "Artículos"
 
 
 class DifusionCulturalCartelera(Page):

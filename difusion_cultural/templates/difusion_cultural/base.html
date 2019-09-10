@@ -89,8 +89,8 @@
     </li>
     <li class="small-flex-child-grow medium-flex-child-auto">
       <!-- Reddit (url, title) -->
-      <a href="http://reddit.com/submit?url={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}&title={{ page.title|escape }}" target="_blank" class="btn share-btn reddit">
-        <i class="fa fa-reddit reddit" aria-label="reddit"></i>
+      <a href="tg://msg_url?url={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}&text={{ page.title|escape }}" target="_blank" class="btn share-btn telegram">
+        <i class="fa fa-telegram telegram" aria-label="telegram"></i>
       </a>
     </li>
     <li class="small-flex-child-grow medium-flex-child-auto">
@@ -99,6 +99,8 @@
         <i class="fa fa-envelope envelope" aria-label="email"></i>
       </a>
     </li>
+
+
 
   </ul>
 
@@ -115,6 +117,7 @@
       jQuery('.owl-carousel-home-front').owlCarousel({
           loop:true,
           autoplay:true,
+          autoplayTimeout:7000,
           items:1,
           margin:0,
           nav:true,
