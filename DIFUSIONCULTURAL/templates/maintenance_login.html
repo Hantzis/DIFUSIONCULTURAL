@@ -1,0 +1,116 @@
+<!doctype html>
+<html class="no-js" lang="es">
+  <head>
+
+    <meta name="robots" content="noindex, nofollow"> <!-- ROBOTS NOINDEX -->
+
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secretaría de Difusión Cultural Y Extensión Univesitaria  |  UMSNH</title>
+
+    <!-- gfonts -->
+    <!-- <link href="https://fonts.googleapis.com/css?family=Cormorant+SC:700|Raleway" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,900" rel="stylesheet">
+  </head>
+  <body>
+
+      <style media="screen">
+        body {
+          font-family: 'Raleway', sans-serif;
+          background-color: #efefef;
+          color: #333;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+          font-family: 'Lato', sans-serif;;
+          color: #333;
+          text-transform: uppercase;
+        }
+        h6 {
+          font-size: 1.5rem;
+          font-weight: 600;
+          line-height: .9;
+        }
+        h4 {
+          font-weight: 600;
+          font-size: 1.3rem;
+          line-height: 1.2;
+        }
+        h4 {
+          font-weight: 600;
+          font-size: 1.2rem;
+          line-height: 1.2;
+        }
+        figure,
+        blockquote {
+          margin: 0;
+        }
+        img {
+          width: 220px;
+          max-width: 100%;
+        }
+        .text-center {
+          text-align: center;
+        }
+        .message {
+          padding: 0;
+        }
+        .main-container {
+          max-width: 750px;
+          margin: 2rem auto;
+
+          padding: 2.5%;
+          background-color: #fff;
+
+          display: flex;
+          flex-direction: column;
+          flex-wrap: nowrap;
+          justify-content: center;
+          align-content: center;
+          height: auto;
+        }
+      </style>
+
+      <main class="main-container text-center">
+
+           <figure>
+             <img src="//hipervolta.com/misc/difusioncult_support/img/logo_dif_2.png" alt="Difusión Cultural Logo">
+           </figure>
+
+           <h4>Secretaría de Difusión Cultural
+             y Extensión Universitaria
+           </h4>
+
+           <h4>UMSNH</h4>
+
+         <div class="text-center message">
+           <span>Sitio en mantenimiento</span>
+         </div>
+
+        <h5>Password para revisar</h5>
+
+        <form action="{{ action_url }}" method="POST">
+            {% csrf_token %}
+
+            {{ form.non_field_errors }}
+
+            <div>
+                {{ form.password.errors }}
+                {{ form.password.label_tag }}
+                {{ form.password }}
+            </div>
+
+            {% for field in form.hidden_fields %}
+                {{ field }}
+            {% endfor %}
+            <br>
+            <input type="submit" value="Continue" />
+        </form>
+        <br>
+
+      </main>
+
+
+  </body>
+</html>
