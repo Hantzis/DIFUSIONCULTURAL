@@ -18,7 +18,7 @@
           <ul class="menu align-right dropdown" data-dropdown-menu>
             <li class="show-for-medium ">
               <a href="#">{{ page.title }}</a>
-              <ul class="menu vertical align-left">
+              <ul class="menu vertical text-left align-left">
                 {% for post in page.get_children %}
                 <li><a href="{% pageurl post %}">{{ post.title }}</a></li>
                 {% endfor %}
