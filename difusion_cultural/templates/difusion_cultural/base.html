@@ -1,4 +1,4 @@
-{% load static wagtailuserbar %}
+{% load static wagtailuserbar wagtailimages_tags %}
 
 <!doctype html>
 <html class="no-js" lang="es">
@@ -6,6 +6,32 @@
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="">
+    
+    <meta name="theme-color" content="#333333">
+    <meta name="msapplication-navbutton-color" content="#333333">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#333333">
+    <meta name="revisit-after" content="1 week">
+    <meta name="author" content="difusion cultural y extensión universitaria - umsnh">
+    
+    <meta name="keywords" content="">
+    <meta name="title" content="{% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}">
+    
+    <meta name="twitter:card"             content="summary_large_image">
+    <meta name="twitter:site"             content="@culturaumsnh">
+    <meta name="twitter:creator"          content="@culturaumsnh">
+    <meta property="og:title"             content="{% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}" />
+    <meta property="og:type"              content="website" />
+    <meta property="og:locale"            content="es_MX" />
+    
+    {% image page.imagen fill-800x600 as semihero_medium %}
+    
+    <meta property="og:image" itemprop="image" content="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ semihero_medium.url }}" />
+    
+    <meta property="og:description"       content="{{ page.introduccion|truncatechars:56 }}" />
+    <meta property="og:url"               content="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" />
+
     <title>
       {% block title %}
           {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
@@ -71,31 +97,31 @@
   <!-- Facebook -->
   <ul class="menu medium-vertical expanded">
     <li class="small-flex-child-grow medium-flex-child-auto">
-      <a href="http://www.facebook.com/sharer/sharer.php?u={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" target="_blank" class="btn share-btn facebook">
+      <a href="//facebook.com/sharer/sharer.php?u={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" class="btn share-btn facebook">
         <i class="fa fa-facebook facebook" aria-label="facebok"></i>
       </a>
     </li>
     <li class="small-flex-child-grow medium-flex-child-auto">
       <!-- Twitter -->
-      <a href="http://twitter.com/share?url={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}&text=#UMSNHesCultura&via=@CulturaUMSNH" target="_blank" class="btn share-btn twitter">
+      <a href="//twitter.com/share?url={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}&text={{ page.title|urlencode }}%20#UMSNHesCultura&via=@CulturaUMSNH" class="btn share-btn twitter">
         <i class="fa fa-twitter twitter" aria-label="twitter"></i>
       </a>
     </li>
     <li class="small-flex-child-grow medium-flex-child-auto">
       <!-- Whatsapp -->
-      <a href="https://wa.me/?text=Mira%20esta%20nota%20de%20cultura%20en%20la%20UMICH%3A%20{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" target="_blank" class="btn share-btn whatsapp">
+      <a href="https://wa.me/?text={{ page.title|urlencode }}%20{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" class="btn share-btn whatsapp">
         <i class="fa fa-whatsapp whatsapp" aria-label="whatsapp"></i>
       </a>
     </li>
     <li class="small-flex-child-grow medium-flex-child-auto">
       <!-- Reddit (url, title) -->
-      <a href="tg://msg_url?url={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}&text={{ page.title|escape }}" target="_blank" class="btn share-btn telegram">
+      <a href="tg://msg_url?url={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}&text={{ page.title|urlencode }}%20#UMSNHesCultura" class="btn share-btn telegram">
         <i class="fa fa-telegram telegram" aria-label="telegram"></i>
       </a>
     </li>
     <li class="small-flex-child-grow medium-flex-child-auto">
       <!-- Email -->
-      <a href="mailto:?subject={{ page.title|escape }}&body=#UMSNHesCultura{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" target="_blank" class="btn share-btn email">
+      <a href="mailto:?subject={{ page.title|urlencode }}&body=#UMSNHesCultura{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" class="btn share-btn email">
         <i class="fa fa-envelope envelope" aria-label="email"></i>
       </a>
     </li>

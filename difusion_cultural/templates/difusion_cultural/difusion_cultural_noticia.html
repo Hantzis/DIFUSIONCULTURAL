@@ -34,9 +34,11 @@
       {% image page.imagen fill-600x400 as semihero_small %}
       {% image page.imagen fill-800x600 as semihero_medium %}
 
-      <img src="{{ semihero_small.url }}" alt="{{ imagen.alt }}" data-interchange="[{{ semihero_small.url }}, small],
+      <img
+       class="semihero {% for tag in page.etiquetas.all %}{% if forloop.first %} {{ tag.slug }}{% endif %}{% endfor %}"
+       src="{{ semihero_small.url }}" alt="{{ imagen.alt }}" data-interchange="[{{ semihero_small.url }}, small],
       [{{ semihero_medium.url }}, medium]"
-       class="semihero {% for tag in page.etiquetas.all %}{% if forloop.first %} {{ tag.slug }}{% endif %}{% endfor %}">
+       >
     </div>
 
     <div class="medium-10 medium-offset-1 large-6 large-offset-1 cell intro-offset noticia">
@@ -58,7 +60,7 @@
 
         <h3>{{ page.title }}</h3>
         <p class="lead">
-          {{ page.introduccion}}  
+          {{ page.introduccion }}
         </p>
       </div>
 
