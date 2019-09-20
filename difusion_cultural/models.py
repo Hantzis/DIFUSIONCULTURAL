@@ -204,7 +204,7 @@ class DifusionCulturalPagina(Page):
 
     ]
 
-    subpage_types = ['DifusionCulturalPagina']
+    subpage_types = ['DifusionCulturalPagina', 'DifusionCulturalNota']
     parent_page_types = ['DifusionCulturalPagina', 'DifusionCulturalPaginaCategoria', 'DifusionCulturalHomePage']
 
 
