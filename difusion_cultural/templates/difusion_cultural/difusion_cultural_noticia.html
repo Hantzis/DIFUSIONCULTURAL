@@ -62,10 +62,34 @@
         <p class="lead">
           {{ page.introduccion }}
         </p>
+
       </div>
 
 
       <div class="article-body">
+        <div class="card borderless">
+          <ul class="menu vertical">
+
+            <li>
+              <span><strong>Fecha(s)</strong></span> {{ page.fecha_de_evento }}
+            </li>
+
+            <li>
+              <span><strong>Horario(s)</strong></span> {{ page.horarios }}
+            </li>
+
+            <li>
+              <span><strong>Lugar</strong></span> {{ page.lugar }}
+            </li>
+
+          </ul>
+
+          <p>
+            {{ page.consideraciones }}
+          </p>
+
+          {{ page.cuerpo }}
+        </div>
 
 
         {{ page.cuerpo }}

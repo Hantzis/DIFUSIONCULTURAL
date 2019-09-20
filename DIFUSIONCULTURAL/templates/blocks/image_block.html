@@ -1,6 +1,6 @@
 {% load wagtailimages_tags %}
 
 <figure>
-    {% image self.image fill-600x600 %}
-    {% if self.caption %}<figcaption>{{ self.caption }}{% if self.attribution %} - {{ self.attribution }}{% endif %}</figcaption>{% endif %}
+    {% image self.image width-600 %}
+    {% if self.caption %}<figcaption><small>{{ self.caption }}{% if self.attribution %} - {{ self.attribution }}{% endif %}</small></figcaption>{% endif %}
 </figure>
