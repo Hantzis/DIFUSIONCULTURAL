@@ -13,22 +13,50 @@
 
 
 {% block content %}
-    <h1>{{ page.title }}</h1>
 
-    <div class="intro">{{ page.introduccion|richtext }}</div>
+
+
+{% block grid %}
+
+<div class="grid-container articles-grid">
+  <h3 class="top-pusher">{{ page.title }}</h3>
+  <div class="grid-x grid-margin-x grid-margin-y" data-equalizer data-equalize-on="medium" id="equalized-grid">
+    {% block main-cell %}
 
     {% for post in page.get_children %}
-        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
-        {{ post.specific.introduccion }}
-        {{ post.specific.cuerpo }}
+    <div class="medium-6 large-4 cell">
+
+      {% for tag in post.specific.etiquetas.all %}
+      {% if forloop.first %}
+      <span class="label {{ tag.slug }}">
+        {{ tag }}
+      </span>
+      {% endif %}
+      {% endfor %}
+      <div class="card borderless box-shadow" data-equalizer-watch>
+
+
+
+        {% image post.specific.imagen fill-700x400 as postimage %}
+        <img src="{{ postimage.url }}" alt="{{ post.title }}">
+
+        <div class="card-section">
+          <h5><a href="{% pageurl post %}">{{ post.title }}</a></h5>
+          <p>
+            {{ post.specific.introduccion }}
+          </p>
+        </div>
+
+      </div>
+    </div>
     {% endfor %}
-    <hr/>
-    {% for post in page.get_children %}
-        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
-        {{ post.specific.title }}
-        {{ post.introduccion }}
-        {{ post.cuerpo }}
-    {% endfor %}
+
+    {% endblock main-cell %}
+
+
+  </div>
+</div>
+{% endblock grid %}
 
 
 {% endblock %}
