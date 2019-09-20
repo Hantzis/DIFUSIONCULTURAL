@@ -28,8 +28,8 @@
     {% image page.imagen fill-800x600 as semihero_medium %}
     
     <meta property="og:description"       content="{{ page.introduccion|truncatechars:56 }}" />
-    <meta property="og:url"               content="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" />
-    <meta property="og:image" itemprop="image"  content="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ semihero_medium.url }}" />
+    {#<meta property="og:url"               content="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}" />#}
+    {#<meta property="og:image" itemprop="image"  content="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ semihero_medium.url }}" />#}
 
     <title>
       {% block title %}
