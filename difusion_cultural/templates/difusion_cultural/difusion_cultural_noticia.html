@@ -69,24 +69,30 @@
       <div class="article-body">
         <div class="card borderless">
           <ul class="menu vertical">
-
+            {% if page.fecha_de_evento %}
             <li>
               <span><strong>Fecha(s)</strong></span> {{ page.fecha_de_evento }}
             </li>
+            {% endif %}
 
+            {% if page.horarios %}
             <li>
               <span><strong>Horario(s)</strong></span> {{ page.horarios }}
             </li>
+            {% endif %}
 
+            {% if page.lugar %}
             <li>
               <span><strong>Lugar</strong></span> {{ page.lugar }}
             </li>
-
+            {% endif %}
           </ul>
 
+          {% if page.consideraciones %}
           <p>
             {{ page.consideraciones }}
           </p>
+          {% endif %}
 
           {{ page.cuerpo }}
         </div>
@@ -108,6 +114,7 @@
             <li><a href="{% pageurl post %}">{{ post.title }}</a></li>
         {% endfor %}
       </ul>
+
     </div>
 {% endblock sidebar %}
 

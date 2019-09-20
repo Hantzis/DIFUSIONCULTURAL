@@ -1,7 +1,7 @@
 {% extends "difusion_cultural/base.html" %}
 {% load wagtailcore_tags wagtailimages_tags navigation_tags %}
 
-{% block body_class %}template-difusionculturalcartelera{% endblock %}
+{% block body_class %}template-difusionculturalblog{% endblock %}
 
 
 {% block navigation %}
@@ -21,8 +21,8 @@
   <div class="grid-x grid-margin-x grid-margin-y" data-equalizer data-equalize-on="medium" id="equalized-grid">
     {% block main-cell %}
 
-    {% for post in page.get_nietos %}
-    <div class="medium-6 large-4 cell">
+    {% for post in page.get_children %}
+    <div class="medium-10 large-8 cell">
 
       {% for tag in post.specific.etiquetas.all %}
       {% if forloop.first %}
@@ -31,59 +31,44 @@
       </span>
       {% endif %}
       {% endfor %}
-      <div class="card borderless box-shadow" data-equalizer-watch>
+      <div class="card borderless " data-equalizer-watch>
 
 
 
-        {% image post.specific.imagen fill-700x400 as postimage %}
+        {% image post.specific.imagen fill-850x500 as postimage %}
         <a href="{% pageurl post %}">
           <img src="{{ postimage.url }}" alt="{{ post.title }}">
         </a>
         <div class="card-section">
           <h6><a href="{% pageurl post %}">{{ post.title }}</a></h6>
-          <p>
-            {{ post.specific.introduccion }}
-          </p>
 
           <ul class="menu vertical">
-            {% if post.specific.fecha_de_evento %}
+            {% if post.specific.fecha%}
             <li>
               <small>
-                {{ post.specific.fecha_de_evento }}
+                {{ post.specific.fecha }}
               </small>
             </li>
             {% endif %}
 
-            {% if post.specific.horarios %}
+            {% if post.specific.autor %}
             <li>
               <small>
-                {{ post.specific.horarios }}
+                <em>  
+                {{ post.specific.autor }}
+              </em>
               </small>
             </li>
             {% endif %}
-
-            {% if post.specific.lugar %}
-
-            <li>
-              <small>
-                {{ post.specific.lugar }}
-              </small>
-            </li>
-            {% endif %}
-
 
           </ul>
 
-          {% if post.specific.consideraciones %}
           <p>
-            <small>
-              {{ post.specific.consideraciones }}
-            </small>
+            {{ post.specific.introduccion }}
           </p>
-          {% endif %}
-          <a href="{% pageurl post %}" class="button primary-color">Ver</a>
+          <a href="{% pageurl post %}" class="button primary">Leer más</a>
+          <hr>
         </div>
-
       </div>
     </div>
     {% endfor %}

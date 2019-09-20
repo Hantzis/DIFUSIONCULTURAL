@@ -1,7 +1,7 @@
 {% extends "difusion_cultural/base.html" %}
 {% load wagtailimages_tags wagtailcore_tags wagtail_html_support navigation_tags gallery_tags %}
 
-{% block body_class %}template-difusionculturalpagina{% endblock %}
+{% block body_class %}template-difusionculturalarticulo{% endblock %}
 
 
   {% block extra_css %}
@@ -42,7 +42,29 @@
         <div class="medium-10 medium-offset-1 large-6 large-offset-1 cell intro-offset">
 
           <div class="intro card box-shadow">
-            <h4 class="title">{{ page.title }}</h4>
+            <h4>{{ page.title }}</h4>
+
+            <ul class="menu vertical">
+              {% if page.fecha %}
+              <li>
+                <small>
+                  {{ page.fecha }}
+                </small>
+              </li>
+              {% endif %}
+
+              {% if page.autor %}
+              <li>
+                <small>
+                    <i class="fa fa-user"></i>
+                    <em>
+                      {{ page.autor }}
+                    </em>
+                </small>
+              </li>
+              {% endif %}
+            </ul>
+            <br>
 
             <p>
                 {{ page.introduccion}}  
@@ -62,14 +84,17 @@
         {% block sidebar %}
         <div class="medium-10 medium-offset-1 large-3 large-offset-1 cell side-bar">
           <hr>
-
-          <h5>Otros sitios de interés:</h5>
+          {% if page.has_siblings %}
+          <h5>Otros notas de interés:</h5>
           <ul class="menu vertical">
             {% for post in page.get_siblings %}
-                <li><a href="{% pageurl post %}">{{ post.title }}</a></li>
+                <li><a href="{% pageurl post %}">{{ post.title }}
+                  <br>
+                  <small> - {{ post.fecha }}</small></a></li>
+                  <hr>
             {% endfor %}
           </ul>
-
+          {% endif %}
         </div>
         {% endblock sidebar %}
 
