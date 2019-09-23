@@ -128,7 +128,7 @@ class DifusionCulturalNota(Page):
         StreamFieldPanel('body'),
     ]
 
-    subpage_types = []
+    subpage_types = ['DifusionCulturalNota']
     parent_page_types = ['DifusionCulturalHomePage','DifusionCulturalPagina','DifusionCulturalNota']
 
     class Meta:
