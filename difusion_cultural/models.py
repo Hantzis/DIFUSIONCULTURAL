@@ -29,7 +29,7 @@ from django.db.models import Q
 
 class DifusionCulturalHomePage(HomePage):
     def get_nuevos_bisnietos(self):
-        return Page.objects.live().filter(Q(depth__gte=5)).order_by('-fecha')[:6]
+        return Page.objects.live().filter(Q(depth__gte=5))[:6]
 
     parent_page_types = ['wagtailcore.Page']
 
