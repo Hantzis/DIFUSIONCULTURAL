@@ -29,7 +29,7 @@ from django.db.models import Q
 
 class DifusionCulturalHomePage(HomePage):
     def get_nuevos_bisnietos(self):
-        return Page.objects.filter(Q(depth__gte=5))[:6]
+        return Page.objects.live().filter(Q(depth__gte=5)).order_by('-fecha')[:6]
 
     parent_page_types = ['wagtailcore.Page']
 
@@ -143,10 +143,10 @@ class DifusionCulturalCartelera(Page):
 
 
     def get_nietos(self):
-        return Page.objects.descendant_of(self, inclusive=False).not_child_of(self)
+        return Page.objects.live().descendant_of(self, inclusive=False).not_child_of(self)
 
     def get_nuevos_nietos(self):
-        return Page.objects.descendant_of(self, inclusive=False).not_child_of(self)[:2]
+        return Page.objects.live().descendant_of(self, inclusive=False).not_child_of(self)[:2]
 
 
     @classmethod
