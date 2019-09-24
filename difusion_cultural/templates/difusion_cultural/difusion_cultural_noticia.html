@@ -35,7 +35,7 @@
       {% image page.imagen fill-800x600 as semihero_medium %}
 
       <img
-       class="semihero {% for tag in page.etiquetas.all %}{% if forloop.first %} {{ tag.slug }}{% endif %}{% endfor %}"
+       class="semihero {{ page.categoria.slug }}"
        src="{{ semihero_small.url }}" alt="{{ imagen.alt }}" data-interchange="[{{ semihero_small.url }}, small],
       [{{ semihero_medium.url }}, medium]"
        >
@@ -47,13 +47,11 @@
 
         <div class="tags">
           <ul class="menu">
-          {% for tag in page.etiquetas.all %}
-            {% if forloop.first %}
-            <li><span class="label {{ tag.slug }}">
-              {{ tag }}
+
+            <li><span class="label {{ page.categoria.slug }}">
+              {{ page.categoria }}
             </span></li>
-            {% endif %}
-          {% endfor %}
+
         </ul>
         </div>
 
