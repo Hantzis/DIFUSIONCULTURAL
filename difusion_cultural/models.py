@@ -4,8 +4,6 @@ from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 
 # Create your models here.
-
-
 from wagtail.core.fields import StreamField
 from wagtail.core.models import Collection, Page, PageManager, PageQuerySet
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
@@ -17,14 +15,8 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase, TagBase, Tag as TaggitTag
 from base.blocks import ExtraStreamBlock
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
-
-
-# from .blocks import BaseStreamBlock, ExtraStreamBlock, HeroSlideBlock, FormStreamBlock
-
 from base.models import HomePage, StandardPage
 from django.db.models import Q
-
-
 
 
 class DifusionCulturalHomePage(HomePage):
@@ -48,25 +40,15 @@ class DifusionCulturalBlog(Page):
     subpage_types = ['DifusionCulturalArticulo']
     parent_page_types = ['DifusionCulturalHomePage']
 
-
     def get_nietos(self):
         return Page.objects.descendant_of(self, inclusive=False).not_child_of(self)
 
     def get_nuevos_nietos(self):
         return Page.objects.descendant_of(self, inclusive=False).not_child_of(self)[:2]
 
-
-    @classmethod
-    def can_create_at(cls, parent):
-        # You can only create one of these!
-        return super(DifusionCulturalBlog, cls).can_create_at(parent) \
-               and not cls.objects.exists()
-
     class Meta:
         verbose_name = "Blog"
         verbose_name_plural = "Blog"
-
-
 
 
 class DifusionCulturalArticulo(StandardPage):
@@ -135,6 +117,24 @@ class DifusionCulturalNota(Page):
         verbose_name = "Nota"
         verbose_name_plural = "Notas"
 
+
+
+@register_snippet
+class DifusionCulturalCarteleraCategoria(ClusterableModel):
+    categoria = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, max_length=80)
+
+    panels = [
+        FieldPanel('categoria'),
+        FieldPanel('slug'),
+    ]
+
+    def __str__(self):
+        return self.categoria
+
+    class Meta:
+        verbose_name = "Categoría (cartelera)"
+        verbose_name_plural = "Categorías (cartelera)"
 
 
 class DifusionCulturalCartelera(Page):
@@ -226,24 +226,15 @@ class DifusionCulturalDependencia(Page):
 
 
 
-'''
-@register_snippet
-class DifusionCulturalEtiqueta(TaggitTag):
-    class Meta:
-        proxy = True
-'''
-
-
 class DifusionCulturalNoticiaQuerySet(PageQuerySet):
     def ultimos(self):
         return self.order_by('-fecha')
 
 
-#DifusionCulturalNoticiaManager = PageManager.from_queryset(DifusionCulturalNoticiaQuerySet)
-
 class DifusionCulturalNoticiaManager(PageManager):
     def ultimos(self):
         return self.order_by('-fecha')
+
 
 @register_snippet
 class DifusionCulturalNoticiaEtiqueta(TaggedItemBase):
@@ -263,6 +254,7 @@ class DifusionCulturalNoticia(Page):
     horarios = models.CharField(verbose_name="Horarios", max_length=250, null=True)
     lugar = models.CharField(verbose_name="Lugar", max_length=250, null=True)
     consideraciones = models.CharField(verbose_name="Consideraciones", max_length=250, null=True)
+    categoria = ParentalKey('DifusionCulturalCarteleraCategoria', on_delete=models.PROTECT, blank=True)
     cuerpo = StreamField(
         ExtraStreamBlock(), verbose_name="Page body", blank=True
     )
@@ -297,6 +289,7 @@ class DifusionCulturalNoticia(Page):
         FieldPanel('lugar'),
         FieldPanel('consideraciones'),
         StreamFieldPanel('cuerpo'),
+        FieldPanel('categoria'),
         ImageChooserPanel('imagen'),
         FieldPanel('galeria'),
         FieldPanel('etiquetas'),
