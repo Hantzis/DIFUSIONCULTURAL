@@ -56,6 +56,8 @@
         </div>
 
 
+
+
         <h3>{{ page.title }}</h3>
         <p class="lead">
           {{ page.introduccion }}
@@ -97,8 +99,16 @@
 
         {{ page.cuerpo }}
 
+                <div class="text-right">
+                    {% for tag in page.etiquetas.all %}
+                        <span class="label {{ tag.slug }}"><small>{{ tag }}</small></span>
+                    {% endfor %}
+                </div>
 
       </div>
+
+
+
     </div>
 {% endblock main-cell %}
 

@@ -29,9 +29,16 @@
                             <button class="button primary">Ver más</button>
                         </b>
                     </a>
+                    <div class="text-right">
+                        {% for tag in post.specific.etiquetas.all %}
+                            <span class="label {{ tag.slug }}"><small>{{ tag }}</small></span>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </figcaption>
+
+
 
     </div>
 {% endfor %}
