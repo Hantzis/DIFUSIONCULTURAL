@@ -6,7 +6,7 @@
 
 {% block navigation %}
 
-  {% include "./includes/navigation.html" %}
+    {% include "./includes/navigation.html" %}
 
 {% endblock %}
 
@@ -14,86 +14,86 @@
 
 {% block content %}
 
-{% block grid %}
+    {% block grid %}
 
-<div class="grid-container articles-grid">
-  <h3 class="top-pusher">{{ page.title }}</h3>
-  <div class="grid-x grid-margin-x grid-margin-y" data-equalizer data-equalize-on="medium" id="equalized-grid">
-    {% block main-cell %}
+        <div class="grid-container articles-grid">
+            <h3 class="top-pusher">{{ page.title }}</h3>
+            <div class="grid-x grid-margin-x grid-margin-y" data-equalizer data-equalize-on="medium"
+                 id="equalized-grid">
+                {% block main-cell %}
 
-    {% for post in page.get_nietos %}
-    <div class="medium-6 large-4 cell">
+                    {% for post in page.posts %}
+                        <div class="medium-6 large-4 cell">
 
-      {% for tag in post.specific.etiquetas.all %}
-      {% if forloop.first %}
-      <span class="label {{ tag.slug }}">
-        {{ tag }}
-      </span>
-      {% endif %}
-      {% endfor %}
-      <div class="card borderless box-shadow" data-equalizer-watch>
+                            <a href="/{{ post.specific.difusion_cultural_cartelera_slug }}/categoria/{{ post.specific.categoria.slug }}"><span
+                                    class="label {{ post.specific.categoria.slug }}">{{ post.specific.categoria }}</span></a>
+
+                            <div class="card borderless box-shadow" data-equalizer-watch>
 
 
+                                {% image post.specific.imagen fill-700x400 as postimage %}
+                                <a href="{% pageurl post %}">
+                                    <img src="{{ postimage.url }}" alt="{{ post.title }}">
+                                </a>
+                                <div class="card-section">
+                                    <h6><a href="{% pageurl post %}">{{ post.title }}</a></h6>
+                                    <p>
+                                        {{ post.specific.introduccion }}
+                                    </p>
 
-        {% image post.specific.imagen fill-700x400 as postimage %}
-        <a href="{% pageurl post %}">
-          <img src="{{ postimage.url }}" alt="{{ post.title }}">
-        </a>
-        <div class="card-section">
-          <h6><a href="{% pageurl post %}">{{ post.title }}</a></h6>
-          <p>
-            {{ post.specific.introduccion }}
-          </p>
+                                    <ul class="menu vertical">
+                                        <li>
+                                            <small>
+                                                {{ post.specific.fecha_inicio }}
+                                                        {% if post.specific.fecha_inicio != post.specific.fecha_fin %}
+                                                            al {{ post.specific.fecha_fin }}{% endif %}
+                                            </small>
+                                        </li>
 
-          <ul class="menu vertical">
-            {% if post.specific.fecha_de_evento %}
-            <li>
-              <small>
-                {{ post.specific.fecha_de_evento }}
-              </small>
-            </li>
-            {% endif %}
+                                        <li>
+                                            <small>
+                                                {{ post.specific.hora_inicio }} - {{ post.specific.hora_fin }}
+                                            </small>
+                                        </li>
 
-            {% if post.specific.horarios %}
-            <li>
-              <small>
-                {{ post.specific.horarios }}
-              </small>
-            </li>
-            {% endif %}
+                                        {% if post.specific.ubicacion %}
 
-            {% if post.specific.lugar %}
-
-            <li>
-              <small>
-                {{ post.specific.lugar }}
-              </small>
-            </li>
-            {% endif %}
+                                            <li>
+                                                <small>
+                                                    {{ post.specific.ubicacion }}
+                                                </small>
+                                            </li>
+                                        {% endif %}
 
 
-          </ul>
+                                    </ul>
 
-          {% if post.specific.consideraciones %}
-          <p>
-            <small>
-              {{ post.specific.consideraciones }}
-            </small>
-          </p>
-          {% endif %}
-          <a href="{% pageurl post %}" class="button primary-color">Ver</a>
+                                    {% if post.specific.consideraciones %}
+                                        <p>
+                                            <small>
+                                                {{ post.specific.consideraciones }}
+                                            </small>
+                                        </p>
+                                    {% endif %}
+                                    <a href="{% pageurl post %}" class="button primary-color">Ver</a>
+                                </div>
+
+                                    <div class="text-right">
+                                    {% for tag in post.specific.etiquetas.all %}
+                                        <a href="/{{ post.specific.difusion_cultural_cartelera_slug }}/etiqueta/{{ tag.slug }}"><span class="label">{{ tag }}</span></a>
+                                    {% endfor %}
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                {% endblock main-cell %}
+
+
+            </div>
         </div>
-
-      </div>
-    </div>
-    {% endfor %}
-
-    {% endblock main-cell %}
-
-
-  </div>
-</div>
-{% endblock grid %}
+    {% endblock grid %}
 
 {% endblock content %}
 

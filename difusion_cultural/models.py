@@ -145,7 +145,6 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
     subpage_types = ['DifusionCulturalDependencia']
     parent_page_types = ['DifusionCulturalHomePage']
 
-
     def get_nietos(self):
         return Page.objects.live().descendant_of(self, inclusive=False).not_child_of(self)
 
@@ -166,25 +165,50 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
         return context
 
     def get_next_posts(self):
-        return DifusionCulturalNoticia.objects.filter(fecha_fin__gte=today).live()
+        return DifusionCulturalNoticia.objects.filter(fecha_fin__gte=today).live().order_by('-fecha_fin')
 
     def get_prev_posts(self):
-        return DifusionCulturalNoticia.objects.filter(fecha_fin__lte=today).live()
+        return DifusionCulturalNoticia.objects.filter(fecha_fin__lte=today).live().order_by('-fecha_fin')
 
     @route(r'^etiqueta/(?P<etiqueta>[-\w]+)/$')
     def posts_proximos_etiqueta(self, request, etiqueta, *args, **kwargs):
         self.search_type = 'etiqueta'
         self.search_term = etiqueta
-        self.posts = self.get_next_posts().filter(etiquetas__slug=etiqueta)
+        self.posts = self.get_next_posts().filter(etiquetas__slug=etiqueta).order_by('-fecha_fin')
         return Page.serve(self, request, *args, **kwargs)
 
     @route(r'^archivado/etiqueta/(?P<etiqueta>[-\w]+)/$')
     def posts_previos_etiqueta(self, request, etiqueta, *args, **kwargs):
         self.search_type = 'etiqueta'
         self.search_term = etiqueta
-        self.posts = self.get_prev_posts().filter(etiquetas__slug=etiqueta)
+        self.posts = self.get_prev_posts().filter(etiquetas__slug=etiqueta).order_by('-fecha_fin')
         return Page.serve(self, request, *args, **kwargs)
 
+    @route(r'^categoria/(?P<categoria>[-\w]+)/$')
+    def posts_proximos_categoria(self, request, categoria, *args, **kwargs):
+        self.search_type = 'categoria'
+        self.search_term = categoria
+        self.posts = self.get_next_posts().filter(categoria__slug=categoria).order_by('-fecha_fin')
+        return Page.serve(self, request, *args, **kwargs)
+
+    @route(r'^archivado/categoria/(?P<categoria>[-\w]+)/$')
+    def posts_previos_categoria(self, request, categoria, *args, **kwargs):
+        self.search_type = 'categoria'
+        self.search_term = categoria
+        self.posts = self.get_prev_posts().filter(categoria__slug=categoria).order_by('-fecha_fin')
+        return Page.serve(self, request, *args, **kwargs)
+
+
+    @route(r'^archivado/$')
+    def post_list(self, request, *args, **kwargs):
+        self.posts = self.get_prev_posts()
+        return Page.serve(self, request, *args, **kwargs)
+
+
+    @route(r'^$')
+    def post_list(self, request, *args, **kwargs):
+        self.posts = self.get_next_posts()
+        return Page.serve(self, request, *args, **kwargs)
 
     class Meta:
         verbose_name = "Cartelera"
@@ -284,6 +308,10 @@ class DifusionCulturalNoticia(Page):
     @property
     def difusion_cultural_cartelera(self):
         return self.get_parent().specific.get_parent().specific
+
+    @property
+    def difusion_cultural_cartelera_slug(self):
+        return self.get_parent().specific.get_parent().specific.slug
 
 
     def get_context(self, request, *args, **kwargs):

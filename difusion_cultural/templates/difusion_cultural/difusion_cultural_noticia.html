@@ -48,9 +48,9 @@
         <div class="tags">
           <ul class="menu">
 
-            <li><span class="label {{ page.categoria.slug }}">
-              {{ page.categoria }}
-            </span></li>
+            <li>
+                <a href="../../categoria/{{ page.categoria.slug }}"><span class="label {{ page.categoria.slug }}">{{ page.categoria }}</span></a>
+            </li>
 
         </ul>
         </div>
@@ -97,7 +97,7 @@
 
                 <div class="text-right">
                     {% for tag in page.etiquetas.all %}
-                        <span class="label {{ tag.slug }}"><small>{{ tag }}</small></span>
+                        <a href="../../etiqueta/{{ tag.slug }}"><span class="label">{{ tag }}</span></a>
                     {% endfor %}
                 </div>
 
@@ -111,9 +111,9 @@
 {% block sidebar %}
     <div class="medium-10 medium-offset-1 large-3 large-offset-1 cell side-bar">
 
-      <h5>Otros notas de interés:</h5>
+      <h5>Otras notas de interés:</h5>
       <ul class="menu vertical">
-        {% for post in page.get_siblings %}
+        {% for post in page.get_next_posts %}
             <li><a href="{% pageurl post %}">{{ post.title }}</a></li>
         {% endfor %}
       </ul>
