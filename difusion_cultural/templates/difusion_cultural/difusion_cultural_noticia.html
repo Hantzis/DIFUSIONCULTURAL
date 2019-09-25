@@ -113,7 +113,7 @@
 
       <h5>Otras notas de interés:</h5>
       <ul class="menu vertical">
-        {% for post in page.get_next_posts %}
+        {% for post in page.difusion_cultural_cartelera.get_next_posts|slice:":10" %}
             <li><a href="{% pageurl post %}">{{ post.title }}</a></li>
         {% endfor %}
       </ul>
