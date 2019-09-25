@@ -41,7 +41,6 @@ class DifusionCulturalHomePage(HomePage):
         verbose_name = "Inicio"
 
 
-
 class DifusionCulturalBlog(Page):
     subpage_types = ['DifusionCulturalArticulo']
     parent_page_types = ['DifusionCulturalHomePage']
@@ -106,8 +105,6 @@ class DifusionCulturalArticulo(StandardPage):
 
 
 class DifusionCulturalNota(Page):
-
-    # Body section of the HomePage
     body = StreamField(
         ExtraStreamBlock(), verbose_name="Home content block", blank=True
     )
@@ -124,10 +121,9 @@ class DifusionCulturalNota(Page):
         verbose_name_plural = "Notas"
 
 
-
 @register_snippet
 class DifusionCulturalCarteleraCategoria(ClusterableModel):
-    categoria = models.CharField(max_length=255)
+    categoria = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(unique=True, max_length=80)
 
     panels = [
@@ -137,6 +133,9 @@ class DifusionCulturalCarteleraCategoria(ClusterableModel):
 
     def __str__(self):
         return self.categoria
+
+    def natural_key(self):
+        return self.slug
 
     class Meta:
         verbose_name = "Categoría (cartelera)"
@@ -193,6 +192,10 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
         self.posts = self.get_next_posts().filter(categoria__slug=categoria).order_by('-fecha_fin')
         return Page.serve(self, request, *args, **kwargs)
 
+    def get_categoria(self, categoria):
+        self.posts = DifusionCulturalNoticia.objects.filter(categoria=categoria)
+
+
     @route(r'^archivado/categoria/(?P<categoria>[-\w]+)/$')
     def posts_previos_categoria(self, request, categoria, *args, **kwargs):
         self.search_type = 'categoria'
@@ -215,8 +218,6 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
     class Meta:
         verbose_name = "Cartelera"
         verbose_name_plural = "Carteleras"
-
-
 
 
 class DifusionCulturalDependencia(Page):

@@ -4,7 +4,7 @@ from wagtail.core.models import Page
 
 #from base.models import FooterText
 
-from .. models import DifusionCulturalCartelera
+from .. models import DifusionCulturalCartelera, DifusionCulturalCarteleraCategoria, DifusionCulturalNoticia
 register = template.Library()
 # https://docs.djangoproject.com/en/1.9/howto/custom-template-tags/
 
@@ -41,15 +41,13 @@ def is_active(page, current_page):
 def top_menu(context, parent, calling_page=None):
     menuitems = parent.get_children().live().in_menu()
     for menuitem in menuitems:
-        print(menuitem.specific.specific_class)
-        print(isinstance(menuitem.specific.__class__, DifusionCulturalCartelera.__class__))
-
         menuitem.show_dropdown = has_menu_children(menuitem)
         # We don't directly check if calling_page is None since the template
         # engine can pass an empty string to calling_page
         # if the variable passed as calling_page does not exist.
         menuitem.active = (calling_page.url_path.startswith(menuitem.url_path)
                            if calling_page else False)
+
     return {
         'calling_page': calling_page,
         'menuitems': menuitems,
@@ -61,16 +59,28 @@ def top_menu(context, parent, calling_page=None):
 # Retrieves the children of the top menu items for the drop downs
 @register.inclusion_tag('tags/top_menu_children.html', takes_context=True)
 def top_menu_children(context, parent, calling_page=None):
-    menuitems_children = parent.get_children()
-    menuitems_children = menuitems_children.live().in_menu()
-    for menuitem in menuitems_children:
-        menuitem.has_dropdown = has_menu_children(menuitem)
-        # We don't directly check if calling_page is None since the template
-        # engine can pass an empty string to calling_page
-        # if the variable passed as calling_page does not exist.
-        menuitem.active = (calling_page.url_path.startswith(menuitem.url_path)
-                           if calling_page else False)
-        menuitem.children = menuitem.get_children().live().in_menu()
+    menuitems_children = None
+
+    if isinstance(parent.specific, DifusionCulturalCartelera):
+        # menuitems_children = DifusionCulturalCarteleraCategoria.objects.all()
+        # menuitems_children = parent.get_children()
+        menuitems_children = DifusionCulturalNoticia.objects.filter(categoria__in=DifusionCulturalCarteleraCategoria.objects.all().distinct()).values('categoria__slug').distinct()
+        menuitems_children = DifusionCulturalNoticia.objects.filter(categoria__in=DifusionCulturalCarteleraCategoria.objects.all().distinct()).values_list('categoria__slug', flat=True).distinct()
+        menuitems_children = menuitems_children.live().in_menu()
+        print("si: ", menuitems_children)
+        # pass
+    else:
+        menuitems_children = parent.get_children()
+        menuitems_children = menuitems_children.live().in_menu()
+        for menuitem in menuitems_children:
+            menuitem.has_dropdown = has_menu_children(menuitem)
+            # We don't directly check if calling_page is None since the template
+            # engine can pass an empty string to calling_page
+            # if the variable passed as calling_page does not exist.
+            menuitem.active = (calling_page.url_path.startswith(menuitem.url_path)
+                               if calling_page else False)
+            menuitem.children = menuitem.get_children().live().in_menu()
+    print(menuitems_children)
     return {
         'parent': parent,
         'menuitems_children': menuitems_children,
