@@ -69,21 +69,17 @@
       <div class="article-body">
         <div class="card borderless">
           <ul class="menu vertical">
-            {% if page.fecha_de_evento %}
             <li>
-              <span><strong>Fecha(s)</strong></span> {{ page.fecha_de_evento }}
+              <span><strong>Fecha{% if page.fecha_inicio != page.fecha_fin %}(s){% endif %}</strong></span> {{ page.fecha_inicio }}{% if page.fecha_inicio != page.fecha_fin %} - {{ page.fecha_fin }}{% endif %}
             </li>
-            {% endif %}
 
-            {% if page.horarios %}
             <li>
-              <span><strong>Horario(s)</strong></span> {{ page.horarios }}
+              <span><strong>Horario</strong></span> {{ page.hora_inicio }} - {{ page.hora_fin }}
             </li>
-            {% endif %}
 
-            {% if page.lugar %}
+            {% if page.ubicacion %}
             <li>
-              <span><strong>Lugar</strong></span> {{ page.lugar }}
+              <span><strong>Ubicación</strong></span> {{ page.ubicacion }}
             </li>
             {% endif %}
           </ul>

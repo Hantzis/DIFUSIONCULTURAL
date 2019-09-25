@@ -17,6 +17,10 @@ from base.blocks import ExtraStreamBlock
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from base.models import HomePage, StandardPage
 from django.db.models import Q
+from datetime import datetime
+
+
+today = datetime.today().date()
 
 
 class DifusionCulturalHomePage(HomePage):
@@ -137,7 +141,7 @@ class DifusionCulturalCarteleraCategoria(ClusterableModel):
         verbose_name_plural = "Categorías (cartelera)"
 
 
-class DifusionCulturalCartelera(Page):
+class DifusionCulturalCartelera(RoutablePageMixin, Page):
     subpage_types = ['DifusionCulturalDependencia']
     parent_page_types = ['DifusionCulturalHomePage']
 
@@ -148,16 +152,149 @@ class DifusionCulturalCartelera(Page):
     def get_nuevos_nietos(self):
         return Page.objects.live().descendant_of(self, inclusive=False).not_child_of(self)[:2]
 
-
     @classmethod
     def can_create_at(cls, parent):
         # You can only create one of these!
         return super(DifusionCulturalCartelera, cls).can_create_at(parent) \
                and not cls.objects.exists()
 
+
+    def get_context(self, request, *args, **kwargs):
+        context = super(DifusionCulturalCartelera, self).get_context(request, *args, **kwargs)
+        context['posts'] = self.posts
+        context['difusion_cultural_cartelera'] = self
+        return context
+
+    def get_next_posts(self):
+        return DifusionCulturalNoticia.objects.filter(fecha_fin__gte=today).live()
+
+    def get_prev_posts(self):
+        return DifusionCulturalNoticia.objects.filter(fecha_fin__lte=today).live()
+
+    @route(r'^etiqueta/(?P<etiqueta>[-\w]+)/$')
+    def posts_proximos_etiqueta(self, request, etiqueta, *args, **kwargs):
+        self.search_type = 'etiqueta'
+        self.search_term = etiqueta
+        self.posts = self.get_next_posts().filter(etiquetas__slug=etiqueta)
+        return Page.serve(self, request, *args, **kwargs)
+
+    @route(r'^archivado/etiqueta/(?P<etiqueta>[-\w]+)/$')
+    def posts_previos_etiqueta(self, request, etiqueta, *args, **kwargs):
+        self.search_type = 'etiqueta'
+        self.search_term = etiqueta
+        self.posts = self.get_prev_posts().filter(etiquetas__slug=etiqueta)
+        return Page.serve(self, request, *args, **kwargs)
+
+
     class Meta:
         verbose_name = "Cartelera"
         verbose_name_plural = "Carteleras"
+
+
+
+
+class DifusionCulturalDependencia(Page):
+    subpage_types = ['DifusionCulturalNoticia']
+    parent_page_types = ['DifusionCulturalCartelera']
+
+
+    class Meta:
+        verbose_name = "Dependencia"
+        verbose_name_plural = "Dependencias"
+
+
+"""
+class DifusionCulturalNoticiaQuerySet(PageQuerySet):
+    def ultimos(self):
+        return self.order_by('-fecha')
+"""
+
+class DifusionCulturalNoticiaManager(PageManager):
+    def ultimos(self):
+        return self.order_by('-fecha')
+
+
+@register_snippet
+class DifusionCulturalNoticiaEtiqueta(TaggedItemBase):
+    content_object = ParentalKey('DifusionCulturalNoticia', related_name='noticia_tags')
+
+@register_snippet
+class Tag(TaggitTag):
+    class Meta:
+        proxy = True
+
+
+class DifusionCulturalNoticia(Page):
+    fecha_inicio = models.DateField("Fecha inicio")
+    fecha_fin = models.DateField("Fecha fin")
+    hora_inicio = models.TimeField("Hora fin")
+    hora_fin = models.TimeField("Hora fin")
+
+    introduccion = models.CharField(max_length=250)
+    ubicacion = models.CharField(max_length=250, blank=True)
+    consideraciones = models.CharField(max_length=250, blank=True, null=True)
+
+    cuerpo = StreamField(
+        ExtraStreamBlock(), verbose_name="Page body", blank=True
+    )
+    imagen = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+        help_text='Imagen de portada'
+    )
+    galeria = models.ForeignKey(
+        Collection,
+        limit_choices_to=~models.Q(name__in=['Root']),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        help_text='Select the image collection for this gallery.'
+    )
+    categoria = ParentalKey('DifusionCulturalCarteleraCategoria', on_delete=models.PROTECT, blank=True)
+    etiquetas = ClusterTaggableManager(through='DifusionCulturalNoticiaEtiqueta', blank=True)
+
+    search_fields = Page.search_fields + [
+        index.SearchField('introduccion'),
+        index.SearchField('cuerpo'),
+    ]
+
+    content_panels = Page.content_panels + [
+        FieldPanel('fecha_inicio'),
+        FieldPanel('fecha_fin'),
+        FieldPanel('hora_inicio'),
+        FieldPanel('hora_fin'),
+        FieldPanel('introduccion'),
+        FieldPanel('ubicacion'),
+        FieldPanel('consideraciones'),
+        StreamFieldPanel('cuerpo'),
+        ImageChooserPanel('imagen'),
+        FieldPanel('galeria'),
+        FieldPanel('categoria'),
+        FieldPanel('etiquetas'),
+    ]
+
+    objects = DifusionCulturalNoticiaManager()
+
+    subpage_types = []
+    parent_page_types = ['DifusionCulturalDependencia']
+
+    @property
+    def difusion_cultural_cartelera(self):
+        return self.get_parent().specific.get_parent().specific
+
+
+    def get_context(self, request, *args, **kwargs):
+        context = super(DifusionCulturalNoticia, self).get_context(request, *args, **kwargs)
+        context['difusion_cultural_cartelera'] = self.difusion_cultural_cartelera
+        return context
+
+    class Meta:
+        verbose_name = "Noticia"
+        verbose_name_plural = "Noticias"
+
 
 
 class DifusionCulturalPaginaCategoria(Page):
@@ -212,95 +349,3 @@ class DifusionCulturalPagina(Page):
         verbose_name = "Página"
         verbose_name_plural = "páginas"
 
-
-
-
-class DifusionCulturalDependencia(Page):
-    subpage_types = ['DifusionCulturalNoticia']
-    parent_page_types = ['DifusionCulturalCartelera']
-
-
-    class Meta:
-        verbose_name = "Dependencia"
-        verbose_name_plural = "Dependencias"
-
-
-
-class DifusionCulturalNoticiaQuerySet(PageQuerySet):
-    def ultimos(self):
-        return self.order_by('-fecha')
-
-
-class DifusionCulturalNoticiaManager(PageManager):
-    def ultimos(self):
-        return self.order_by('-fecha')
-
-
-@register_snippet
-class DifusionCulturalNoticiaEtiqueta(TaggedItemBase):
-    content_object = ParentalKey('DifusionCulturalNoticia', related_name='noticia_tags')
-
-
-@register_snippet
-class Tag(TaggitTag):
-    class Meta:
-        proxy = True
-
-
-class DifusionCulturalNoticia(Page):
-    fecha = models.DateField("Fecha de publicación")
-    introduccion = models.CharField(max_length=250)
-    fecha_de_evento = models.CharField(verbose_name="Fecha_de_evento", max_length=250, null=True)
-    horarios = models.CharField(verbose_name="Horarios", max_length=250, null=True)
-    lugar = models.CharField(verbose_name="Lugar", max_length=250, null=True)
-    consideraciones = models.CharField(verbose_name="Consideraciones", max_length=250, null=True)
-    categoria = ParentalKey('DifusionCulturalCarteleraCategoria', on_delete=models.PROTECT, blank=True)
-    cuerpo = StreamField(
-        ExtraStreamBlock(), verbose_name="Page body", blank=True
-    )
-    imagen = models.ForeignKey(
-        'wagtailimages.Image',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        help_text='Imagen de portada'
-    )
-    galeria = models.ForeignKey(
-        Collection,
-        limit_choices_to=~models.Q(name__in=['Root']),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        help_text='Select the image collection for this gallery.'
-    )
-    etiquetas = ClusterTaggableManager(through='DifusionCulturalNoticiaEtiqueta', blank=True)
-
-    search_fields = Page.search_fields + [
-        index.SearchField('introduccion'),
-        index.SearchField('cuerpo'),
-    ]
-
-    content_panels = Page.content_panels + [
-        FieldPanel('fecha'),
-        FieldPanel('introduccion'),
-        FieldPanel('fecha_de_evento'),
-        FieldPanel('horarios'),
-        FieldPanel('lugar'),
-        FieldPanel('consideraciones'),
-        StreamFieldPanel('cuerpo'),
-        FieldPanel('categoria'),
-        ImageChooserPanel('imagen'),
-        FieldPanel('galeria'),
-        FieldPanel('etiquetas'),
-    ]
-
-    objects = DifusionCulturalNoticiaManager()
-
-    subpage_types = []
-    parent_page_types = ['DifusionCulturalDependencia']
-
-
-    class Meta:
-        verbose_name = "Noticia"
-        verbose_name_plural = "Noticias"
