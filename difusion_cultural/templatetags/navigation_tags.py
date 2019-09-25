@@ -4,7 +4,7 @@ from wagtail.core.models import Page
 
 #from base.models import FooterText
 
-
+from .. models import DifusionCulturalCartelera
 register = template.Library()
 # https://docs.djangoproject.com/en/1.9/howto/custom-template-tags/
 
@@ -41,6 +41,9 @@ def is_active(page, current_page):
 def top_menu(context, parent, calling_page=None):
     menuitems = parent.get_children().live().in_menu()
     for menuitem in menuitems:
+        print(menuitem.specific.specific_class)
+        print(isinstance(menuitem.specific.__class__, DifusionCulturalCartelera.__class__))
+
         menuitem.show_dropdown = has_menu_children(menuitem)
         # We don't directly check if calling_page is None since the template
         # engine can pass an empty string to calling_page
