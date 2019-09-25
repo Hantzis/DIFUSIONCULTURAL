@@ -304,5 +304,3 @@ class DifusionCulturalNoticia(Page):
     class Meta:
         verbose_name = "Noticia"
         verbose_name_plural = "Noticias"
-
-
