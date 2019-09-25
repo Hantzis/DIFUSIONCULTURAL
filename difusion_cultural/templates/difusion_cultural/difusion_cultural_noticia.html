@@ -4,145 +4,165 @@
 {% block body_class %}template-difusionculturalnoticia{% endblock %}
 
 
-  {% block extra_css %}
-  <!-- PHOTOSWIPE -->
-  <!-- Core CSS file -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css" integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE=" crossorigin="anonymous">
+{% block extra_css %}
+    <!-- PHOTOSWIPE -->
+    <!-- Core CSS file -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"
+          integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE=" crossorigin="anonymous">
 
-  <!-- Skin CSS file (styling of UI - buttons, caption, etc.)
-       In the folder of skin CSS file there are also:
-       - .png and .svg icons sprite,
-       - preloader.gif (for browsers that do not support CSS animations) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css" integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin="anonymous">
-  {% endblock extra_css %}
+    <!-- Skin CSS file (styling of UI - buttons, caption, etc.)
+         In the folder of skin CSS file there are also:
+         - .png and .svg icons sprite,
+         - preloader.gif (for browsers that do not support CSS animations) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"
+          integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin="anonymous">
+{% endblock extra_css %}
 
 
 {% block navigation %}
 
-  {% include "./includes/navigation.html" %}
+    {% include "./includes/navigation.html" %}
 
 {% endblock %}
 
 
 {% block content %}
 
-{% block grid %}
-<div class="grid-container">
-  <div class="grid-x">
-    {% block main-cell %}
-    <div class="medium-12 large-8 cell">
-      {% image page.imagen fill-600x400 as semihero_small %}
-      {% image page.imagen fill-800x600 as semihero_medium %}
+    {% block grid %}
+        <div class="grid-container">
+            <div class="grid-x">
+                {% block main-cell %}
+                    <div class="medium-12 large-8 cell">
+                        {% image page.imagen fill-600x400 as semihero_small %}
+                        {% image page.imagen fill-800x600 as semihero_medium %}
 
-      <img
-       class="semihero {{ page.categoria.slug }}"
-       src="{{ semihero_small.url }}" alt="{{ imagen.alt }}" data-interchange="[{{ semihero_small.url }}, small],
+                        <img
+                                class="semihero {{ page.categoria.slug }}"
+                                src="{{ semihero_small.url }}" alt="{{ imagen.alt }}"
+                                data-interchange="[{{ semihero_small.url }}, small],
       [{{ semihero_medium.url }}, medium]"
-       >
-    </div>
+                        >
+                    </div>
 
-    <div class="medium-10 medium-offset-1 large-6 large-offset-1 cell intro-offset noticia">
+                    <div class="medium-10 medium-offset-1 large-6 large-offset-1 cell intro-offset noticia">
 
-      <div class="intro card box-shadow">
+                        <div class="intro card box-shadow">
 
-        <div class="tags">
-          <ul class="menu">
+                            <div class="tags">
+                                <ul class="menu">
 
-            <li>
-                <a href="../../categoria/{{ page.categoria.slug }}"><span class="label {{ page.categoria.slug }}">{{ page.categoria }}</span></a>
-            </li>
+                                    <li>
+                                        <a href="../../categoria/{{ page.categoria.slug }}"><span
+                                                class="label {{ page.categoria.slug }}">{{ page.categoria }}</span></a>
+                                    </li>
 
-        </ul>
+                                </ul>
+                            </div>
+
+
+                            <h3>{{ page.title }}</h3>
+                            <p class="lead">
+                                {{ page.introduccion }}
+                            </p>
+
+                        </div>
+
+
+                        <div class="article-body">
+                            <div class="card borderless">
+                                <ul class="menu vertical">
+                                    <li>
+                                        <span><strong>Fecha{% if page.fecha_inicio != page.fecha_fin %}
+                                            (s){% endif %}</strong></span>
+                                        {{ page.fecha_inicio }}{% if page.fecha_inicio != page.fecha_fin %} -
+                                            {{ page.fecha_fin }}{% endif %}
+                                    </li>
+
+                                    <li>
+                                        <span><strong>Horario</strong></span> {{ page.hora_inicio }}
+                                        - {{ page.hora_fin }}
+                                    </li>
+
+                                    {% if page.ubicacion %}
+                                        <li>
+                                            <span><strong>Ubicación</strong></span> {{ page.ubicacion }}
+                                        </li>
+                                    {% endif %}
+                                </ul>
+
+                                {% if page.consideraciones %}
+                                    <p>
+                                        {{ page.consideraciones }}
+                                    </p>
+                                {% endif %}
+
+                            </div>
+
+
+                            {{ page.cuerpo }}
+
+                            <div class="text-right">
+                                {% for tag in page.etiquetas.all %}
+                                    <a href="../../etiqueta/{{ tag.slug }}"><span class="label">{{ tag }}</span></a>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                {% endblock main-cell %}
+
+                {% block sidebar %}
+                    <div class="medium-10 medium-offset-1 large-3 large-offset-1 cell side-bar">
+
+                        {% if page.esta_vigente %}
+                            <h5>Otras notas de interés:</h5>
+                            <ul class="menu vertical">
+                                {% for post in page.difusion_cultural_cartelera.get_next_posts|slice:":10" %}
+                                    {% if post.id != page.id %}
+                                    <li><a href="{% pageurl post %}">{{ post.title }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <h5>Otras notas de pasadas:</h5>
+                            <ul class="menu vertical">
+                                {% for post in page.difusion_cultural_cartelera.get_prev_posts|slice:":10" %}
+                                    {% if post.id != page.id %}
+                                    <li><a href="{% pageurl post %}">{{ post.title }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                    </div>
+                {% endblock sidebar %}
+
+
+
+                {% if page.galeria %}
+                    <div class="medium-10 medium-offset-1 cell intro-offset">
+                        <h4>Galería</h4>
+                        {% gallery page.galeria %}
+                    </div>
+                {% endif %}
+
+            </div>
         </div>
-
-
-
-
-        <h3>{{ page.title }}</h3>
-        <p class="lead">
-          {{ page.introduccion }}
-        </p>
-
-      </div>
-
-
-      <div class="article-body">
-        <div class="card borderless">
-          <ul class="menu vertical">
-            <li>
-              <span><strong>Fecha{% if page.fecha_inicio != page.fecha_fin %}(s){% endif %}</strong></span> {{ page.fecha_inicio }}{% if page.fecha_inicio != page.fecha_fin %} - {{ page.fecha_fin }}{% endif %}
-            </li>
-
-            <li>
-              <span><strong>Horario</strong></span> {{ page.hora_inicio }} - {{ page.hora_fin }}
-            </li>
-
-            {% if page.ubicacion %}
-            <li>
-              <span><strong>Ubicación</strong></span> {{ page.ubicacion }}
-            </li>
-            {% endif %}
-          </ul>
-
-          {% if page.consideraciones %}
-          <p>
-            {{ page.consideraciones }}
-          </p>
-          {% endif %}
-
-        </div>
-
-
-        {{ page.cuerpo }}
-
-                <div class="text-right">
-                    {% for tag in page.etiquetas.all %}
-                        <a href="../../etiqueta/{{ tag.slug }}"><span class="label">{{ tag }}</span></a>
-                    {% endfor %}
-                </div>
-
-      </div>
-
-
-
-    </div>
-{% endblock main-cell %}
-
-{% block sidebar %}
-    <div class="medium-10 medium-offset-1 large-3 large-offset-1 cell side-bar">
-
-      <h5>Otras notas de interés:</h5>
-      <ul class="menu vertical">
-        {% for post in page.difusion_cultural_cartelera.get_next_posts|slice:":10" %}
-            <li><a href="{% pageurl post %}">{{ post.title }}</a></li>
-        {% endfor %}
-      </ul>
-
-    </div>
-{% endblock sidebar %}
-
-
-
-    {% if page.galeria %}
-    <div class="medium-10 medium-offset-1 cell intro-offset">
-      <h4>Galería</h4>
-      {% gallery page.galeria %}
-    </div>
-    {% endif %}
-
-  </div>
-</div>
-{% endblock grid %}
+    {% endblock grid %}
 
 {% endblock content %}
 
 {% block extra_js %}
 
-  <!-- Core JS file -->
-  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js" integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin="anonymous"></script>
+    <!-- Core JS file -->
+    <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"
+            integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin="anonymous"></script>
 
-  <!-- UI JS file -->
-  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js" integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin="anonymous"></script>
+    <!-- UI JS file -->
+    <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"
+            integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin="anonymous"></script>
 
 {% endblock extra_js %}
 

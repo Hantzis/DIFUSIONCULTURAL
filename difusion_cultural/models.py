@@ -17,10 +17,12 @@ from base.blocks import ExtraStreamBlock
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from base.models import HomePage, StandardPage
 from django.db.models import Q
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 today = datetime.today().date()
+
+
 
 
 class DifusionCulturalHomePage(HomePage):
@@ -168,7 +170,7 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
         return DifusionCulturalNoticia.objects.filter(fecha_fin__gte=today).live().order_by('-fecha_fin')
 
     def get_prev_posts(self):
-        return DifusionCulturalNoticia.objects.filter(fecha_fin__lte=today).live().order_by('-fecha_fin')
+        return DifusionCulturalNoticia.objects.filter(fecha_fin__lt=today).live().order_by('-fecha_fin')
 
     @route(r'^etiqueta/(?P<etiqueta>[-\w]+)/$')
     def posts_proximos_etiqueta(self, request, etiqueta, *args, **kwargs):
@@ -200,14 +202,14 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
 
 
     @route(r'^archivado/$')
-    def post_list(self, request, *args, **kwargs):
-        self.posts = self.get_prev_posts()
+    def prev_post_list(self, request, *args, **kwargs):
+        self.posts = self.get_prev_posts().order_by('-fecha_fin')
         return Page.serve(self, request, *args, **kwargs)
 
 
     @route(r'^$')
-    def post_list(self, request, *args, **kwargs):
-        self.posts = self.get_next_posts()
+    def next_post_list(self, request, *args, **kwargs):
+        self.posts = self.get_next_posts().order_by('-fecha_fin')
         return Page.serve(self, request, *args, **kwargs)
 
     class Meta:
@@ -304,6 +306,10 @@ class DifusionCulturalNoticia(Page):
 
     subpage_types = []
     parent_page_types = ['DifusionCulturalDependencia']
+
+    @property
+    def esta_vigente(self):
+        return self.fecha_fin > (today - timedelta(days=1))
 
     @property
     def difusion_cultural_cartelera(self):
