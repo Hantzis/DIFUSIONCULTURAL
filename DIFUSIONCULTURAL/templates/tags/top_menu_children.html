@@ -1,7 +1,13 @@
 {% load navigation_tags wagtailcore_tags %}
 
 <ul class="dropdown-menu" role="menu">
+  {% if en_menu %}
   {% for child in menuitems_children %}
     <li><a href="{% pageurl child %}" role="menuitem">{{ child.title }}</a></li>
   {% endfor %}
+  {% else %}
+  {% for child in menuitems_children %}
+    <li><a href="/{{ parent_slug }}/categoria/{{ child.slug }}/" role="menuitem">{{ child.categoria }}</a></li>
+  {% endfor %}
+  {% endif %}
 </ul>

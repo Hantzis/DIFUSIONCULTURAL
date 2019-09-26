@@ -60,16 +60,17 @@ def top_menu(context, parent, calling_page=None):
 @register.inclusion_tag('tags/top_menu_children.html', takes_context=True)
 def top_menu_children(context, parent, calling_page=None):
     menuitems_children = None
+    en_menu = None
 
     if isinstance(parent.specific, DifusionCulturalCartelera):
         # menuitems_children = DifusionCulturalCarteleraCategoria.objects.all()
         # menuitems_children = parent.get_children()
-        menuitems_children = DifusionCulturalNoticia.objects.filter(categoria__in=DifusionCulturalCarteleraCategoria.objects.all().distinct()).values('categoria__slug').distinct()
-        menuitems_children = DifusionCulturalNoticia.objects.filter(categoria__in=DifusionCulturalCarteleraCategoria.objects.all().distinct()).values_list('categoria__slug', flat=True).distinct()
-        menuitems_children = menuitems_children.live().in_menu()
+        menuitems_children = DifusionCulturalCarteleraCategoria.objects.all()
         print("si: ", menuitems_children)
+        print("si: ", parent.specific.slug)
         # pass
     else:
+        en_menu = True
         menuitems_children = parent.get_children()
         menuitems_children = menuitems_children.live().in_menu()
         for menuitem in menuitems_children:
@@ -80,10 +81,12 @@ def top_menu_children(context, parent, calling_page=None):
             menuitem.active = (calling_page.url_path.startswith(menuitem.url_path)
                                if calling_page else False)
             menuitem.children = menuitem.get_children().live().in_menu()
-    print(menuitems_children)
+
     return {
         'parent': parent,
         'menuitems_children': menuitems_children,
+        'en_menu': en_menu,
+        'parent_slug': parent.specific.slug,
         # required by the pageurl tag that we want to use within this template
         'request': context['request'],
     }
