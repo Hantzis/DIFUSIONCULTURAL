@@ -101,9 +101,11 @@
                         <nav aria-label="Pagination">
                             <ul class="pagination">
                                 {% if posts.has_previous %}
-                                <li class="pagination-previous"><a href="?p={{ posts.previous_page_number }}" aria-label="Next page">Anterior <span class="show-for-sr">página</span></a></li>
+                                <li class="pagination-previous"><a href="?p=1" aria-label="Next page">Primera <span class="show-for-sr">página</span></a></li>
+                                <li class="pagination-previous"><a href="?p={{ posts.previous_page_number }}" aria-label="Next page">Ant. <span class="show-for-sr">página</span></a></li>
                                 {% else %}
-                                <li class="pagination-previous disabled">Anterior <span class="show-for-sr">página</span></li>
+                                <li class="pagination-previous disabled">Primera <span class="show-for-sr">página</span></li>
+                                <li class="pagination-previous disabled">Ant. <span class="show-for-sr">página</span></li>
                                 {% endif %}
 
                                 {% for page_num in posts.paginator.page_range %}
@@ -117,9 +119,11 @@
                                 <!-- <li class="ellipsis" aria-hidden="true"></li> -->
 
                                 {% if posts.has_next %}
-                                <li class="pagination-next"><a href="?p={{ posts.next_page_number }}" aria-label="Next page">Siguiente <span class="show-for-sr">página</span></a></li>
+                                <li class="pagination-next"><a href="?p={{ posts.paginator.num_pages }}" aria-label="Next page">Sig. <span class="show-for-sr">página</span></a></li>
+                                <li class="pagination-next"><a href="?p={{ posts.next_page_number }}" aria-label="Next page">Última <span class="show-for-sr">página</span></a></li>
                                 {% else %}
-                                <li class="pagination-next disabled">Siguiente <span class="show-for-sr">página</span></li>
+                                <li class="pagination-next disabled">Sig. <span class="show-for-sr">página</span></li>
+                                <li class="pagination-next disabled">Última <span class="show-for-sr">página</span></li>
                                 {% endif %}
 
                             </ul>
