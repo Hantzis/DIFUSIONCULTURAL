@@ -22,7 +22,7 @@
                  id="equalized-grid">
                 {% block main-cell %}
 
-                    {% for post in page.posts %}
+                    {% for post in posts %}
                         <div class="medium-6 large-4 cell">
 
                             <a href="/{{ post.specific.difusion_cultural_cartelera_slug }}/categoria/{{ post.specific.categoria.slug }}"><span
@@ -45,8 +45,8 @@
                                         <li>
                                             <small>
                                                 {{ post.specific.fecha_inicio }}
-                                                        {% if post.specific.fecha_inicio != post.specific.fecha_fin %}
-                                                            al {{ post.specific.fecha_fin }}{% endif %}
+                                                {% if post.specific.fecha_inicio != post.specific.fecha_fin %}
+                                                    al {{ post.specific.fecha_fin }}{% endif %}
                                             </small>
                                         </li>
 
@@ -78,9 +78,10 @@
                                     <a href="{% pageurl post %}" class="button primary-color">Ver</a>
                                 </div>
 
-                                    <div class="text-right">
+                                <div class="text-right">
                                     {% for tag in post.specific.etiquetas.all %}
-                                        <a href="/{{ post.specific.difusion_cultural_cartelera_slug }}/etiqueta/{{ tag.slug }}"><span class="label">{{ tag }}</span></a>
+                                        <a href="/{{ post.specific.difusion_cultural_cartelera_slug }}/etiqueta/{{ tag.slug }}"><span
+                                                class="label">{{ tag }}</span></a>
                                     {% endfor %}
                                 </div>
 
@@ -90,8 +91,45 @@
 
                 {% endblock main-cell %}
 
-
             </div>
+
+            {% if posts.paginator.num_pages > 1 %}
+                <div class="grid-x grid-margin-x grid-margin-y" data-equalizer data-equalize-on="medium">
+                    <div class="medium-12 large-12 cell">
+                        {{ posts.paginator.num_pages1 }}
+
+                        <nav aria-label="Pagination">
+                            <ul class="pagination">
+                                {% if posts.has_previous %}
+                                <li class="pagination-previous"><a href="?p={{ posts.previous_page_number }}" aria-label="Next page">Anterior <span class="show-for-sr">página</span></a></li>
+                                {% else %}
+                                <li class="pagination-previous disabled">Anterior <span class="show-for-sr">página</span></li>
+                                {% endif %}
+
+                                {% for page_num in posts.paginator.page_range %}
+                                {% if page_num == posts.number %}
+                                <li class="current"><span class="show-for-sr">En página</span>{{ page_num }}</li>
+                                {% else %}
+                                <li><a href="?p={{ page_num }}" aria-label="Página {{ page_num }}">{{ page_num }}</a></li>
+                                {% endif %}
+                                {% endfor %}
+
+                                <!-- <li class="ellipsis" aria-hidden="true"></li> -->
+
+                                {% if posts.has_next %}
+                                <li class="pagination-next"><a href="?p={{ posts.next_page_number }}" aria-label="Next page">Siguiente <span class="show-for-sr">página</span></a></li>
+                                {% else %}
+                                <li class="pagination-next disabled">Siguiente <span class="show-for-sr">página</span></li>
+                                {% endif %}
+
+                            </ul>
+                        </nav>
+
+                    </div>
+                </div>
+            {% endif %}
+
+
         </div>
     {% endblock grid %}
 

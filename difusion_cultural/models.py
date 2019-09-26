@@ -18,6 +18,7 @@ from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from base.models import HomePage, StandardPage
 from django.db.models import Q
 from datetime import datetime, timedelta
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
 today = datetime.today().date()
@@ -161,15 +162,27 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
 
     def get_context(self, request, *args, **kwargs):
         context = super(DifusionCulturalCartelera, self).get_context(request, *args, **kwargs)
-        context['posts'] = self.posts
+        # context['posts'] = self.posts
+        all_posts = self.posts
+        paginator = Paginator(all_posts, 2)
+        page = request.GET.get("p")
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
+        print(posts)
+        context['posts'] = posts
         context['difusion_cultural_cartelera'] = self
         return context
 
     def get_next_posts(self):
-        return DifusionCulturalNoticia.objects.filter(fecha_fin__gte=today).live().order_by('-fecha_fin')
+        return DifusionCulturalNoticia.objects.filter(fecha_fin__gte=today).live().public().order_by('-fecha_fin')
 
     def get_prev_posts(self):
-        return DifusionCulturalNoticia.objects.filter(fecha_fin__lt=today).live().order_by('-fecha_fin')
+        return DifusionCulturalNoticia.objects.filter(fecha_fin__lt=today).live().public().order_by('-fecha_fin')
 
     @route(r'^etiqueta/(?P<etiqueta>[-\w]+)/$')
     def posts_proximos_etiqueta(self, request, etiqueta, *args, **kwargs):
@@ -191,10 +204,6 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
         self.search_term = categoria
         self.posts = self.get_next_posts().filter(categoria__slug=categoria).order_by('-fecha_fin')
         return Page.serve(self, request, *args, **kwargs)
-
-    def get_categoria(self, categoria):
-        self.posts = DifusionCulturalNoticia.objects.filter(categoria=categoria)
-
 
     @route(r'^archivado/categoria/(?P<categoria>[-\w]+)/$')
     def posts_previos_categoria(self, request, categoria, *args, **kwargs):
