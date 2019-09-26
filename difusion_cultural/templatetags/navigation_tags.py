@@ -61,14 +61,8 @@ def top_menu(context, parent, calling_page=None):
 def top_menu_children(context, parent, calling_page=None):
     menuitems_children = None
     en_menu = None
-
     if isinstance(parent.specific, DifusionCulturalCartelera):
-        # menuitems_children = DifusionCulturalCarteleraCategoria.objects.all()
-        # menuitems_children = parent.get_children()
         menuitems_children = DifusionCulturalCarteleraCategoria.objects.all()
-        print("si: ", menuitems_children)
-        print("si: ", parent.specific.slug)
-        # pass
     else:
         en_menu = True
         menuitems_children = parent.get_children()
