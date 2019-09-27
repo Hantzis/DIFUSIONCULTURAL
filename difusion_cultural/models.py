@@ -177,23 +177,37 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
             posts = paginator.page(page)
         except PageNotAnInteger:
             posts = paginator.page(1)
-            page=1
+            page = 1
         except EmptyPage:
             posts = paginator.page(paginator.num_pages)
 
-        if int(page) <= paginator.num_pages/2:
-            print("izquierda")
-            derecha = [paginator.num_pages - 2, paginator.num_pages - 1, paginator.num_pages]
-            print(derecha)
-        else:
-            print("derecha")
-            izquierda = [1, 2, 3]
-            print(izquierda)
+        if paginator.num_pages > 7:
+            paginas = []
+            for i in range(int(page)-3, int(page)+4):
+                paginas.append(i)
+
+            print(posts)
+            print(paginator.num_pages)
+            print(paginas)
+            if paginas[0] < 1:
+                inc = abs(paginas[0]) + 1
+                for i in range(len(paginas)):
+                    paginas[i] = paginas[i] + inc
+                paginas.append(0)
+            elif paginas[-1] >= paginator.num_pages:
+                dec = paginas[-1] - paginator.num_pages
+                for i in range(len(paginas)):
+                    paginas[i] = paginas[i] - dec
+                paginas.insert(0, 0)
+            else:
+                paginas.insert(0, 0)
+                paginas.append(0)
 
 
-        print(int(paginator.num_pages/2))
-        print(page)
-        print(posts)
+            print(paginas)
+
+            context['paginas'] = paginas
+
         context['posts'] = posts
         context['difusion_cultural_cartelera'] = self
         return context

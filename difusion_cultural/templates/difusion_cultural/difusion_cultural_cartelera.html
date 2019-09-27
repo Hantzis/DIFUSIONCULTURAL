@@ -97,6 +97,7 @@
                 <div class="grid-x grid-margin-x grid-margin-y" data-equalizer data-equalize-on="medium">
                     <div class="medium-12 large-12 cell">
                         {{ posts.paginator.num_pages1 }}
+                        {{ paginas1 }}
 
                         <nav aria-label="Pagination">
                             <ul class="pagination">
@@ -118,11 +119,17 @@
                                 {% endfor %}
                                 {% else %}
 
+                                {% for page_num in paginas %}
+                                {% if page_num == 0 %}
+                                <li class="ellipsis" aria-hidden="true"></li>
+                                {% elif page_num == posts.number %}
+                                <li class="current"><span class="show-for-sr">En página</span>{{ page_num }}</li>
+                                {% else %}
+                                <li><a href="?p={{ page_num }}" aria-label="Página {{ page_num }}">{{ page_num }}</a></li>
+                                {% endif %}
+                                {% endfor %}
 
                                 {% endif %}
-
-
-                                <!-- <li class="ellipsis" aria-hidden="true"></li> -->
 
                                 {% if posts.has_next %}
                                 <li class="pagination-next"><a href="?p={{ posts.next_page_number }}" aria-label="Next page">Sig. <span class="show-for-sr">página</span></a></li>
