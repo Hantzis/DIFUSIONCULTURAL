@@ -168,11 +168,6 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
         page = request.GET.get("p")
         page = page if page else 1
 
-
-
-
-
-
         try:
             posts = paginator.page(page)
         except PageNotAnInteger:
@@ -194,13 +189,16 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
                 for i in range(len(paginas)):
                     paginas[i] = paginas[i] + inc
                 paginas.append(0)
-            elif paginas[-1] >= paginator.num_pages:
+            elif paginas[-1] > paginator.num_pages:
                 dec = paginas[-1] - paginator.num_pages
                 for i in range(len(paginas)):
                     paginas[i] = paginas[i] - dec
                 paginas.insert(0, 0)
             else:
+                pass
+            if paginas[0] > 1:
                 paginas.insert(0, 0)
+            if paginas[-1] < paginator.num_pages and paginas[-1] > 0:
                 paginas.append(0)
 
 
