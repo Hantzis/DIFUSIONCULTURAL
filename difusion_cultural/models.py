@@ -4,7 +4,7 @@ from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 
 # Create your models here.
-from wagtail.core.fields import StreamField
+from wagtail.core.fields import StreamField, RichTextField
 from wagtail.core.models import Collection, Page, PageManager, PageQuerySet
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.images.edit_handlers import ImageChooserPanel
@@ -42,8 +42,8 @@ class DifusionCulturalHomePage(HomePage):
         verbose_name = "Inicio"
 
 
-class DifusionCulturalBlog(Page):
-    subpage_types = ['DifusionCulturalArticulo']
+class DifusionCulturalBlogIndex(Page):
+    subpage_types = ['DifusionCulturalBlogArticulo']
     parent_page_types = ['DifusionCulturalHomePage']
 
     def get_nietos(self):
@@ -57,12 +57,37 @@ class DifusionCulturalBlog(Page):
         verbose_name_plural = "Blog"
 
 
-class DifusionCulturalArticulo(StandardPage):
-    fecha = models.DateField("Fecha de publicación")
+@register_snippet
+class DifusionCulturalBlogCategoria(ClusterableModel):
+    categoria = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(unique=True, max_length=80)
+
+    panels = [
+        FieldPanel('categoria'),
+        FieldPanel('slug'),
+    ]
+
+    def __str__(self):
+        return self.categoria
+
+    def natural_key(self):
+        return self.slug
+
+    class Meta:
+        verbose_name = "Categoría (blog)"
+        verbose_name_plural = "Categorías (blog)"
+
+
+@register_snippet
+class DifusionCulturalBlogArticuloEtiqueta(TaggedItemBase):
+    content_object = ParentalKey('DifusionCulturalBlogArticulo', related_name='blog_articulo_tags')
+
+
+class DifusionCulturalBlogArticulo(StandardPage):
     autor = models.CharField(max_length=250)
-    introduccion = models.CharField(max_length=250)
+    introduccion = RichTextField(max_length=250)
     cuerpo = StreamField(
-        ExtraStreamBlock(), verbose_name="Page body", blank=True
+        ExtraStreamBlock(), verbose_name="Cuerpo", blank=True
     )
     imagen = models.ForeignKey(
         'wagtailimages.Image',
@@ -72,7 +97,6 @@ class DifusionCulturalArticulo(StandardPage):
         related_name='+',
         help_text='Imagen de portada'
     )
-    # acotaciones = models.CharField(verbose_name="Acotaciones", max_length=250)
     galeria = models.ForeignKey(
         Collection,
         limit_choices_to=~models.Q(name__in=['Root']),
@@ -81,7 +105,8 @@ class DifusionCulturalArticulo(StandardPage):
         on_delete=models.SET_NULL,
         help_text='Select the image collection for this gallery.'
     )
-    #etiquetas = ClusterTaggableManager(through='DifusionCulturalNoticiaEtiqueta', blank=True)#viene de noticia: TODO: adaptar a ArticuloDeBlog
+    categoria = ParentalKey('DifusionCulturalBlogCategoria', on_delete=models.PROTECT, blank=True)
+    etiquetas = ClusterTaggableManager(through='DifusionCulturalBlogArticuloEtiqueta', blank=True)
 
     search_fields = Page.search_fields + [
         index.SearchField('introduccion'),
@@ -89,8 +114,8 @@ class DifusionCulturalArticulo(StandardPage):
     ]
 
     content_panels = Page.content_panels + [
-        FieldPanel('fecha'),
         FieldPanel('introduccion'),
+        FieldPanel('categoria'),
         FieldPanel('autor'),
         StreamFieldPanel('cuerpo'),
         ImageChooserPanel('imagen'),
@@ -98,7 +123,7 @@ class DifusionCulturalArticulo(StandardPage):
     ]
 
     subpage_types = []
-    parent_page_types = ['DifusionCulturalBlog']
+    parent_page_types = ['DifusionCulturalBlogIndex']
 
     class Meta:
         verbose_name = "Artículo"
@@ -159,7 +184,6 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
         return super(DifusionCulturalCartelera, cls).can_create_at(parent) \
                and not cls.objects.exists()
 
-
     def get_context(self, request, *args, **kwargs):
         context = super(DifusionCulturalCartelera, self).get_context(request, *args, **kwargs)
         # context['posts'] = self.posts
@@ -200,10 +224,6 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
                 paginas.insert(0, 0)
             if paginas[-1] < paginator.num_pages and paginas[-1] > 0:
                 paginas.append(0)
-
-
-            print(paginas)
-
             context['paginas'] = paginas
 
         context['posts'] = posts
@@ -244,12 +264,10 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
         self.posts = self.get_prev_posts().filter(categoria__slug=categoria).order_by('-fecha_fin')
         return Page.serve(self, request, *args, **kwargs)
 
-
     @route(r'^archivado/$')
     def prev_post_list(self, request, *args, **kwargs):
         self.posts = self.get_prev_posts().order_by('-fecha_fin')
         return Page.serve(self, request, *args, **kwargs)
-
 
     @route(r'^$')
     def next_post_list(self, request, *args, **kwargs):
@@ -265,17 +283,10 @@ class DifusionCulturalDependencia(Page):
     subpage_types = ['DifusionCulturalNoticia']
     parent_page_types = ['DifusionCulturalCartelera']
 
-
     class Meta:
         verbose_name = "Dependencia"
         verbose_name_plural = "Dependencias"
 
-
-"""
-class DifusionCulturalNoticiaQuerySet(PageQuerySet):
-    def ultimos(self):
-        return self.order_by('-fecha')
-"""
 
 class DifusionCulturalNoticiaManager(PageManager):
     def ultimos(self):
@@ -285,6 +296,7 @@ class DifusionCulturalNoticiaManager(PageManager):
 @register_snippet
 class DifusionCulturalNoticiaEtiqueta(TaggedItemBase):
     content_object = ParentalKey('DifusionCulturalNoticia', related_name='noticia_tags')
+
 
 @register_snippet
 class Tag(TaggitTag):
@@ -298,9 +310,9 @@ class DifusionCulturalNoticia(Page):
     hora_inicio = models.TimeField("Hora fin")
     hora_fin = models.TimeField("Hora fin")
 
-    introduccion = models.CharField(max_length=250)
-    ubicacion = models.CharField(max_length=250, blank=True)
-    consideraciones = models.CharField(max_length=250, blank=True, null=True)
+    introduccion = RichTextField(max_length=250)
+    ubicacion = RichTextField(max_length=250, blank=True)
+    consideraciones = RichTextField(max_length=250, blank=True, null=True)
 
     cuerpo = StreamField(
         ExtraStreamBlock(), verbose_name="Page body", blank=True
@@ -370,7 +382,6 @@ class DifusionCulturalNoticia(Page):
     class Meta:
         verbose_name = "Noticia"
         verbose_name_plural = "Noticias"
-
 
 
 class DifusionCulturalPaginaCategoria(Page):

@@ -45,20 +45,20 @@
             <h4>{{ page.title }}</h4>
 
             <ul class="menu vertical">
-              {% if page.fecha %}
+              {% if page.first_published_at %}
               <li>
                 <small>
-                  {{ page.fecha }}
+                  {{ page.first_published_at }}
                 </small>
               </li>
               {% endif %}
 
-              {% if page.autor %}
+              {% if page.owner %}
               <li>
                 <small>
                     <i class="fa fa-user"></i>
                     <em>
-                      {{ page.autor }}
+                      {{ page.owner }}
                     </em>
                 </small>
               </li>
@@ -66,9 +66,7 @@
             </ul>
             <br>
 
-            <p>
-                {{ page.introduccion}}  
-            </p>
+                {{ page.introduccion|richtext }}
           </div>
           <div class="article-body">
 

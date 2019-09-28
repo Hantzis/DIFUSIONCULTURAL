@@ -63,9 +63,7 @@
 
           </ul>
 
-          <p>
-            {{ post.specific.introduccion }}
-          </p>
+            {{ post.specific.introduccion|richtext }}
           <a href="{% pageurl post %}" class="button primary">Leer más</a>
           <hr>
         </div>
