@@ -20,10 +20,7 @@ from django.db.models import Q
 from datetime import datetime, timedelta
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
-
 today = datetime.today().date()
-
-
 
 
 class DifusionCulturalHomePage(HomePage):
@@ -41,20 +38,6 @@ class DifusionCulturalHomePage(HomePage):
     class Meta:
         verbose_name = "Inicio"
 
-
-class DifusionCulturalBlogIndex(Page):
-    subpage_types = ['DifusionCulturalBlogArticulo']
-    parent_page_types = ['DifusionCulturalHomePage']
-
-    def get_nietos(self):
-        return Page.objects.descendant_of(self, inclusive=False).not_child_of(self)
-
-    def get_nuevos_nietos(self):
-        return Page.objects.descendant_of(self, inclusive=False).not_child_of(self)[:2]
-
-    class Meta:
-        verbose_name = "Blog"
-        verbose_name_plural = "Blog"
 
 
 @register_snippet
@@ -81,6 +64,113 @@ class DifusionCulturalBlogCategoria(ClusterableModel):
 @register_snippet
 class DifusionCulturalBlogArticuloEtiqueta(TaggedItemBase):
     content_object = ParentalKey('DifusionCulturalBlogArticulo', related_name='blog_articulo_tags')
+
+
+class DifusionCulturalBlogIndex(RoutablePageMixin, Page):
+    subpage_types = ['DifusionCulturalBlogArticulo']
+    parent_page_types = ['DifusionCulturalHomePage']
+
+    def get_nietos(self):
+        return Page.objects.descendant_of(self, inclusive=False).not_child_of(self)
+
+    def get_nuevos_nietos(self):
+        return Page.objects.descendant_of(self, inclusive=False).not_child_of(self)[:2]
+
+
+
+    def get_context(self, request, *args, **kwargs):
+        context = super(DifusionCulturalBlogIndex, self).get_context(request, *args, **kwargs)
+        all_posts = self.posts
+        paginator = Paginator(all_posts, 2)
+        page = request.GET.get("p")
+        page = page if page else 1
+
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+            page = 1
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
+        if paginator.num_pages > 7:
+            paginas = []
+            for i in range(int(page)-3, int(page)+4):
+                paginas.append(i)
+
+            print(posts)
+            print(paginator.num_pages)
+            print(paginas)
+            if paginas[0] < 1:
+                inc = abs(paginas[0]) + 1
+                for i in range(len(paginas)):
+                    paginas[i] = paginas[i] + inc
+                paginas.append(0)
+            elif paginas[-1] > paginator.num_pages:
+                dec = paginas[-1] - paginator.num_pages
+                for i in range(len(paginas)):
+                    paginas[i] = paginas[i] - dec
+                paginas.insert(0, 0)
+            else:
+                pass
+            if paginas[0] > 1:
+                paginas.insert(0, 0)
+            if paginas[-1] < paginator.num_pages and paginas[-1] > 0:
+                paginas.append(0)
+            context['paginas'] = paginas
+
+        context['posts'] = posts
+        context['difusion_cultural_cartelera'] = self
+        return context
+
+    def get_next_posts(self):
+        return DifusionCulturalNoticia.objects.filter(fecha_fin__gte=today).live().public().order_by('-fecha_fin')
+
+    def get_prev_posts(self):
+        return DifusionCulturalNoticia.objects.filter(fecha_fin__lt=today).live().public().order_by('-fecha_fin')
+
+    @route(r'^etiqueta/(?P<etiqueta>[-\w]+)/$')
+    def posts_proximos_etiqueta(self, request, etiqueta, *args, **kwargs):
+        self.search_type = 'etiqueta'
+        self.search_term = etiqueta
+        self.posts = self.get_next_posts().filter(etiquetas__slug=etiqueta).order_by('-fecha_fin')
+        return Page.serve(self, request, *args, **kwargs)
+
+    @route(r'^archivado/etiqueta/(?P<etiqueta>[-\w]+)/$')
+    def posts_previos_etiqueta(self, request, etiqueta, *args, **kwargs):
+        self.search_type = 'etiqueta'
+        self.search_term = etiqueta
+        self.posts = self.get_prev_posts().filter(etiquetas__slug=etiqueta).order_by('-fecha_fin')
+        return Page.serve(self, request, *args, **kwargs)
+
+    @route(r'^categoria/(?P<categoria>[-\w]+)/$')
+    def posts_proximos_categoria(self, request, categoria, *args, **kwargs):
+        self.search_type = 'categoria'
+        self.search_term = categoria
+        self.posts = self.get_next_posts().filter(categoria__slug=categoria).order_by('-fecha_fin')
+        return Page.serve(self, request, *args, **kwargs)
+
+    @route(r'^archivado/categoria/(?P<categoria>[-\w]+)/$')
+    def posts_previos_categoria(self, request, categoria, *args, **kwargs):
+        self.search_type = 'categoria'
+        self.search_term = categoria
+        self.posts = self.get_prev_posts().filter(categoria__slug=categoria).order_by('-fecha_fin')
+        return Page.serve(self, request, *args, **kwargs)
+
+    @route(r'^archivado/$')
+    def prev_post_list(self, request, *args, **kwargs):
+        self.posts = self.get_prev_posts().order_by('-fecha_fin')
+        return Page.serve(self, request, *args, **kwargs)
+
+    @route(r'^$')
+    def next_post_list(self, request, *args, **kwargs):
+        self.posts = self.get_next_posts().order_by('-fecha_fin')
+        return Page.serve(self, request, *args, **kwargs)
+
+
+    class Meta:
+        verbose_name = "Blog"
+        verbose_name_plural = "Blog"
 
 
 class DifusionCulturalBlogArticulo(StandardPage):
@@ -188,7 +278,7 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
         context = super(DifusionCulturalCartelera, self).get_context(request, *args, **kwargs)
         # context['posts'] = self.posts
         all_posts = self.posts
-        paginator = Paginator(all_posts, 2)
+        paginator = Paginator(all_posts, 6)
         page = request.GET.get("p")
         page = page if page else 1
 
