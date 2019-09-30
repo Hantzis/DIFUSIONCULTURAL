@@ -70,18 +70,15 @@ class DifusionCulturalBlogIndex(RoutablePageMixin, Page):
     subpage_types = ['DifusionCulturalBlogArticulo']
     parent_page_types = ['DifusionCulturalHomePage']
 
-    def get_nietos(self):
-        return Page.objects.descendant_of(self, inclusive=False).not_child_of(self)
-
-    def get_nuevos_nietos(self):
-        return Page.objects.descendant_of(self, inclusive=False).not_child_of(self)[:2]
-
-
+    @classmethod
+    def can_create_at(cls, parent):
+        # You can only create one of these!
+        return super(DifusionCulturalBlogIndex, cls).can_create_at(parent) and not cls.objects.exists()
 
     def get_context(self, request, *args, **kwargs):
         context = super(DifusionCulturalBlogIndex, self).get_context(request, *args, **kwargs)
         all_posts = self.posts
-        paginator = Paginator(all_posts, 2)
+        paginator = Paginator(all_posts, 6)
         page = request.GET.get("p")
         page = page if page else 1
 
@@ -97,10 +94,6 @@ class DifusionCulturalBlogIndex(RoutablePageMixin, Page):
             paginas = []
             for i in range(int(page)-3, int(page)+4):
                 paginas.append(i)
-
-            print(posts)
-            print(paginator.num_pages)
-            print(paginas)
             if paginas[0] < 1:
                 inc = abs(paginas[0]) + 1
                 for i in range(len(paginas)):
@@ -123,48 +116,26 @@ class DifusionCulturalBlogIndex(RoutablePageMixin, Page):
         context['difusion_cultural_cartelera'] = self
         return context
 
-    def get_next_posts(self):
-        return DifusionCulturalNoticia.objects.filter(fecha_fin__gte=today).live().public().order_by('-fecha_fin')
-
-    def get_prev_posts(self):
-        return DifusionCulturalNoticia.objects.filter(fecha_fin__lt=today).live().public().order_by('-fecha_fin')
+    def get_posts(self):
+        return DifusionCulturalBlogArticulo.objects.live().public().order_by('-first_published_at')
 
     @route(r'^etiqueta/(?P<etiqueta>[-\w]+)/$')
     def posts_proximos_etiqueta(self, request, etiqueta, *args, **kwargs):
         self.search_type = 'etiqueta'
         self.search_term = etiqueta
-        self.posts = self.get_next_posts().filter(etiquetas__slug=etiqueta).order_by('-fecha_fin')
-        return Page.serve(self, request, *args, **kwargs)
-
-    @route(r'^archivado/etiqueta/(?P<etiqueta>[-\w]+)/$')
-    def posts_previos_etiqueta(self, request, etiqueta, *args, **kwargs):
-        self.search_type = 'etiqueta'
-        self.search_term = etiqueta
-        self.posts = self.get_prev_posts().filter(etiquetas__slug=etiqueta).order_by('-fecha_fin')
+        self.posts = self.get_posts().filter(etiquetas__slug=etiqueta).order_by('-first_published_at')
         return Page.serve(self, request, *args, **kwargs)
 
     @route(r'^categoria/(?P<categoria>[-\w]+)/$')
     def posts_proximos_categoria(self, request, categoria, *args, **kwargs):
         self.search_type = 'categoria'
         self.search_term = categoria
-        self.posts = self.get_next_posts().filter(categoria__slug=categoria).order_by('-fecha_fin')
-        return Page.serve(self, request, *args, **kwargs)
-
-    @route(r'^archivado/categoria/(?P<categoria>[-\w]+)/$')
-    def posts_previos_categoria(self, request, categoria, *args, **kwargs):
-        self.search_type = 'categoria'
-        self.search_term = categoria
-        self.posts = self.get_prev_posts().filter(categoria__slug=categoria).order_by('-fecha_fin')
-        return Page.serve(self, request, *args, **kwargs)
-
-    @route(r'^archivado/$')
-    def prev_post_list(self, request, *args, **kwargs):
-        self.posts = self.get_prev_posts().order_by('-fecha_fin')
+        self.posts = self.get_posts().filter(categoria__slug=categoria).order_by('-first_published_at')
         return Page.serve(self, request, *args, **kwargs)
 
     @route(r'^$')
     def next_post_list(self, request, *args, **kwargs):
-        self.posts = self.get_next_posts().order_by('-fecha_fin')
+        self.posts = self.get_posts().order_by('-first_published_at')
         return Page.serve(self, request, *args, **kwargs)
 
 
@@ -210,6 +181,7 @@ class DifusionCulturalBlogArticulo(StandardPage):
         StreamFieldPanel('cuerpo'),
         ImageChooserPanel('imagen'),
         FieldPanel('galeria'),
+        FieldPanel('etiquetas'),
     ]
 
     subpage_types = []
@@ -276,7 +248,6 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
 
     def get_context(self, request, *args, **kwargs):
         context = super(DifusionCulturalCartelera, self).get_context(request, *args, **kwargs)
-        # context['posts'] = self.posts
         all_posts = self.posts
         paginator = Paginator(all_posts, 6)
         page = request.GET.get("p")
