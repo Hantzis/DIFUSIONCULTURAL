@@ -5,7 +5,7 @@ from modelcluster.models import ClusterableModel
 
 # Create your models here.
 from wagtail.core.fields import StreamField
-from wagtail.core.models import Collection, Page, PageManager, PageQuerySet
+from wagtail.core.models import Collection, Page, PageManager
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
@@ -20,11 +20,7 @@ from django.db.models import Q
 from datetime import datetime, timedelta
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
-
 today = datetime.today().date()
-
-
-
 
 class DifusionCulturalHomePage(HomePage):
     def get_nuevos_bisnietos(self):
