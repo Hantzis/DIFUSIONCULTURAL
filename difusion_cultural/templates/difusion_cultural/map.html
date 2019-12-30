@@ -1,0 +1,349 @@
+{% extends "conflictos/conflictos_base.html" %}
+{% load static wagtailimages_tags wagtailcore_tags %}
+
+{% block extra_css %}
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+
+        .ol-popup {
+            position: absolute;
+            min-width: 300px;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            bottom: 12px;
+            left: -50px;
+        }
+
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+
+        .ol-popup-closer:after {
+            content: "✖";
+        }
+
+        #map-popup-content {
+            max-height: 5em;
+            overflow: auto;
+            max-height: 300px;
+        }
+
+        #more {
+            display: none;
+        }
+    </style>
+
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.1.1/build/ol.js"></script>
+    <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.1.1/css/ol.css">
+    <link rel="stylesheet" href="{% static 'ol-ext/ol-ext.css' %}"/>
+    <script type="text/javascript" src="{% static 'ol-ext/ol-ext.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+    <div id="map-popup">
+        <a href="#" id="map-popup-closer" class="ol-popup-closer"></a>
+        <div id="map-popup-content"></div>
+    </div>
+
+    <div class="ui longer modal">
+        <!-- <i class="close icon"></i> -->
+        <div class="header">
+            {{ page.title }}
+        </div>
+        <div class="scrolling image content">
+            <div class="ui medium image">
+                <img src="https://pbs.twimg.com/profile_images/673667506511343616/fH9Z0tX-_400x400.jpg">
+            </div>
+            <div class="description">
+                <div class="ui header">Bienvenido</div>
+                {{ page.aviso }}
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui black deny button">
+                Salir
+            </div>
+            <div class="ui positive right labeled icon button">
+                Acepto
+                <i class="checkmark icon"></i>
+            </div>
+        </div>
+    </div>
+
+    <div id="principal">
+
+        <div id="menuder" class="ui sidebar vertical wide menu right">
+            <div class="item"><h2>Tablero</h2>
+                <hr/>
+                <div class=""><p class="">Tablero de datos y gráficas.</p><br/></div>
+            </div>
+            <a class="item"><i class="home icon"></i>Inicio</a>
+        </div>
+
+        <div class="pusher">
+            <div class="ui">
+                <div id="map"></div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+
+
+{% block extra_js %}
+    <script>
+        $('.ui.menu:first-child').css('margin-bottom', '0rem')
+        $("#map").css('height', $(window).height() - 40)
+        $(window).on("resize", function () {
+            $("#map").css('height', $(window).height() - 40)
+            console.log($(window).height())
+        });
+
+        var styles = {
+            {% for tipo in page.get_tipos %}
+            '{{ tipo.pk }}': new ol.style.Style({
+                {% image tipo.conflictotipo_imagen fill-40x40 as icono %}
+                image: new ol.style.Icon({src: "{{ icono.url }}"})
+            }){% if forloop.last %}{% else %}, {% endif %}{% endfor %}
+        };
+
+        var styleFunction = function (feature) {
+            return styles[feature.values_.tipo[0]];
+        };
+
+        var osmbase = new ol.layer.Tile({source: new ol.source.OSM(), type: 'base'});
+        var googleLayerHybrid2 = new ol.layer.Tile({
+            title: "Google Terrain",
+            source: new ol.source.TileImage({url: 'https://mt2.google.com/vt/lyrs=p&x={x}&y={y}&z={z}'}), type: 'base'
+        });
+        var conflictos = new ol.layer.Vector({
+            title: 'Conflictos socioambientales de México (GeoJSON)',
+            source: new ol.source.Vector({
+                format: new ol.format.GeoJSON({image: styles}),
+                url: '/conflictos/conflictos.geojson',
+            }),
+            style: styleFunction,
+        });
+
+        var map = new ol.Map({
+            target: document.getElementById('map'),
+            //layers: [googleLayerHybrid2, osmbase, conflictos],
+            layers: [googleLayerHybrid2, conflictos],
+
+            view: new ol.View({
+                center: ol.proj.fromLonLat([-102.28259, 21.88234]),
+                zoom: 6
+            })
+        });
+
+
+        var container = document.getElementById('map-popup');
+        var content_element = document.getElementById('map-popup-content');
+        var closer = document.getElementById('map-popup-closer');
+
+        closer.onclick = function () {
+            overlay.setPosition(undefined);
+            closer.blur();
+            return false;
+        };
+
+        var overlay = new ol.Overlay({
+            element: container,
+            autoPan: true,
+            offset: [0, 0]
+        });
+        map.addOverlay(overlay);
+
+        //var fullscreen = new ol.control.FullScreen();
+        //map.addControl(fullscreen);
+
+        function fvermas() {
+            var dots = document.getElementById("dots");
+            var moreText = document.getElementById("more");
+            var btnText = document.getElementById("vermas");
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                moreText.style.display = "inline";
+            }
+        }
+
+        map.on('click', function (evt) {
+            var feature = map.forEachFeatureAtPixel(evt.pixel,
+                function (feature, layer) {
+                    return feature;
+                });
+            if (feature) {
+                var geometry = feature.getGeometry();
+                var coord = geometry.getCoordinates()[0];
+                console.log(coord);
+
+                function formato_resumen(texto) {
+                    if (texto.length > 140) {
+                        texto = texto.substring(0, 140) + '<span id="dots">... <a style="cursor: pointer;" onclick="fvermas()" id="vermas">Ver más</a></span><span id="more">' + texto.substring(140, texto.length) + '<a style="cursor: pointer;" onclick="fvermas()" id="vermenos"> Ver menos</a>'
+                    }
+                    texto = texto.replace(/(?:\r\n|\r|\n)/g, '<br>')
+                    return texto
+                }
+
+                function formato_bibliografia(bio) {
+                    texto = '<ul style="padding-left: 12px;">';
+                    bio.forEach(function (value, index, array) {
+                        console.log(value);
+                        vol = value[5] || null;
+                        if (vol) {
+                            vol = ' (' + vol + ')'
+                        } else {
+                            vol = ''
+                        }
+                        num = value[6] || null;
+                        if (num) {
+                            num = ' ' + num
+                        } else {
+                            num = ''
+                        }
+                        pag = value[7] || null;
+                        if (pag) {
+                            pag = ', pp.' + pag
+                        } else {
+                            pag = ''
+                        }
+                        reflink = value[8] || null
+                        if (reflink) {
+                            reflink = ' <a href="' + reflink + '" target="_blank">Link</a>'
+                        } else {
+                            reflink = ''
+                        }
+                        doi = value[9] || null
+                        if (doi) {
+                            doi = ' <a href="' + doi + '" target="_blank">DOI</a>'
+                        } else {
+                            doi = ''
+                        }
+
+                        texto = texto + "<li>" + value[1] + ' (' + value[2] + ').' + ' "' + value[3] + '" ' + value[4] + vol + num + reflink + doi + "</li><br />"
+                    });
+                    texto = texto.substring(0, texto.length - 6) + "</ul>";
+                    return texto
+                }
+
+                var content = '<h2>' + feature.get('tipo')[1] + '</h2>';
+                content += '<table class="ui celled striped table unstackable definition">';
+                content += '<tbody>';
+                if (feature.get('resumen')) {
+                    content += '<tr><td colspan="2">' + formato_resumen(feature.get('resumen')) + '</td></tr>'
+                }
+                if (feature.get('estados').length > 0) {
+                    content += '<tr><td>Estados</td><td>' + feature.get('estados').join(", ") + '</td></tr>'
+                }
+                if (feature.get('municipios').length > 0) {
+                    content += '<tr><td>Municipios</td><td>' + feature.get('municipios').join(", ") + '</td></tr>'
+                }
+                if (feature.get('organizaciones').length > 0) {
+                    content += '<tr><td>Organizaciones</td><td>' + feature.get('organizaciones').join(", ") + '</td></tr>'
+                }
+                if (feature.get('empresas').length > 0) {
+                    content += '<tr><td>Empresas</td><td>' + feature.get('empresas').join(", ") + '</td></tr>'
+                }
+                if (feature.get('secretarias').length > 0) {
+                    content += '<tr><td>Secretarias</td><td>' + feature.get('secretarias').join(", ") + '</td></tr>'
+                }
+                if (feature.get('pueblos_originarios').length > 0) {
+                    content += '<tr><td>Pueblos originarios</td><td>' + feature.get('pueblos_originarios').join(", ") + '</td></tr>'
+                }
+                if (feature.get('fecha_inicio')) {
+                    content += '<tr><td>Fecha de inicio</td><td>' + feature.get('fecha_inicio') + '</td></tr>'
+                }
+                if (feature.get('fecha_fin')) {
+                    content += '<tr><td>Fecha de fin</td><td>' + feature.get('fecha_fin') + '</td></tr>'
+                }
+                if (feature.get('total_poblacion') > 0) {
+                    content += '<tr><td>Total de población</td><td>' + feature.get('total_poblacion') + '</td></tr>'
+                }
+                if (feature.get('publicaciones')) {
+                    content += '<tr><td>Bibliografía</td><td>' + formato_bibliografia(feature.get('publicaciones')) + '</td></tr>'
+                }
+                content += '</tbody>';
+                content += '</table>';
+
+                content_element.innerHTML = content;
+                overlay.setPosition(coord);
+
+                $('#ver-resumen').on('click', function () {
+                    console.log("click")
+                    $('#resumen-modal').modal({
+                        closable: true
+                    }).modal('show')
+                })
+            }
+        });
+
+        map.on('pointermove', function (e) {
+            if (e.dragging) return;
+            var pixel = map.getEventPixel(e.originalEvent);
+            var hit = map.hasFeatureAtPixel(pixel);
+            map.getTarget().style.cursor = hit ? 'pointer' : '';
+        });
+
+        {% if page.mostrar_aviso %}
+            $('.longer.modal').modal({
+                blurring: true,
+                closable: false,
+            }).modal('show');
+        {% endif %}
+
+        $(function () {
+            $('#map-popup').addClass("ol-popup")
+            $('#menu-derecha').on('click', function () {
+                $('#principal .ui.sidebar')
+                    .sidebar({context: $('#principal')})
+                    .sidebar('setting', 'transition', 'pusher')
+                    .sidebar('setting', 'closable', false)
+                    .sidebar('setting', 'dimPage', false)
+                    .sidebar('toggle')
+            })
+        })
+
+    </script>
+{% endblock %}
