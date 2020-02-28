@@ -365,10 +365,10 @@ class Tag(TaggitTag):
 
 
 class DifusionCulturalNoticia(Page):
-    fecha_inicio = models.DateField("Fecha inicio")
-    fecha_fin = models.DateField("Fecha fin")
-    hora_inicio = models.TimeField("Hora fin")
-    hora_fin = models.TimeField("Hora fin")
+    fecha_inicio = models.DateField("Fecha inicio", null=True)
+    fecha_fin = models.DateField("Fecha fin", null=True)
+    hora_inicio = models.TimeField("Hora fin", null=True)
+    hora_fin = models.TimeField("Hora fin", null=True)
 
     introduccion = RichTextField(max_length=250)
     ubicacion = RichTextField(max_length=250, blank=True)
