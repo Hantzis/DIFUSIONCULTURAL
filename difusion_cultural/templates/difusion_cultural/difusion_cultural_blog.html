@@ -1,7 +1,7 @@
 {% extends "difusion_cultural/base.html" %}
 {% load wagtailcore_tags wagtailimages_tags navigation_tags %}
 
-{% block body_class %}template-difusionculturalcartelera{% endblock %}
+{% block body_class %}template-difusionculturalblog{% endblock %}
 
 
 {% block navigation %}
@@ -22,68 +22,62 @@
     {% block main-cell %}
 
     {% for post in posts %}
-    <div class="medium-6 large-4 cell">
+    <div class="medium-10 large-8 cell">
 
-      <a href="/{{ post.specific.difusion_cultural_cartelera_slug }}/categoria/{{ post.specific.categoria.slug }}/"><span
-              class="label {{ post.specific.categoria.slug }}">{{ post.specific.categoria }}</span></a>
+      <a href="/blog/categoria/{{ post.specific.categoria.slug }}/"><span class="label {{ post.specific.categoria.slug }}">
+        {{ post.specific.categoria }}
+      </span>
+      {% endif %}
+      {% endfor %}
+      <div class="card borderless " data-equalizer-watch>
 
-      <div class="card borderless box-shadow" data-equalizer-watch>
 
 
-
-        {% image post.specific.imagen fill-700x400 as postimage %}
+        {% image post.specific.imagen fill-850x500 as postimage %}
         <a href="{% pageurl post %}">
           <img src="{{ postimage.url }}" alt="{{ post.title }}">
         </a>
         <div class="card-section">
           <h6><a href="{% pageurl post %}">{{ post.title }}</a></h6>
-          <p>
-            {{ post.specific.introduccion|richtext }}
-          </p>
 
           <ul class="menu vertical">
+            {% if post.specific.first_published_at %}
             <li>
               <small>
-                {{ post.specific.fecha_inicio }}
-                {% if post.specific.fecha_inicio != post.specific.fecha_fin %}
-                    al {{ post.specific.fecha_fin }}{% endif %}
-              </small>
-            </li>
-
-            <li>
-              <small>
-                {{ post.specific.hora_inicio }} - {{ post.specific.hora_fin }}
-              </small>
-            </li>
-
-            {% if post.specific.ubicacion %}
-
-            <li>
-              <small>
-                {{ post.specific.ubicacion|richtext }}
+                {{ post.specific.first_published_at }}
               </small>
             </li>
             {% endif %}
 
+            <a href="/blog/categoria/{{ post.specific.categoria.slug }}/"><span
+                   class="text-right label {{ post.specific.categoria.slug }}">{{ post.specific.categoria }}</span></a>
+
+
+            {% if post.specific.owner %}
+            <li>
+              <small>
+                <em>
+                {{ post.specific.owner.first_name }} {{ post.specific.owner.last_name }}
+              </em>
+              </small>
+            </li>
+            {% endif %}
 
           </ul>
 
-          {% if post.specific.consideraciones %}
-          <p>
-            <small>
-              {{ post.specific.consideraciones|richtext }}
-            </small>
-          </p>
-          {% endif %}
-          <a href="{% pageurl post %}" class="button primary-color">Ver</a>
 
           <div class="tag-cloud">
-            {% for tag in post.specific.etiquetas.all %}
+            {% for tag in post.etiquetas.all %}
             <a class="tag-cloud-individual-tag" href="/blog/etiqueta/{{ tag.slug }}">{{ tag }}</a>
             {% endfor %}
           </div>
-        </div>
 
+          <p>
+            {{ post.specific.introduccion|richtext }}
+          </p>
+          <a href="{% pageurl post %}" class="button primary">Leer más</a>
+          <hr>
+        </div>
       </div>
     </div>
     {% endfor %}
@@ -145,7 +139,6 @@
           </div>
       </div>
   {% endif %}
-
 
 </div>
 {% endblock grid %}

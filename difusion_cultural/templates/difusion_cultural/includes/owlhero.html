@@ -3,43 +3,42 @@
 
 
 {% for post in page.get_nuevos_bisnietos %}
-    <div class="item">
+<div class="item">
 
-        {% image post.specific.imagen fill-600x800 as hero_small %}
-        {% image post.specific.imagen fill-800x500 as hero_medium %}
-        {% image post.specific.imagen fill-1400x550 as hero_large %}
-        {% image post.specific.imagen fill-1600x650 as hero_xlarge %}
-        <figure style="background-image: url('{{ hero_medium.url }}')"
-                data-interchange="[{{ hero_small.url }}, small],
+  {% image post.specific.imagen fill-600x800 as hero_small %}
+  {% image post.specific.imagen fill-800x500 as hero_medium %}
+  {% image post.specific.imagen fill-1400x550 as hero_large %}
+  {% image post.specific.imagen fill-1600x650 as hero_xlarge %}
+  <figure style="background-image: url('{{ hero_medium.url }}')"
+          data-interchange="[{{ hero_small.url }}, small],
                             [{{ hero_medium.url }}, medium],
                             [{{ hero_large.url }}, large],
                             [{{ hero_xlarge.url }}, xlarge]
                             ">
 
-        </figure>
+  </figure>
 
-        <figcaption class="grid-x {{ post.specific.categoria.slug }}">
-            <span class="label {{ post.specific.categoria.slug }}"><small>{{ post.specific.categoria }}</small></span>
-            <div class="cell large-12">
-                <div>
-                    <a href="{% pageurl post %}">
-                        <h4 class="font-bold">{{ post.title }}</h4>
-                        <p>{{ post.specific.introduccion }}</p>
-                        <b class="owlfront-item-details">
-                            <button class="button primary">Ver más</button>
-                        </b>
-                    </a>
-                    <div class="text-right">
-                        {% for tag in post.specific.etiquetas.all %}
-                            <span class="label {{ tag.slug }}"><small>{{ tag }}</small></span>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </figcaption>
+  <figcaption class="grid-x {{ post.specific.categoria.slug }}">
+    <span class="label {{ post.specific.categoria.slug }}"><small>{{ post.specific.categoria }}</small></span>
+    <div class="cell large-12">
+      <div>
+        <a href="{% pageurl post %}">
+          <h4 class="font-bold">{{ post.title }}</h4>
+          <p>{{ post.specific.introduccion|richtext }}</p>
+          <b class="owlfront-item-details">
+            <button class="button primary">Ver más</button>
+          </b>
+        </a>
 
-
-
+        <div class="tag-cloud">
+          {% for tag in post.specific.etiquetas.all %}
+          <a class="tag-cloud-individual-tag" href="/blog/etiqueta/{{ tag.slug }}">{{ tag }}</a>
+          {% endfor %}
+        </div>
+      </div>
     </div>
+  </figcaption>
+
+</div>
 {% endfor %}
 

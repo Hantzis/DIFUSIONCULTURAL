@@ -31,9 +31,9 @@
 
               <div class="card-section title-uppercase">
                 <h5>{{ post.title }}</h5>
-                <p>
-                  {{ post.specific.introduccion }}
-                </p>
+
+                  {{ post.specific.introduccion|richtext }}
+
               </div>
 
             </a>

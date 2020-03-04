@@ -26,13 +26,9 @@
     {% for post in page.get_children %}
     <div class="medium-6 large-4 cell">
 
-      {% for tag in post.specific.etiquetas.all %}
-      {% if forloop.first %}
-      <span class="label {{ tag.slug }}">
-        {{ tag }}
-      </span>
-      {% endif %}
-      {% endfor %}
+      <a href="/{{ post.specific.difusion_cultural_cartelera_slug }}/categoria/{{ post.specific.categoria.slug }}/"><span
+              class="label {{ post.specific.categoria.slug }}">{{ post.specific.categoria }}</span></a>
+
       <div class="card borderless box-shadow" data-equalizer-watch>
 
 
@@ -43,7 +39,7 @@
         <div class="card-section">
           <h5><a href="{% pageurl post %}">{{ post.title }}</a></h5>
           <p>
-            {{ post.specific.introduccion }}
+            {{ post.specific.introduccion|richtext }}
           </p>
         </div>
 
