@@ -52,6 +52,7 @@
           <ul class="menu vertical">
             <li>
               <small>
+                <i class="fa fa-calendar-o" aria-hidden="true"></i>
                 {% if post.specific.fecha_inicio.month != post.specific.fecha_fin.month %}
                   {% if post.specific.fecha_inicio.year != post.specific.fecha_fin.year %}
                     {{ post.specific.fecha_inicio|date:"j \d\e F \d\e\l Y" }}
@@ -68,16 +69,16 @@
 
             <li>
               <small>
+                <i class="fa fa-clock-o" aria-hidden="true"></i>
                 {{ post.specific.hora_inicio }} - {{ post.specific.hora_fin }}
               </small>
             </li>
 
             {% if post.specific.ubicacion %}
 
-            <li>
-              <small>
+            <li class="ubicacion-item-icon">
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
                 {{ post.specific.ubicacion|richtext }}
-              </small>
             </li>
             {% endif %}
 
@@ -187,7 +188,7 @@
               class="label {{ post.specific.categoria.slug }}">{{ post.specific.categoria }}</span></a>
 
 
-      <div class="card borderless " data-equalizer-watch>
+      <div class="card borderless box-shadow" data-equalizer-watch>
 
         {% image post.specific.imagen fill-600x450 as postimage %}
         <a href="{% pageurl post %}">
@@ -208,6 +209,7 @@
             {% if post.specific.autor %}
             <li>
               <small>
+                <i class="fa fa-user" aria-hidden="true"></i>
                 <em>
                 {{ post.specific.autor }}
               </em>
@@ -217,7 +219,7 @@
           </ul>
 
           <div class="tag-cloud">
-            {% for tag in post.etiquetas.all %}
+            {% for tag in post.specific.etiquetas.all %}
             <a class="tag-cloud-individual-tag" href="/blog/etiqueta/{{ tag.slug }}">{{ tag }}</a>
             {% endfor %}
           </div>
@@ -283,7 +285,7 @@
               <div class="card-section title-uppercase">
                 <h5>Centro Cultural Universitario</h5>
                 <p>
-                  {{ post.specific.introduccion|richtext }}
+                  Un espacio abierto, creativo e incluyente donde se comparten las distintas manifestaciones culturales de la Universidad para el fomento de una mejor sociedad
                 </p>
               </div>
 
@@ -304,7 +306,7 @@
               <div class="card-section title-uppercase">
                 <h5>Centro de Información, Arte y Cultura</h5>
                 <p>
-                  {{ post.specific.introduccion|richtext }}
+                  Es una dependencia nicolaita comprometida con el desarrollo de la comunidad universitaria y la sociedad en general que contribuye con el desarrollo de eventos académicos
                 </p>
               </div>
 
@@ -325,7 +327,7 @@
               <div class="card-section title-uppercase">
                 <h5>Auditorio teatros e infraestructura cultural</h5>
                 <p>
-                  {{ post.specific.introduccion|richtext }}
+                  Departamento que coordina los foros de espectáculos de música, danza, variedades e infantiles, así como festivales, asambleas y conferencias
                 </p>
               </div>
 
@@ -346,7 +348,7 @@
               <div class="card-section title-uppercase">
                 <h5>ExConvento de Tiripetío</h5>
                 <p>
-                  {{ post.specific.introduccion|richtext }}
+                  Centro de cultura e investigación en las inmediaciones de la ciudad de Morelia enfocado a la apreciación de la cultura regional, nacional y universal, a través de exposiciones plásticas, representaciones teatrales y conciertos
                 </p>
               </div>
 
@@ -367,7 +369,7 @@
               <div class="card-section title-uppercase">
                 <h5>Deportes e infraestructura deportiva</h5>
                 <p>
-                  {{ post.specific.introduccion|richtext }}
+                  La UMSNH tiene la convicción de contribuir a la formación integral de la comunidad universitaria en su desarrollo psicológico, físico, ético y social, a través del desarrollo de actividades deportivas y la cultura física
                 </p>
               </div>
 

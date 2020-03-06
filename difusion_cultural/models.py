@@ -204,7 +204,7 @@ class DifusionCulturalNota(Page):
     ]
 
     subpage_types = ['DifusionCulturalNota']
-    parent_page_types = ['DifusionCulturalHomePage','DifusionCulturalPagina','DifusionCulturalNota']
+    parent_page_types = ['DifusionCulturalHomePage', 'DifusionCulturalPagina', 'DifusionCulturalPaginaCategoria','DifusionCulturalNota']
 
     class Meta:
         verbose_name = "Nota"
@@ -501,7 +501,7 @@ class DifusionCulturalNoticia(Page):
 
 
 class DifusionCulturalPaginaCategoria(Page):
-    subpage_types = ['DifusionCulturalPagina']
+    subpage_types = ['DifusionCulturalPagina', 'DifusionCulturalNota']
     parent_page_types = ['DifusionCulturalHomePage']
 
     class Meta:

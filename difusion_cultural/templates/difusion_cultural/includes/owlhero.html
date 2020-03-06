@@ -26,9 +26,10 @@
           <h4 class="font-bold">{{ post.title }}</h4>
           <p>{{ post.specific.introduccion|richtext }}</p>
 
-          <ul class="menu vertical">
+          <ul class="menu vertical owl-links">
             <li>
               <small>
+                <i class="fa fa-calendar-o" aria-hidden="true"></i>
                 {% if post.specific.fecha_inicio.month != post.specific.fecha_fin.month %}
                   {% if post.specific.fecha_inicio.year != post.specific.fecha_fin.year %}
                     {{ post.specific.fecha_inicio|date:"j \d\e F \d\e\l Y" }}
@@ -45,6 +46,7 @@
 
             <li>
               <small>
+                <i class="fa fa-clock-o" aria-hidden="true"></i>
                 {{ post.specific.hora_inicio }} - {{ post.specific.hora_fin }}
               </small>
             </li>

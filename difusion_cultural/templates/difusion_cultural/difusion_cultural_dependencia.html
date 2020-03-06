@@ -48,6 +48,7 @@
           <ul class="menu vertical">
             <li>
               <small>
+                <i class="fa fa-calendar-o" aria-hidden="true"></i>
                 {% if post.specific.fecha_inicio.month != post.specific.fecha_fin.month %}
                   {% if post.specific.fecha_inicio.year != post.specific.fecha_fin.year %}
                     {{ post.specific.fecha_inicio|date:"j \d\e F \d\e\l Y" }}
@@ -64,16 +65,16 @@
 
             <li>
               <small>
+                <i class="fa fa-clock-o" aria-hidden="true"></i>
                 {{ post.specific.hora_inicio }} - {{ post.specific.hora_fin }}
               </small>
             </li>
 
             {% if post.specific.ubicacion %}
 
-            <li>
-              <small>
+            <li class="ubicacion-item-icon">
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
                 {{ post.specific.ubicacion|richtext }}
-              </small>
             </li>
             {% endif %}
 
