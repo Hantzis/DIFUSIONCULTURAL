@@ -26,7 +26,7 @@
 
 {% block grid %}
 <div class="grid-container">
-  <div class="grid-x grid-margin-x grid-margin-y" data-equalizer data-equalize-on="medium" id="equalized-grid">
+  <div class="grid-x grid-margin-x grid-margin-y" data-equalizer data-equalize-on="medium" id="equalized-grid" data-equalize-by-row="true">
     {% block main-cell %}
 
     {% for post in page.get_nuevos_bisnietos %}
@@ -53,17 +53,22 @@
             <li>
               <small>
                 <i class="fa fa-calendar-o" aria-hidden="true"></i>
-                {% if post.specific.fecha_inicio.month != post.specific.fecha_fin.month %}
-                  {% if post.specific.fecha_inicio.year != post.specific.fecha_fin.year %}
-                    {{ post.specific.fecha_inicio|date:"j \d\e F \d\e\l Y" }}
-                    {% else %}
-                    {{ post.specific.fecha_inicio|date:"j \d\e F" }}
+                {% if post.specific.fecha_inicio != post.specific.fecha_fin %}
+                  {% if post.specific.fecha_inicio.month != post.specific.fecha_fin.month %}
+                    {% if post.specific.fecha_inicio.year != post.specific.fecha_fin.year %}
+                      {{ post.specific.fecha_inicio|date:"j \d\e F \d\e\l Y" }}
+                      {% else %}
+                      {{ post.specific.fecha_inicio|date:"j \d\e F" }}
+                    {% endif %}
+                  {% else %}
+                    {{ post.specific.fecha_inicio|date:"j" }}
                   {% endif %}
                 {% else %}
-                  {{ post.specific.fecha_inicio|date:"j" }}
+                {{ post.specific.fecha_inicio|date:"j \d\e F \d\e\l Y" }}
                 {% endif %}
                 {% if post.specific.fecha_inicio != post.specific.fecha_fin %}
-                    al {{ post.specific.fecha_fin|date:"j \d\e F \d\e\l\ Y" }}{% endif %}
+                    al {{ post.specific.fecha_fin|date:"j \d\e F \d\e\l\ Y" }}
+                {% endif %}
               </small>
             </li>
 
@@ -84,7 +89,7 @@
 
 
           </ul>
-          <a href="{% pageurl post %}" class="button primary-color">Ver</a>
+          <a href="{% pageurl post %}" class="button small primary-color">Ver</a>
 
           <div class="tag-cloud">
             {% for tag in post.specific.etiquetas.all %}
@@ -178,7 +183,7 @@
       <h6>Artículos y noticias de cultura y deporte</h6>
     </div>
   </div>
-  <div class="grid-x grid-margin-x grid-margin-y" data-equalizer data-equalize-on="medium" id="equalized-grid">
+  <div class="grid-x grid-margin-x grid-margin-y" data-equalizer data-equalize-on="medium" id="equalized-grid" data-equalize-by-row="true">
     {% for post in page.get_articulos_blog %}
 
     <div class="small-6 medium-4 large-3 cell">

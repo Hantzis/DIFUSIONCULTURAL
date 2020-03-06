@@ -30,17 +30,22 @@
             <li>
               <small>
                 <i class="fa fa-calendar-o" aria-hidden="true"></i>
-                {% if post.specific.fecha_inicio.month != post.specific.fecha_fin.month %}
-                  {% if post.specific.fecha_inicio.year != post.specific.fecha_fin.year %}
-                    {{ post.specific.fecha_inicio|date:"j \d\e F \d\e\l Y" }}
-                    {% else %}
-                    {{ post.specific.fecha_inicio|date:"j \d\e F" }}
+                {% if post.specific.fecha_inicio != post.specific.fecha_fin %}
+                  {% if post.specific.fecha_inicio.month != post.specific.fecha_fin.month %}
+                    {% if post.specific.fecha_inicio.year != post.specific.fecha_fin.year %}
+                      {{ post.specific.fecha_inicio|date:"j \d\e F \d\e\l Y" }}
+                      {% else %}
+                      {{ post.specific.fecha_inicio|date:"j \d\e F" }}
+                    {% endif %}
+                  {% else %}
+                    {{ post.specific.fecha_inicio|date:"j" }}
                   {% endif %}
                 {% else %}
-                  {{ post.specific.fecha_inicio|date:"j" }}
+                {{ post.specific.fecha_inicio|date:"j \d\e F \d\e\l Y" }}
                 {% endif %}
                 {% if post.specific.fecha_inicio != post.specific.fecha_fin %}
-                    al {{ post.specific.fecha_fin|date:"j \d\e F \d\e\l\ Y" }}{% endif %}
+                    al {{ post.specific.fecha_fin|date:"j \d\e F \d\e\l\ Y" }}
+                {% endif %}
               </small>
             </li>
 
