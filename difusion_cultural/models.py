@@ -26,6 +26,9 @@ class DifusionCulturalHomePage(HomePage):
     def get_nuevos_bisnietos(self):
         return Page.objects.live().public().filter(Q(depth__gte=5)).filter(difusionculturalnoticia__fecha_fin__gte=today)[:6]
 
+    def get_articulos_blog(self):
+        return Page.objects.type(DifusionCulturalBlogArticulo).live().public()[:6]
+
     parent_page_types = ['wagtailcore.Page']
 
     @classmethod

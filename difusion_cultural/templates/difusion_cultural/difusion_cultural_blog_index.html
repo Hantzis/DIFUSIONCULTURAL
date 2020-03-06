@@ -44,7 +44,7 @@
             {% if post.specific.first_published_at %}
             <li>
               <small>
-                {{ post.specific.first_published_at }}
+                {{ post.specific.first_published_at|date:"j F Y" }}
               </small>
             </li>
             {% endif %}

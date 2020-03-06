@@ -42,7 +42,7 @@
         <div class="medium-10 medium-offset-1 large-6 large-offset-1 cell intro-offset">
 
           <a href="/blog/categoria/{{ page.specific.categoria.slug }}/"><span
-                    class="label {{ page.specific.categoria.slug }}"></span></a>
+                    class="label {{ page.specific.categoria.slug }}">{{ page.specific.categoria }}</span></a>
 
           <div class="intro card box-shadow">
             <h4>{{ page.title }}</h4>
@@ -51,7 +51,7 @@
               {% if page.first_published_at %}
               <li>
                 <small>
-                  {{ page.first_published_at }}
+                  {{ page.first_published_at|date:"j F Y" }}
                 </small>
               </li>
               {% endif %}

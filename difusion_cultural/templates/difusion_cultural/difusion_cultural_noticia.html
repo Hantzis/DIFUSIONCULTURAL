@@ -71,7 +71,17 @@
           <ul class="menu vertical">
             <li>
               <span><strong>Fecha{% if page.fecha_inicio != page.fecha_fin %}(s){% endif %}: </strong></span>
-                {{ page.fecha_inicio }}{% if page.fecha_inicio != page.fecha_fin %} - {% endif %}
+                {% if page.fecha_inicio.month != page.fecha_fin.month %}
+                  {% if page.fecha_inicio.year != page.fecha_fin.year %}
+                    {{ page.fecha_inicio|date:"j \d\e F \d\e\l Y" }}
+                    {% else %}
+                    {{ page.fecha_inicio|date:"j \d\e F" }}
+                  {% endif %}
+                {% else %}
+                  {{ page.fecha_inicio|date:"j" }}
+                {% endif %}
+                {% if page.fecha_inicio != page.fecha_fin %}
+                    al {{ page.fecha_fin|date:"j \d\e F \d\e\l\ Y" }}{% endif %}
             </li>
 
             <li>

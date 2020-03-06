@@ -48,9 +48,17 @@
           <ul class="menu vertical">
             <li>
               <small>
-                {{ post.specific.fecha_inicio }}
+                {% if post.specific.fecha_inicio.month != post.specific.fecha_fin.month %}
+                  {% if post.specific.fecha_inicio.year != post.specific.fecha_fin.year %}
+                    {{ post.specific.fecha_inicio|date:"j \d\e F \d\e\l Y" }}
+                    {% else %}
+                    {{ post.specific.fecha_inicio|date:"j \d\e F" }}
+                  {% endif %}
+                {% else %}
+                  {{ post.specific.fecha_inicio|date:"j" }}
+                {% endif %}
                 {% if post.specific.fecha_inicio != post.specific.fecha_fin %}
-                    al {{ post.specific.fecha_fin }}{% endif %}
+                    al {{ post.specific.fecha_fin|date:"j \d\e F \d\e\l\ Y" }}{% endif %}
               </small>
             </li>
 
