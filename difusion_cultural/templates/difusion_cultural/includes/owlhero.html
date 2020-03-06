@@ -25,14 +25,33 @@
         <a href="{% pageurl post %}">
           <h4 class="font-bold">{{ post.title }}</h4>
           <p>{{ post.specific.introduccion|richtext }}</p>
+
+          <ul class="menu vertical">
+            <li>
+              <small>
+                {{ post.specific.fecha_inicio }}
+                {% if post.specific.fecha_inicio != post.specific.fecha_fin %}
+                    al {{ post.specific.fecha_fin }}{% endif %}
+              </small>
+            </li>
+
+            <li>
+              <small>
+                {{ post.specific.hora_inicio }} - {{ post.specific.hora_fin }}
+              </small>
+            </li>
+
+
+          </ul>
+
           <b class="owlfront-item-details">
-            <button class="button primary">Ver más</button>
+            <button class="button small primary">Ver más</button>
           </b>
         </a>
 
         <div class="tag-cloud">
           {% for tag in post.specific.etiquetas.all %}
-          <a class="tag-cloud-individual-tag" href="/blog/etiqueta/{{ tag.slug }}">{{ tag }}</a>
+          <a class="tag-cloud-individual-tag" href="/cartelera/etiqueta/{{ tag.slug }}">{{ tag }}</a>
           {% endfor %}
         </div>
       </div>

@@ -19,7 +19,7 @@
 
 {% block navigation %}
 
-  {% include "./includes/navigation_siblings.html" %}
+  {% include "./includes/navigation.html" %}
 
 {% endblock %}
 
@@ -56,12 +56,12 @@
               </li>
               {% endif %}
 
-              {% if page.owner %}
+              {% if page.autor %}
               <li>
                 <small>
                     <i class="fa fa-user"></i>
                     <em>
-                      {{ page.owner.first_name }} {{ page.owner.last_name }}
+                      {{ page.autor }}
                     </em>
                 </small>
               </li>

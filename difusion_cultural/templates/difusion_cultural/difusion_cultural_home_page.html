@@ -26,30 +26,102 @@
 
 {% block grid %}
 <div class="grid-container">
-  <div class="grid-x grid-margin-x grid-margin-y">
+  <div class="grid-x grid-margin-x grid-margin-y" data-equalizer data-equalize-on="medium" id="equalized-grid">
     {% block main-cell %}
 
+    {% for post in page.get_nuevos_bisnietos %}
+    <div class="medium-6 large-4 cell">
 
-    <div class="medium-10 medium-offset-1 large-10 large-offset-1 cell">
+      <a href="/{{ post.specific.difusion_cultural_cartelera_slug }}/categoria/{{ post.specific.categoria.slug }}/"><span
+              class="label {{ post.specific.categoria.slug }}">{{ post.specific.categoria }}</span></a>
 
-      <h4>
-        La Secretaría de Difusión Cultural y Extensión Universitaria te da la bienvenida
-      </h4>
+      <div class="card borderless box-shadow" data-equalizer-watch>
 
-      <p class="lead">
-        Somos la instancia institucional que se encarga de diseñar y ejecutar la política cultural de la Universidad, a través de un programa de animación cultural que llegue no únicamente a los universitarios sino a la sociedad en general.
-      </p>
+
+
+        {% image post.specific.imagen fill-700x400 as postimage %}
+        <a href="{% pageurl post %}">
+          <img src="{{ postimage.url }}" alt="{{ post.title }}">
+        </a>
+        <div class="card-section">
+          <h6><a href="{% pageurl post %}">{{ post.title }}</a></h6>
+          <p>
+            {{ post.specific.introduccion|richtext }}
+          </p>
+
+          <ul class="menu vertical">
+            <li>
+              <small>
+                {{ post.specific.fecha_inicio }}
+                {% if post.specific.fecha_inicio != post.specific.fecha_fin %}
+                    al {{ post.specific.fecha_fin }}{% endif %}
+              </small>
+            </li>
+
+            <li>
+              <small>
+                {{ post.specific.hora_inicio }} - {{ post.specific.hora_fin }}
+              </small>
+            </li>
+
+            {% if post.specific.ubicacion %}
+
+            <li>
+              <small>
+                {{ post.specific.ubicacion|richtext }}
+              </small>
+            </li>
+            {% endif %}
+
+
+          </ul>
+          <a href="{% pageurl post %}" class="button primary-color">Ver</a>
+
+          <div class="tag-cloud">
+            {% for tag in post.specific.etiquetas.all %}
+            <a class="tag-cloud-individual-tag" href="/cartelera/etiqueta/{{ tag.slug }}">{{ tag }}</a>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+    {% endfor %}
+
+{% endblock main-cell %}
+
+
+  </div>
+</div>
+
+
+<br>
+<br>
+<br>
+<section class="background-gray">
+  <div class="grid-container">
+    <div class="grid-x grid-margin-x grid-margin-y">
+
+
+      <div class="medium-10 medium-offset-1 large-10 large-offset-1 cell">
+
+        <h4>
+          Secretaría de Difusión Cultural y Extensión Universitaria
+        </h4>
+
+        <p>
+          Somos la instancia institucional que se encarga de diseñar y ejecutar la política cultural de la Universidad, a través de un programa de animación cultural que llegue no únicamente a los universitarios sino a la sociedad en general.
+        </p>
+
+
+
+      </div>
 
 
 
     </div>
-
-
-
-    {% endblock main-cell %}
-
   </div>
-</div>
+</section>
 
 <br>
 <br>
@@ -119,13 +191,16 @@
 
 
 <div class="grid-container articles-grid">
-      <h3 class="top-pusher">Espacios</h3>
+      <h3 class="top-pusher">Galería de espacios
+        <br>
+        <small>y departamentos</small>
+      </h3>
       <div class="grid-x grid-margin-x grid-margin-y" data-equalizer data-equalize-on="medium" id="equalized-grid">
 
         <div class="medium-6 large-4 cell">
           <div class="card borderless box-shadow" data-equalizer-watch>
 
-            <a href="/espacios/centro-cultural-universitario/">
+            <a href="/centro-cultural-universitario/">
 
 
               <img src="//difusioncultural.umich.mx/media/images/ccu_0001__web.2e16d0ba.fill-700x400.jpg" alt="Centro Cultural Universitario">
@@ -143,7 +218,7 @@
         <div class="medium-6 large-4 cell">
           <div class="card borderless box-shadow" data-equalizer-watch>
 
-            <a href="/espacios/ciac/">
+            <a href="/transformacion-digital/departamento-ciac/">
 
 
               <img src="//difusioncultural.umich.mx/media/images/ciac_principal1.2e16d0ba.fill-700x400.jpg" alt="Centro de Información, Arte y Cultura">

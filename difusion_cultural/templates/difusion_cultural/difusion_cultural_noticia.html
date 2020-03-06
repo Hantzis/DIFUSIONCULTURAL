@@ -70,10 +70,8 @@
         <div class="card borderless">
           <ul class="menu vertical">
             <li>
-              <span><strong>Fecha{% if page.fecha_inicio != page.fecha_fin %}
-                  (s){% endif %}: </strong></span>
-                {{ page.fecha_inicio }}{% if page.fecha_inicio != page.fecha_fin %} -
-                  {% endif %}
+              <span><strong>Fecha{% if page.fecha_inicio != page.fecha_fin %}(s){% endif %}: </strong></span>
+                {{ page.fecha_inicio }}{% if page.fecha_inicio != page.fecha_fin %} - {% endif %}
             </li>
 
             <li>
@@ -83,7 +81,7 @@
 
             {% if page.ubicacion %}
             <li>
-              <span><strong>Lugar</strong></span> {{ page.ubicacion|richtext }}
+              <span><strong>Lugar:</strong></span> {{ page.ubicacion|richtext }}
             </li>
             {% endif %}
           </ul>
@@ -113,7 +111,7 @@
         <section class="tag-cloud-section">
           <div class="tag-cloud in-article">
             {% for tag in page.etiquetas.all %}
-            <a class="tag-cloud-individual-tag" href="/blog/etiqueta/{{ tag.slug }}">{{ tag }}</a>
+            <a class="tag-cloud-individual-tag" href="/cartelera/etiqueta/{{ tag.slug }}">{{ tag }}</a>
             {% endfor %}
           </div>
         </section>
@@ -125,7 +123,7 @@
 {% block sidebar %}
     <div class="medium-10 medium-offset-1 large-3 large-offset-1 cell side-bar">
       {% if page.esta_vigente %}
-        <h5>Otros notas de interés:</h5>
+        <h6>Otros notas de interés:</h6>
         <ul class="menu vertical">
           {% for post in page.difusion_cultural_cartelera.get_next_posts|slice:":10" %}
               {% if post.id != page.id %}
@@ -134,7 +132,7 @@
           {% endfor %}
         </ul>
         {% else %}
-            <h5>Otras notas de pasadas:</h5>
+            <h6>Otras notas de pasadas:</h6>
             <ul class="menu vertical">
                 {% for post in page.difusion_cultural_cartelera.get_prev_posts|slice:":10" %}
                     {% if post.id != page.id %}

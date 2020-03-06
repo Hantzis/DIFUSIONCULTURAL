@@ -24,7 +24,7 @@ today = datetime.today().date()
 
 class DifusionCulturalHomePage(HomePage):
     def get_nuevos_bisnietos(self):
-        return Page.objects.live().filter(Q(depth__gte=5))[:6]
+        return Page.objects.live().public().filter(Q(depth__gte=5)).filter(difusionculturalnoticia__fecha_fin__gte=today)[:6]
 
     parent_page_types = ['wagtailcore.Page']
 
@@ -339,9 +339,62 @@ class DifusionCulturalCartelera(RoutablePageMixin, Page):
         verbose_name_plural = "Carteleras"
 
 
-class DifusionCulturalDependencia(Page):
+class DifusionCulturalDependencia(RoutablePageMixin, Page):
     subpage_types = ['DifusionCulturalNoticia']
     parent_page_types = ['DifusionCulturalCartelera']
+
+    def get_context(self, request, *args, **kwargs):
+        context = super(DifusionCulturalDependencia, self).get_context(request, *args, **kwargs)
+        all_posts = self.posts
+        paginator = Paginator(all_posts, 6)
+        page = request.GET.get("p")
+        page = page if page else 1
+
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+            page = 1
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
+        if paginator.num_pages > 7:
+            paginas = []
+            for i in range(int(page)-3, int(page)+4):
+                paginas.append(i)
+
+            print(posts)
+            print(paginator.num_pages)
+            print(paginas)
+            if paginas[0] < 1:
+                inc = abs(paginas[0]) + 1
+                for i in range(len(paginas)):
+                    paginas[i] = paginas[i] + inc
+                paginas.append(0)
+            elif paginas[-1] > paginator.num_pages:
+                dec = paginas[-1] - paginator.num_pages
+                for i in range(len(paginas)):
+                    paginas[i] = paginas[i] - dec
+                paginas.insert(0, 0)
+            else:
+                pass
+            if paginas[0] > 1:
+                paginas.insert(0, 0)
+            if paginas[-1] < paginator.num_pages and paginas[-1] > 0:
+                paginas.append(0)
+            context['paginas'] = paginas
+
+        context['posts'] = posts
+        context['difusion_cultural_cartelera'] = self
+        return context
+
+    def get_next_posts(self):
+        return DifusionCulturalNoticia.objects.filter(fecha_fin__gte=today).live().public().order_by('-fecha_fin')
+
+    @route(r'^$')
+    def next_post_list(self, request, *args, **kwargs):
+        self.posts = self.get_next_posts().order_by('-fecha_fin')
+        return Page.serve(self, request, *args, **kwargs)
 
     class Meta:
         verbose_name = "Dependencia"
@@ -367,7 +420,7 @@ class Tag(TaggitTag):
 class DifusionCulturalNoticia(Page):
     fecha_inicio = models.DateField("Fecha inicio", null=True)
     fecha_fin = models.DateField("Fecha fin", null=True)
-    hora_inicio = models.TimeField("Hora fin", null=True)
+    hora_inicio = models.TimeField("Hora inicio", null=True)
     hora_fin = models.TimeField("Hora fin", null=True)
 
     introduccion = RichTextField(max_length=250)

@@ -19,7 +19,10 @@
 {% block grid %}
 
 <div class="grid-container articles-grid">
-  <h3 class="top-pusher">{{ page.title }}</h3>
+  <h3 class="top-pusher">
+    <small>Cartelera</small>
+    <br>
+    {{ page.title }}</h3>
   <div class="grid-x grid-margin-x grid-margin-y" data-equalizer data-equalize-on="medium" id="equalized-grid">
     {% block main-cell %}
 
@@ -41,6 +44,49 @@
           <p>
             {{ post.specific.introduccion|richtext }}
           </p>
+
+          <ul class="menu vertical">
+            <li>
+              <small>
+                {{ post.specific.fecha_inicio }}
+                {% if post.specific.fecha_inicio != post.specific.fecha_fin %}
+                    al {{ post.specific.fecha_fin }}{% endif %}
+              </small>
+            </li>
+
+            <li>
+              <small>
+                {{ post.specific.hora_inicio }} - {{ post.specific.hora_fin }}
+              </small>
+            </li>
+
+            {% if post.specific.ubicacion %}
+
+            <li>
+              <small>
+                {{ post.specific.ubicacion|richtext }}
+              </small>
+            </li>
+            {% endif %}
+
+
+          </ul>
+
+          {% if post.specific.consideraciones %}
+          <p>
+            <small>
+              {{ post.specific.consideraciones|richtext }}
+            </small>
+          </p>
+          {% endif %}
+          <a href="{% pageurl post %}" class="button primary-color">Ver</a>
+
+          <div class="tag-cloud">
+            {% for tag in post.specific.etiquetas.all %}
+            <a class="tag-cloud-individual-tag" href="/cartelera/etiqueta/{{ tag.slug }}">{{ tag }}</a>
+            {% endfor %}
+          </div>
+
         </div>
 
       </div>
