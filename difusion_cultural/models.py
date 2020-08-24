@@ -3,9 +3,6 @@ from django.db import models
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 
-# Create your models here.
-
-
 from wagtail.core.fields import StreamField
 from wagtail.core.models import Collection, Page, PageManager, PageQuerySet
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
@@ -16,15 +13,11 @@ from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase, TagBase, Tag as TaggitTag
 from base.blocks import ExtraStreamBlock
-from wagtail.contrib.routable_page.models import RoutablePageMixin, route
-
-
-# from .blocks import BaseStreamBlock, ExtraStreamBlock, HeroSlideBlock, FormStreamBlock
-
 from base.models import HomePage, StandardPage
 from django.db.models import Q
 
 
+# Create your models here.
 
 
 class DifusionCulturalHomePage(HomePage):
