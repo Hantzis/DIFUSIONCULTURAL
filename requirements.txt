@@ -12,7 +12,7 @@ html5lib==1.0.1
 idna==2.8
 lxml==4.4.1
 mysqlclient==1.4.2.post1
-Pillow==5.4.1
+Pillow==8.1.1
 pytz==2019.1
 requests==2.22.0
 six==1.12.0
