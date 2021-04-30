@@ -19,7 +19,7 @@ six==1.12.0
 sorl-thumbnail==12.5.0
 sqlparse==0.3.0
 Unidecode==1.1.1
-urllib3==1.25.3
+urllib3==1.25.8
 wagtail==2.6.1
 wagtail-blocks==0.6.8
 wagtailfontawesome==1.1.4
