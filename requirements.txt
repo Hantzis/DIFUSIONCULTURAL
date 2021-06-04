@@ -1,7 +1,7 @@
 beautifulsoup4==4.6.0
 certifi==2019.6.16
 chardet==3.0.4
-Django==2.2.3
+Django==2.2.21
 django-instagram==0.3.0
 django-modelcluster==4.4
 django-taggit==0.24.0
